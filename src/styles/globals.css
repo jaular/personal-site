@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply font-bold text-black dark:text-white scroll-mt-14;
+}
+.prose p,
+.prose li {
+  @apply text-gray-800 dark:text-gray;
+}
+.prose strong {
+  @apply font-medium text-black dark:text-white;
+}
+.prose a {
+  @apply my-0 font-normal text-gray-800 no-underline dark:text-gray hover:underline focus:underline focus:outline-none hover:text-blue dark:hover:text-blue focus:text-blue dark:focus:text-blue underline-offset-2 decoration-1;
+}
+.prose ::marker {
+  @apply text-gray-300 dark:text-gray-800;
+}
+.prose code {
+  @apply text-pink-600 dark:text-pink-400;
+}
+.prose ul {
+  @apply list-square;
+}
+
+prose > :first-child {
+  /* Override removing top margin, causing layout shift */
+  margin-top: 1.25em !important;
+  margin-bottom: 1.25em !important;
+}
+
+.prose pre {
+  @apply bg-black-700 rounded !important;
+}
+
+/* pre::-webkit-scrollbar {
+  display: none;
+}
+
+pre {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} */
+
+/* https://docs.astro.build/en/guides/integrations-guide/tailwind/#configapplybasestyles */

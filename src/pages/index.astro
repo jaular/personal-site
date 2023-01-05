@@ -1,0 +1,35 @@
+---
+import type { Frontmatter } from "~/lib/types";
+import Layout from "~/layouts/Layout.astro";
+import Notes from "~/components/Notes.astro";
+
+type Props = {
+  url: string;
+  frontmatter: Frontmatter;
+};
+
+const notes = await Astro.glob<Props>("./notes/*.{md,mdx}");
+const sortedNotes = notes.sort(
+  (a, b) =>
+    new Date(b.frontmatter.publishDate).valueOf() -
+    new Date(a.frontmatter.publishDate).valueOf()
+);
+---
+
+<Layout>
+  <h1 class="text-3xl font-bold sm:text-4xl">Apuntes</h1>
+
+  <div class="mt-10">
+    <ul role="list" class="space-y-6">
+      {
+        sortedNotes.map((note) => (
+          <Notes
+            href={note.url}
+            title={note.frontmatter.title}
+            publishDate={note.frontmatter.publishDate}
+          />
+        ))
+      }
+    </ul>
+  </div>
+</Layout>

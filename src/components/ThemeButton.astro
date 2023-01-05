@@ -1,0 +1,29 @@
+---
+import { Icon } from "astro-icon";
+---
+
+<button
+  x-on:click="isDarkMode = ! isDarkMode"
+  aria-label="ThemeButton"
+  class="w-6 h-6 text-gray-800 dark:text-gray hover:text-black dark:hover:text-white focus:outline outline-offset-4 focus:outline-1 focus:outline-blue"
+>
+  <div x-cloak>
+    <Icon
+      x-bind:class="{ 'hidden':  isDarkMode }"
+      name="sun"
+      aria-hidden="true"
+    />
+
+    <Icon
+      x-bind:class="{ 'hidden': ! isDarkMode }"
+      name="moon"
+      aria-hidden="true"
+    />
+  </div>
+</button>
+
+<style>
+  [x-cloak] {
+    display: none;
+  }
+</style>

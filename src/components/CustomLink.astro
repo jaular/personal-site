@@ -1,0 +1,34 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+}
+
+const { href, ...attrs } = Astro.props;
+
+const isInternalLink = href && (href.startsWith("/") || href.startsWith("#"));
+let props = { ...attrs };
+
+!isInternalLink &&
+  (props = {
+    class: "inline-flex items-center space-x-1",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    ...attrs,
+  });
+---
+
+<a href={href} {...props}>
+  <span><slot /></span>
+  {
+    !isInternalLink && (
+      <span>
+        <Icon class="w-4 h-4" name="external-link" aria-hidden="true" />
+      </span>
+    )
+  }
+</a>
+
+<!-- https://docs.astro.build/es/guides/typescript/#atributos-html-integrados -->

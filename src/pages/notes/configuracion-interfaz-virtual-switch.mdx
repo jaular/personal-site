@@ -1,0 +1,30 @@
+---
+layout: ~/layouts/NotesLayout.astro
+title: Configuración de Interfaz Virtual de Switch (SVI)
+publishDate: "2023-01-06T00:10:00"
+author: "José Aular"
+---
+
+Una SVI es una interfaz definida en el quipo y asociada a una VLAN concreta.
+Para acceder al switch de manera remota, se deben configurar una dirección IP y una máscara de subred en la SVI.
+
+Para configurar una SVI en un switch, utilice el comando `interface vlan {number}`.
+
+```js
+SW_1# configure terminal
+SW_1(config)# interface vlan 1
+
+// La "vlan 1" no es una interfaz física real, sino una virtual.
+```
+
+A continuación, asigne una dirección IPv4 con el comando `ip address {ip-address} {subnet-mask}`.
+
+```js
+SW_1(config-if)# ip address 192.168.1.20 255.255.255.0
+```
+
+Finalmente, habilite la interfaz virtual utilizando el comando `no shutdown`.
+
+```js
+SW_1(config-if)# no shutdown
+```

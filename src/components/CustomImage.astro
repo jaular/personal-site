@@ -1,0 +1,26 @@
+---
+import { Image } from "@astrojs/image/components";
+
+type Props = {
+  src: string;
+  title: string;
+  alt: string;
+};
+
+const { src, title, alt } = Astro.props;
+---
+
+<div class="aspect-video bg-gray-200/50 rounded dark:bg-black-600">
+  <Image
+    class="w-full cover rounded"
+    src={src}
+    title={title}
+    width={800}
+    sizes="(max-width: 800px) 100vw, 800px"
+    aspectRatio="16:9"
+    format="avif"
+    alt={alt}
+  />
+</div>
+
+<!-- https://docs.astro.build/en/guides/images/#examples-1 -->

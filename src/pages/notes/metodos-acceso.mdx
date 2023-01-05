@@ -1,0 +1,35 @@
+---
+layout: ~/layouts/NotesLayout.astro
+title: Métodos de acceso
+publishDate: "2022-12-17T00:00:00"
+author: "José Aular"
+heroImage:
+  src: "https://cdn.pixabay.com/photo/2017/01/27/20/07/computer-2014113_960_720.jpg"
+  author: "Zozz_"
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+export const components = { a: CustomLink };
+
+## Tabla de Contenido
+
+1.  [Consola](/notes/metodos-acceso#consola)
+2.  [Secure Shell](/notes/metodos-acceso#secure-shell)
+3.  [Telnet](/notes/metodos-acceso#telnet)
+4.  [Referencias](/notes/metodos-acceso#referencias)
+
+## Consola
+
+Este es un puerto de administración físico que proporciona acceso fuera de banda a un dispositivo de Cisco. El acceso fuera de banda hace referencia al acceso por un canal de administración exclusivo que se usa únicamente con fines de mantenimiento del dispositivo. La ventaja de usar un puerto de consola es que el dispositivo es accesible incluso si no hay servicios de red configurados, como realizar la configuración inicial. Para una conexión de consola **se requiere un equipo con software de emulación de terminal y un cable de consola especial (Rollover)** para conectarse al dispositivo.
+
+## Secure Shell
+
+SSH es un método para establecer de manera remota una **conexión CLI segura** a través de una interfaz virtual por medio de una red. A diferencia de las conexiones de consola, las conexiones SSH requieren servicios de red activos en el dispositivo, incluida una interfaz activa configurada con una dirección.
+
+## Telnet
+
+Telnet es un método inseguro para establecer una sesión CLI de manera remota a través de una interfaz virtual por medio de una red. A diferencia de SSH, **Telnet no proporciona una conexión segura y encriptada** y solo debe usarse en un entorno de laboratorio. La autenticación de usuario, las contraseñas y los comandos se envían por la red en texto simple. **La mejor práctica es usar SSH en lugar de Telnet**.
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)

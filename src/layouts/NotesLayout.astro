@@ -1,0 +1,49 @@
+---
+import "~/styles/globals.css";
+import type { Frontmatter } from "~/lib/types";
+import formattedDate from "~/lib/formattedDate";
+import Layout from "./Layout.astro";
+import CustomImage from "~/components/CustomImage.astro";
+
+type Props = {
+  content: Frontmatter;
+};
+
+const ogImage =
+  "https://images.unsplash.com/photo-1520869562399-e772f042f422?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80";
+
+const {
+  content: { title, publishDate, author, heroImage },
+} = Astro.props;
+---
+
+<Layout
+  title={title}
+  image={heroImage ? heroImage.src : ogImage}
+  date={new Date(publishDate).toISOString()}
+>
+  <article class="space-y-8">
+    <div class="space-y-2.5">
+      <h1 class="text-3xl font-bold sm:text-4xl">{title}</h1>
+      <div
+        class="flex text-sm items-center space-x-2 text-gray-800 capitalize dark:text-gray"
+      >
+        <span>{author}</span>
+        <span>/</span>
+        <span>
+          {formattedDate(publishDate)}
+        </span>
+      </div>
+    </div>
+
+    {
+      heroImage && (
+        <CustomImage src={heroImage.src} title={heroImage.author} alt={title} />
+      )
+    }
+
+    <div class="leading-relaxed prose max-w-none">
+      <slot />
+    </div>
+  </article>
+</Layout>

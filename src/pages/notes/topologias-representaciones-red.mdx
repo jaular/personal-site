@@ -1,0 +1,46 @@
+---
+layout: ~/layouts/NotesLayout.astro
+title: Topologías y representaciones de red
+publishDate: "2022-12-17T00:00:00"
+author: "José Aular"
+heroImage:
+  src: "https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+  author: "@kaleidico"
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de Contenido
+
+1.  [Representaciones de red](/notes/topologias-representaciones-red#representaciones-de-red)
+2.  [Topologías](/notes/topologias-representaciones-red#topologías)
+3.  [Referencias](/notes/topologias-representaciones-red#referencias)
+
+## Representaciones de red
+
+Los arquitectos y administradores de redes deben poder mostrar el aspecto que tendrán sus redes. Necesitan poder ver fácilmente qué componentes se conectan a otros componentes, dónde se ubicarán y cómo se conectarán.
+
+- **Dispositivos finales**: Computadora (escritorio - portátil), Impresora, Teléfono IP, Tableta inalámbrica.
+- **Dispositivos intermediarios**: Router inalámbrico, Switch LAN, Router, Switch de multicapa, Dispositivos de firewall.
+- **Medios de red**: Medios inalámbricos, Medios LAN, Medios WAN.
+
+Terminología especializada para describir cómo cada uno de estos dispositivos y medios se conectan entre sí:
+
+- **Tarjeta de interfaz de red (Network Interface Card) (NIC)**: Una NIC conecta físicamente el dispositivo final a la red.
+- **Puerto físico**: Un conector o conexión en un dispositivo de red donde se conectan los medios a un terminal u otro dispositivo de red.
+- **Interfaz**: Puertos especializados en un dispositivo de red que se conecta a redes individuales. Debido a que los routers conectan redes, los puertos en un router se denominan interfaces de red.
+
+## Topologías
+
+![Topologías](https://cdn.pixabay.com/photo/2016/11/24/20/30/architecture-1857175_960_720.jpg "StartupStockPhotos")
+
+Son documentación obligatoria para cualquier persona que trabaje con una red. Estos diagramas proporcionan un mapa visual que muestra cómo está conectada la red.
+
+- **Topologías físicas**: Ilustran la ubicación física de los dispositivos intermedios y la instalación del cable. Puede ver que las habitaciones en las que se encuentran estos dispositivos están etiquetadas.
+- **Topologías lógicas**: Ilustran los dispositivos, los puertos y el esquema de direccionamiento de la red. Puede ver qué dispositivos finales están conectados a qué dispositivos intermediarios y qué medios se están utilizando.
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)

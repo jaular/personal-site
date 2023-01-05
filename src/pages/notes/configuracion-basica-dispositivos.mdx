@@ -1,0 +1,116 @@
+---
+layout: ~/layouts/NotesLayout.astro
+title: Configuración básica de dispositivos
+publishDate: "2023-01-06T00:00:00"
+author: "José Aular"
+heroImage:
+  src: "https://cdn.pixabay.com/photo/2019/08/08/16/51/network-4393368_960_720.jpg"
+  author: "Bru-nO"
+---
+
+## Tabla de Contenido
+
+1.  [Acceso](/notes/configuracion-basica-dispositivos#acceso)
+2.  [Hostname](/notes/configuracion-basica-dispositivos#hostname)
+3.  [Contraseña consola](/notes/configuracion-basica-dispositivos#contraseña-consola)
+4.  [Contraseña VTY](/notes/configuracion-basica-dispositivos#contraseña-vty)
+5.  [Contraseña enable](/notes/configuracion-basica-dispositivos#contraseña-enable)
+6.  [Encriptar contraseñas](/notes/configuracion-basica-dispositivos#encriptar-contraseñas)
+7.  [Mensaje de aviso](/notes/configuracion-basica-dispositivos#mensaje-de-aviso)
+8.  [Mostrar configuración](/notes/configuracion-basica-dispositivos#mostrar-configuración)
+9.  [Guardar configuración](/notes/configuracion-basica-dispositivos#guardar-configuración)
+
+## Acceso
+
+Accede al Switch con el comando `enable` y después utilice el comando `configure terminal` para acceder al modo de configuración global.
+
+```js
+Switch> enable
+Switch# configure terminal
+```
+
+## Hostname
+
+Utilice el comando `hostname {name}` para cambiar el nombre del equipo.
+
+```js
+Switch(config)# hostname SW_1
+```
+
+## Contraseña consola
+
+Utilice los comandos `line console 0`, `password {password}` y `login` para crear una contraseña de consola.
+
+```js
+SW_1(config)# line console 0
+SW_1(config-line)# password cisco
+SW_1(config-line)# login
+
+// El "0" representar la primera (y en la mayoría de los casos la única) interfaz de consola.
+```
+
+## Contraseña VTY
+
+Utilice los comandos `line vty 0 15`, `password {password}` y `login` para crear una contraseña a las líneas de terminal virtual.
+
+```js
+SW_1(config)# line vty 0 15
+SW_1(config-line)# password abc
+SW_1(config-line)# login
+
+// Permiten el acceso remoto mediante Telnet o SSH al dispositivo.
+// Switch (0-15) | Router (0-4).
+```
+
+## Contraseña enable
+
+Utilice el comando `enable secret {password}` para crear una contraseña de usuario privilegiado.
+
+```js
+SW_1(config-line)# enable secret admin
+```
+
+## Encriptar contraseñas
+
+Utilice el comando `service password-encryption` para crear encriptar las contraseñas de texto sin formato.
+
+```js
+SW_1(config)# service password-encryption
+
+// El propósito de este comando es evitar que individuos no autorizados vean las contraseñas en el archivo de configuración.
+```
+
+## Mensaje de aviso
+
+Utilice el comando `banner motd #{text}#` para crear un mensaje de aviso.
+
+```js
+SW_1(config)# banner motd #Solo usuarios autorizados pueden acceder al equipo#
+```
+
+## Mostrar configuración
+
+Utilice el comando `show {running-config o startup-config}` para ver la configuración de ejecución y de inicio.
+
+```js
+// Archivo de configuración ubicado en la RAM. Refleja la configuración actual.
+// Pierde todo el contenido cuando el dispositivo se apaga o se reinicia.
+SW_1#show running-config
+
+// Archivo de configuración ubicado en la VRAM.
+// No pierde su contenido cuando el dispositivo está apagado.
+SW_1#show startup-config
+
+// Extra: La configuración de inicio se elimina mediante el comando `erase startup-config`
+```
+
+## Guardar configuración
+
+Utilice el comando `copy running-config startup-config` para guardar los cambios realizados en la configuración en ejecución en el archivo de configuración de inicio.
+
+```js
+SW_1#copy running-config startup-config
+Destination filename [startup-config]?
+Building configuration...
+[OK]
+```
