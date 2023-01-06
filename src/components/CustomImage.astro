@@ -1,5 +1,5 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
 
 type Props = {
   src: string;
@@ -11,11 +11,11 @@ const { src, title, alt } = Astro.props;
 ---
 
 <div class="aspect-video bg-gray-200/50 rounded dark:bg-black-600">
-  <Image
+  <Picture
     class="w-full cover rounded"
     src={src}
     title={title}
-    width={1080}
+    widths={[300, 600, 1080]}
     sizes="(max-width: 1080px) 100vw, 1080px"
     aspectRatio="16:9"
     format="avif"
