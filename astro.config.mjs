@@ -7,7 +7,7 @@ import image from "@astrojs/image";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://jaular-cisco.vercel.app",
+  site: "https://jaular-apuntes.vercel.app",
   integrations: [
     tailwind({
       config: {
