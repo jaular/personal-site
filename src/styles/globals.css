@@ -18,7 +18,7 @@
   @apply font-medium text-black dark:text-white;
 }
 .prose a {
-  @apply my-0 font-normal text-gray-800 no-underline dark:text-gray hover:underline focus:underline focus:outline-none hover:text-blue dark:hover:text-blue focus:text-blue dark:focus:text-blue underline-offset-2 decoration-1;
+  @apply my-0 font-normal no-underline hover:underline focus:underline focus:outline-none text-blue underline-offset-2 decoration-1;
 }
 .prose ::marker {
   @apply text-gray-300 dark:text-gray-800;
