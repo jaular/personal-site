@@ -1,0 +1,40 @@
+---
+layout: ~/layouts/NotesLayout.astro
+title: DNS 1.1.1.1
+publishDate: "2023-01-07T00:00:00"
+author: "José Aular"
+heroImage:
+  src: "https://1.1.1.1/media/card-v2.png"
+  author: "Cloudflare"
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de Contenido
+
+1.  [Concepto](/notes/dns#concepto)
+2.  [Solucionador de DNS](/notes/dns#solucionador-de-dns)
+3.  [1.1.1.1](/notes/dns#1111)
+4.  [Referencias](/notes/dns#referencias)
+
+## Concepto
+
+El Sistema de nombres de dominio (DNS) es la guía telefónica de Internet. Mientras que las personas acceden a la información en línea a través de nombres de dominio como example.com, los ordenadores lo hacen utilizando direcciones del Protocolo de Internet (IP), cadenas únicas de caracteres alfanuméricos que se asignan a cada propiedad de Internet. **El DNS traduce los nombres de dominio a direcciones IP** para que los usuarios puedan acceder fácilmente a un sitio web sin tener que conocer su dirección IP.
+
+## Solucionador de DNS
+
+Un solucionador de DNS es un tipo de servidor que gestiona la traducción "nombre a dirección", en la que una dirección IP se corresponde con un nombre de dominio y se envía de vuelta al ordenador que la solicitó. Los solucionadores de DNS también se conocen como solucionadores recursivos.
+
+Los equipos están configurados para hablar con solucionadores de DNS específicos, que se identifican por dirección IP. Generalmente, la configuración la gestiona el Proveedor de acceso a Internet (ISP) del usuario en conexiones desde el hogar o inalámbricas, y un administrador de red en las conexiones desde la oficina. Los usuarios también pueden cambiar manualmente el solucionador de DNS con el que pueden comunicarse sus ordenadores.
+
+## 1.1.1.1
+
+![dns](https://res.cloudinary.com/jaular/image/upload/v1673016124/apuntes/dns_m2nyph.png "Configuración de DNS en Windows 10")
+
+1.1.1.1 es un solucionador de DNS público operado por **[Cloudflare](https://www.cloudflare.com/)** que ofrece una forma **rápida y privada de navegar por Internet**. A diferencia de la mayoría de los solucionadores de DNS, 1.1.1.1 **no vende los datos de los usuarios a los anunciantes**. Además, según mediciones realizadas, 1.1.1.1 es el solucionador de DNS **más rápido del mercado**.
+
+## Referencias
+
+- [Cloudflare](https://www.cloudflare.com/es-es/learning/dns/what-is-1.1.1.1/)
