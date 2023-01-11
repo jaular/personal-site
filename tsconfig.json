@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "importsNotUsedAsValues": "error",
     "baseUrl": ".",
     "paths": {
       "~/*": [
