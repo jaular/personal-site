@@ -1,4 +1,8 @@
-const formattedDate = (date: string) =>
+export const cn = (...classes: string[]) => {
+  return classes.filter(Boolean).join(" ");
+};
+
+export const formattedDate = (date: string) =>
   new Date(date)
     .toLocaleDateString("es-VE", {
       day: "2-digit",
@@ -6,5 +10,3 @@ const formattedDate = (date: string) =>
       year: "numeric",
     })
     .replace(/\//g, ".");
-
-export default formattedDate;
