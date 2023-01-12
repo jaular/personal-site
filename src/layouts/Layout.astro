@@ -1,6 +1,7 @@
 ---
 import "~/styles/globals.css";
 import type { CustomMeta } from "~/lib/types";
+import SEO from "~/components/SEO.astro";
 import Header from "~/components/Header.astro";
 import Footer from "~/components/Footer.astro";
 
@@ -10,15 +11,12 @@ const { ...customMeta } = Astro.props;
 const meta: CustomMeta = {
   title: "Inicio",
   description: "Conceptos informáticos y configuración de equipos",
-  image:
-    "https://images.unsplash.com/photo-1520869562399-e772f042f422?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80",
   type: "website",
   siteName: "jaular",
   ...customMeta,
 };
 ---
 
-<!DOCTYPE html>
 <html
   lang="es"
   x-data="{ isDarkMode: JSON.parse(localStorage.getItem('darkMode'))}"
@@ -26,37 +24,7 @@ const meta: CustomMeta = {
   x-bind:class="{ 'dark': isDarkMode, 'light': !isDarkMode }"
 >
   <head>
-    <!-- Global Metadata -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="robots" content="follow, index" />
-    <meta name="generator" content={Astro.generator} />
-
-    <!-- Primary Meta Tags -->
-    <title>{meta.title}</title>
-    <meta name="title" content={meta.title} />
-    <meta name="description" content={meta.description} />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content={meta.type} />
-    <meta property="og:site_name" content={meta.siteName} />
-    <meta property="og:title" content={meta.title} />
-    <meta property="og:description" content={meta.description} />
-    <meta property="og:image" content={meta.image} />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={meta.title} />
-    <meta name="twitter:description" content={meta.description} />
-    <meta name="twitter:image" content={meta.image} />
-
-    <!-- Article  -->
-    {
-      meta.date && (
-        <meta property="article:published_time" content={meta.date} />
-      )
-    }
+    <SEO meta={meta} />
   </head>
   <body
     class="flex flex-col justify-between min-h-screen text-black bg-white dark:text-white dark:bg-black"
@@ -70,18 +38,3 @@ const meta: CustomMeta = {
     <Footer />
   </body>
 </html>
-
-<script is:inline>
-  // The configured mode is stored in local storage
-  const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
-
-  // Set theme to 'dark' if darkMode = true
-  const theme = isDarkMode === true ? "dark" : "light";
-
-  // Put dark class on html tag to enable dark mode
-  document.querySelector("html").className = theme;
-</script>
-
-<!-- https://axellarsson.com/blog/astrojs-prevent-dark-mode-flicker/ -->
-<!-- https://dev.to/rinas/toggle-dark-and-sunny-mode-using-alpinejs-tailwindcss-and-localstorage-7fo -->
-<!-- https://caffeinecreations.ca/blog/dark-mode-with-alpinejs-and-tailwind/ -->
