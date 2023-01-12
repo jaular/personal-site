@@ -44,13 +44,4 @@ prose > :first-child {
   @apply bg-black-700 rounded !important;
 }
 
-/* pre::-webkit-scrollbar {
-  display: none;
-}
-
-pre {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
-
 /* https://docs.astro.build/en/guides/integrations-guide/tailwind/#configapplybasestyles */

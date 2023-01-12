@@ -8,13 +8,6 @@ import Footer from "~/components/Footer.astro";
 type Props = CustomMeta;
 
 const { ...customMeta } = Astro.props;
-const meta: CustomMeta = {
-  title: "Inicio",
-  description: "Conceptos informáticos y configuración de equipos",
-  type: "website",
-  siteName: "jaular",
-  ...customMeta,
-};
 ---
 
 <html
@@ -24,15 +17,13 @@ const meta: CustomMeta = {
   x-bind:class="{ 'dark': isDarkMode, 'light': !isDarkMode }"
 >
   <head>
-    <SEO meta={meta} />
+    <SEO data={customMeta} />
   </head>
   <body
-    class="flex flex-col justify-between min-h-screen text-black bg-white dark:text-white dark:bg-black"
+    class="flex flex-col justify-between min-h-screen text-black bg-white dark:text-white dark:bg-black antialiased"
   >
     <Header />
-    <main
-      class="w-full max-w-3xl px-4 mx-auto my-10 antialiased sm:px-6 md:my-12 lg:px-8"
-    >
+    <main class="w-full max-w-3xl px-4 mx-auto my-10 sm:px-6 md:my-12 lg:px-8">
       <slot />
     </main>
     <Footer />
