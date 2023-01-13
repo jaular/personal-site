@@ -1,25 +1,28 @@
 ---
-import { Picture } from "@astrojs/image/components";
+import { Image } from "@astrojs/image/components";
 
 type Props = {
   src: string;
   title: string;
   alt: string;
+  loading?: boolean;
 };
 
-const { src, title, alt } = Astro.props;
+const { src, title, alt, loading } = Astro.props;
+const loadingAttribute = loading ? "eager" : "lazy";
 ---
 
 <div class="aspect-video bg-gray-200/50 rounded dark:bg-black-600">
-  <Picture
+  <Image
     class="w-full cover rounded"
     src={src}
     title={title}
-    widths={[300, 600, 1080]}
-    sizes="(max-width: 1080px) 100vw, 1080px"
+    width={720}
+    sizes="(max-width: 720px) 100vw, (max-width: 1200px) 50vw, 33vw"
     aspectRatio="16:9"
     format="avif"
     alt={alt}
+    loading={loadingAttribute}
   />
 </div>
 
