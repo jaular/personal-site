@@ -21,15 +21,3 @@ export type SocialLink = {
   pack?: string;
   name: string;
 };
-
-type HeroImage = {
-  src: string;
-  author: string;
-};
-
-export type Frontmatter = {
-  title: string;
-  publishDate: string;
-  author: string;
-  heroImage?: HeroImage;
-};

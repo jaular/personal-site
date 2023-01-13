@@ -14,9 +14,11 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+*.generated.*
 
 # macOS-specific files
 .DS_Store
+.vercel
 
-# others
+# vs code config
 .vscode
