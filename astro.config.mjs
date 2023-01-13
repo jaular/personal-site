@@ -30,6 +30,9 @@ export default defineConfig({
       langs: [],
     },
   },
+  experimental: {
+    contentCollections: true,
+  },
 });
 
 // https://docs.astro.build/en/guides/markdown-content/#syntax-highlighting

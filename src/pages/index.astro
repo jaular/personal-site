@@ -1,18 +1,19 @@
 ---
-import type { Frontmatter } from "~/lib/types";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import Layout from "~/layouts/Layout.astro";
 import Notes from "~/components/Notes.astro";
 
 type Props = {
-  url: string;
-  frontmatter: Frontmatter;
+  note: CollectionEntry<"notes">;
 };
 
-const notes = await Astro.glob<Props>("./notes/*.{md,mdx}");
+const notes = await getCollection("notes");
+
 const sortedNotes = notes.sort(
   (a, b) =>
-    new Date(b.frontmatter.publishDate).valueOf() -
-    new Date(a.frontmatter.publishDate).valueOf()
+    new Date(b.data.publishDate).valueOf() -
+    new Date(a.data.publishDate).valueOf()
 );
 ---
 
@@ -24,9 +25,9 @@ const sortedNotes = notes.sort(
       {
         sortedNotes.map((note) => (
           <Notes
-            href={note.url}
-            title={note.frontmatter.title}
-            publishDate={note.frontmatter.publishDate}
+            href={`/notes/${note.slug}`}
+            title={note.data.title}
+            publishDate={note.data.publishDate}
           />
         ))
       }
