@@ -1,10 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import { formattedDate } from "~/lib/utils";
-import Layout from "~/layouts/Layout.astro";
-import CustomImage from "~/components/CustomImage.astro";
-import CustomLink from "~/components/CustomLink.astro";
+import NoteLayout from "~/layouts/NoteLayout.astro";
 
 type Props = {
   note: CollectionEntry<"notes">;
@@ -20,40 +17,6 @@ export async function getStaticPaths() {
 }
 
 const { note } = Astro.props;
-const { Content } = await note.render();
-
-const { title, heroImage, publishDate, author } = note.data;
 ---
 
-<Layout
-  title={title}
-  image={heroImage && heroImage.src}
-  date={new Date(publishDate).toISOString()}
->
-  <article class="space-y-8">
-    <div class="space-y-2.5">
-      <h1 class="text-3xl font-bold sm:text-4xl">{title}</h1>
-      <div
-        class="flex text-sm items-center space-x-2 text-gray-800 capitalize dark:text-gray"
-      >
-        <span>{author}</span>
-        <span>/</span>
-        <span>
-          {formattedDate(publishDate)}
-        </span>
-      </div>
-    </div>
-
-    {
-      heroImage && (
-        <CustomImage src={heroImage.src} title={heroImage.author} alt={title} />
-      )
-    }
-
-    <div class="leading-relaxed prose max-w-none">
-      <Content components={{ a: CustomLink, img: CustomImage }} />
-    </div>
-  </article>
-</Layout>
-
-<!-- https://docs.astro.build/en/guides/markdown-content/#custom-components-with-imported-mdx -->
+<NoteLayout note={note} />

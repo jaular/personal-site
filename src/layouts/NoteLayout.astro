@@ -1,17 +1,18 @@
 ---
-import "~/styles/globals.css";
-import type { Frontmatter } from "~/lib/types";
+import type { CollectionEntry } from "astro:content";
 import { formattedDate } from "~/lib/utils";
 import Layout from "./Layout.astro";
 import CustomImage from "~/components/CustomImage.astro";
+import CustomLink from "~/components/CustomLink.astro";
 
 type Props = {
-  content: Frontmatter;
+  note: CollectionEntry<"notes">;
 };
 
-const {
-  content: { title, publishDate, author, heroImage },
-} = Astro.props;
+const { note } = Astro.props;
+const { Content } = await note.render();
+
+const { title, heroImage, publishDate, author } = note.data;
 ---
 
 <Layout
@@ -40,7 +41,9 @@ const {
     }
 
     <div class="leading-relaxed prose max-w-none">
-      <slot />
+      <Content components={{ a: CustomLink, img: CustomImage }} />
     </div>
   </article>
 </Layout>
+
+<!-- https://docs.astro.build/en/guides/markdown-content/#custom-components-with-imported-mdx -->
