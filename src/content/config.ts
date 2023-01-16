@@ -15,5 +15,5 @@ const notes = defineCollection({
 });
 
 export const collections = {
-  notes: notes,
+  notes,
 };

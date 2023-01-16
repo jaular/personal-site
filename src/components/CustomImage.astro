@@ -1,5 +1,5 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Picture } from "@astrojs/image/components";
 
 type Props = {
   src: string;
@@ -13,12 +13,14 @@ const loadingAttribute = loading ? "eager" : "lazy";
 ---
 
 <div class="aspect-video bg-gray-200/50 rounded dark:bg-black-600">
-  <Image
+  <Picture
     class="w-full cover rounded"
     src={src}
     title={title}
     width={720}
-    sizes="(max-width: 720px) 100vw, (max-width: 1200px) 50vw, 33vw"
+    height={405}
+    widths={[200, 400, 600, 720, 1024]}
+    sizes="(max-width: 1024px) 100vw, 720px"
     aspectRatio="16:9"
     format="avif"
     alt={alt}
