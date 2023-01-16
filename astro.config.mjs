@@ -4,18 +4,20 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
 import image from "@astrojs/image";
+import solidJs from "@astrojs/solid-js";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://jaular-apuntes.vercel.app",
   integrations: [
+    solidJs(),
+    mdx(),
+    alpinejs(),
     tailwind({
       config: {
         applyBaseStyles: false,
       },
     }),
-    mdx(),
-    alpinejs(),
     image({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
@@ -27,7 +29,6 @@ export default defineConfig({
         type: "dark",
         settings: houston.tokenColors,
       },
-      langs: [],
     },
   },
   experimental: {
