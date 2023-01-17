@@ -21,7 +21,7 @@ const SearchNotes: Component<Props> = ({ data }) => {
 
   return (
     <>
-      <div class="space-y-10">
+      <div class="space-y-14">
         <div class="relative w-full mt-4">
           <input
             aria-label="Buscar publicaciones"
