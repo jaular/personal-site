@@ -20,6 +20,13 @@ const { ...customMeta } = Astro.props;
 >
   <head>
     <SEO data={customMeta} />
+    <link
+      rel="preload"
+      href="/fonts/inter-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
   </head>
   <body
     class="flex flex-col justify-between min-h-screen text-black bg-white dark:text-white dark:bg-black antialiased"
