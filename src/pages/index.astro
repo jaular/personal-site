@@ -1,7 +1,46 @@
 ---
 import Layout from "~/layouts/Layout.astro";
+import MySkills from "~/components/MySkills.astro";
 ---
 
 <Layout>
-  <h1 class="text-4xl font-bold sm:text-5xl">WIP</h1>
+  <div class="space-y-14">
+    <div class="space-y-4">
+      <h1 class="text-4xl font-bold sm:text-5xl">José Aular</h1>
+      <p class="text-base leading-relaxed text-gray-800 dark:text-gray">
+        Bienvenido, aquí encontrarás información sobre desarrollo web,
+        configuración de equipos, informática y tecnología.
+      </p>
+    </div>
+
+    <div class="space-y-2">
+      <p class="text-base font-semibold text-gray-800 dark:text-gray">
+        Habilidades
+      </p>
+      <MySkills />
+    </div>
+
+    <div
+      class="flex flex-col space-y-4 sm:flex-row sm:items-start sm:space-y-0 sm:space-x-4"
+    >
+      <div>
+        <a
+          href="/projects"
+          class="flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-white rounded outline-none bg-blue hover:opacity-75 focus:opacity-75"
+          aria-label="Proyectos"
+        >
+          <span>Proyectos</span>
+        </a>
+      </div>
+      <div>
+        <a
+          href="/blog"
+          class="flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-black bg-gray-100 rounded outline-none dark:text-white hover:bg-gray-200 focus:bg-gray-200 dark:bg-black-600 dark:hover:bg-black-700 dark:focus:bg-black-700"
+          aria-label="Blog"
+        >
+          <span>Blog</span>
+        </a>
+      </div>
+    </div>
+  </div>
 </Layout>
