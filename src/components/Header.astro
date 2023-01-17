@@ -43,7 +43,7 @@ const currentPage = Astro.url.pathname;
               <a
                 href={item.href}
                 class={cn(
-                  item.href == currentPage
+                  item.href === currentPage
                     ? "border-blue"
                     : "border-transparent hover:border-blue-400 focus:border-blue-400",
                   "inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 text-gray-800 dark:text-gray focus:outline-none hover:text-black dark:hover:text-white focus:text-black dark:focus:text-white"
@@ -106,7 +106,7 @@ const currentPage = Astro.url.pathname;
           <a
             href={item.href}
             class={cn(
-              item.href == currentPage
+              item.href === currentPage
                 ? "border-blue"
                 : "border-transparent hover:border-gray-800 dark:hover:border-gray-300 focus:border-gray-800 dark:focus:border-gray-300",
               "block text-sm py-2 pl-3 pr-4 text-gray-800 dark:text-gray border-l-2 hover:bg-gray-100 dark:hover:bg-black-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-black-700 hover:text-black dark:hover:text-white focus:text-black dark:focus:text-white"

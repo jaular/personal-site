@@ -8,7 +8,7 @@ import solidJs from "@astrojs/solid-js";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://jaular-apuntes.vercel.app",
+  // site: "https://jaular-apuntes.vercel.app",
   integrations: [
     solidJs(),
     mdx(),
