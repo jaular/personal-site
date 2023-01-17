@@ -5,6 +5,7 @@ export type CustomMeta = {
   image?: string;
   type?: string;
   siteName?: string;
+  twitterUser?: string;
   date?: string;
 };
 
@@ -20,4 +21,11 @@ export type SocialLink = {
   title: string;
   pack?: string;
   name: string;
+};
+
+// MySkills Component
+export type Skill = {
+  name: string;
+  href: string;
+  iconName: string;
 };

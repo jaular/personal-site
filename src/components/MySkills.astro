@@ -1,0 +1,26 @@
+---
+import { Icon } from "astro-icon";
+import skills from "~/data/skills";
+---
+
+<div class="flex flex-row items-center space-x-6">
+  {
+    skills.map((skill) => (
+      <a
+        class="focus:outline outline-offset-4 focus:outline-1 focus:outline-blue"
+        href={skill.href}
+        title={skill.name}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="sr-only">{skill.name}</span>
+
+        <Icon
+          class="h-7 fill-gray dark:fill-gray-800"
+          name={skill.iconName}
+          aria-hidden="true"
+        />
+      </a>
+    ))
+  }
+</div>
