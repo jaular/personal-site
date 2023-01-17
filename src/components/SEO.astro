@@ -8,10 +8,11 @@ type Props = {
 const { data } = Astro.props;
 
 const meta: CustomMeta = {
-  title: "Inicio",
+  title: "José Aular",
   description: "Conceptos informáticos y configuración de equipos",
   type: "website",
   siteName: "jaular",
+  twitterUser: "@jaular14",
   ...data,
 };
 
@@ -44,6 +45,7 @@ const { title, description, image, type, siteName, date } = meta;
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={meta.twitterUser} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={image} />
