@@ -4,7 +4,7 @@ import type { CustomMeta } from "~/lib/types";
 import SEO from "~/components/SEO.astro";
 import Header from "~/components/Header.astro";
 import Footer from "~/components/Footer.astro";
-import ScrollToTopButton from "~/components/ScrollToTopButton";
+import ScrollToTopButton from "~/components/ScrollToTopButton.astro";
 
 type Props = CustomMeta;
 
@@ -28,7 +28,7 @@ const { ...customMeta } = Astro.props;
     <main class="w-full max-w-3xl px-4 mx-auto my-10 sm:px-6 md:my-12 lg:px-8">
       <slot />
     </main>
-    <ScrollToTopButton client:only="solid-js" />
+    <ScrollToTopButton />
     <Footer />
   </body>
 </html>

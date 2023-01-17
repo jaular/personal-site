@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "~/layouts/Layout.astro";
+import Posts from "~/components/Posts";
+
+const posts = await getCollection("posts");
+
+const sortedPosts = posts.sort(
+  (a, b) =>
+    new Date(b.data.publishDate).valueOf() -
+    new Date(a.data.publishDate).valueOf()
+);
+---
+
+<Layout title="Blog">
+  <div class="space-y-4">
+    <h1 class="text-4xl font-bold sm:text-5xl">Blog</h1>
+    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-300">
+      {`En total, he escrito ${posts.length} artículos en mi blog`}
+    </p>
+  </div>
+
+  <Posts data={sortedPosts} client:load />
+</Layout>

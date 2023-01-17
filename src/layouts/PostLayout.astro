@@ -6,13 +6,13 @@ import CustomImage from "~/components/CustomImage.astro";
 import CustomLink from "~/components/CustomLink.astro";
 
 type Props = {
-  note: CollectionEntry<"notes">;
+  post: CollectionEntry<"posts">;
 };
 
-const { note } = Astro.props;
-const { Content } = await note.render();
+const { post } = Astro.props;
+const { Content } = await post.render();
 
-const { title, heroImage, publishDate, author } = note.data;
+const { title, heroImage, publishDate, author } = post.data;
 ---
 
 <Layout
