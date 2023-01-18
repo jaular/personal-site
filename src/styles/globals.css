@@ -33,7 +33,7 @@
   @apply text-blue dark:text-blue-400 font-normal my-0 no-underline hover:underline focus:underline focus:outline-none underline-offset-2 decoration-1;
 }
 .prose ::marker {
-  @apply text-gray-300 dark:text-gray-800;
+  @apply text-gray dark:text-gray-800;
 }
 .prose code {
   @apply text-pink-600 dark:text-pink-400;
