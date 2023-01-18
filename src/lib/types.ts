@@ -9,13 +9,13 @@ export type CustomMeta = {
   date?: string;
 };
 
-// Header Component
+// Header data
 export type NavigationLink = {
   name: string;
   href: string;
 };
 
-// Footer Component
+// Social Links data
 export type SocialLink = {
   href: string;
   title: string;
@@ -23,9 +23,16 @@ export type SocialLink = {
   name: string;
 };
 
-// MySkills Component
+// My Skills data
 export type Skill = {
   name: string;
   href: string;
   iconName: string;
+};
+
+// Projects data
+export type Project = {
+  title: string;
+  href: string;
+  imageUrl: string;
 };

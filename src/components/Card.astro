@@ -1,0 +1,28 @@
+---
+type Props = {
+  title: string;
+  imageSrc: string;
+  href: string;
+};
+
+const { title, imageSrc, href } = Astro.props;
+---
+
+<a
+  class="group focus:outline outline-offset-4 focus:outline-1 focus:outline-blue"
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img
+    class="bg-gray-100 rounded dark:bg-black-600 group-hover:opacity-75"
+    src={imageSrc}
+    alt={title}
+    title={title}
+  />
+  <div class="pt-2">
+    <p class="text-base font-semibold text-gray-800 dark:text-gray">
+      {title}
+    </p>
+  </div>
+</a>

@@ -1,0 +1,39 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import projects from "~/data/projects";
+import Card from "~/components/Card.astro";
+---
+
+<Layout title="José Aular | Proyectos">
+  <div class="space-y-14">
+    <div class="space-y-4">
+      <h1 class="text-4xl font-bold sm:text-5xl">Proyectos</h1>
+      <p class="text-base leading-relaxed text-gray-800 dark:text-gray-300">
+        Estos son algunos de mis proyectos
+      </p>
+    </div>
+    {
+      projects.length > 0 && (
+        <div class="grid gap-10">
+          {projects.map((project) => (
+            <Card
+              title={project.title}
+              href={project.href}
+              imageSrc={project.imageUrl}
+            />
+          ))}
+        </div>
+      )
+    }
+    <div>
+      <a
+        class="inline-flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-white rounded outline-none sm:w-auto bg-blue hover:opacity-75 focus:opacity-75"
+        href="https://github.com/jaular?tab=repositories"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>Más proyectos</span>
+      </a>
+    </div>
+  </div>
+</Layout>
