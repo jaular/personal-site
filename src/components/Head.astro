@@ -9,7 +9,7 @@ const { data } = Astro.props;
 
 const meta: CustomMeta = {
   title: "José Aular",
-  description: "Conceptos informáticos y configuración de equipos",
+  description: "Programación, configuración de equipos, tecnología y más.",
   type: "website",
   siteName: "jaular",
   twitterUser: "@jaular14",
@@ -51,6 +51,15 @@ const { title, description, image, type, siteName, date } = meta;
 <meta name="twitter:image" content={image} />
 
 {date && <meta property="article:published_time" content={date} />}
+
+<!-- Links -->
+<link
+  rel="preload"
+  href="/fonts/inter-var.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 
 <!-- Scripts -->
 <script is:inline>
