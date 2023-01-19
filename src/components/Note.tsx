@@ -17,7 +17,7 @@ const Note: Component<Props> = ({ note }) => {
         <div class="space-y-1">
           <a
             href={`/blog/${slug}`}
-            class="text-base text-gray-800 sm:text-lg dark:text-gray group-hover:text-blue dark:group-hover:text-blue focus:outline outline-offset-4 focus:outline-1 focus:outline-blue focus:text-blue dark:focus:text-blue"
+            class="text-base text-black sm:text-lg dark:text-white group-hover:text-blue dark:group-hover:text-blue focus:outline outline-offset-4 focus:outline-1 focus:outline-blue focus:text-blue dark:focus:text-blue"
           >
             <span aria-hidden="true" class="absolute inset-0"></span>
             {title}
