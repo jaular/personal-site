@@ -9,7 +9,7 @@ Para acceder al switch de manera remota, se deben configurar una dirección IP y
 
 Para configurar una SVI en un switch, utilice el comando `interface vlan {number}`.
 
-```js
+```js title="Switch #1"
 SW_1# configure terminal
 SW_1(config)# interface vlan 1
 
@@ -18,12 +18,12 @@ SW_1(config)# interface vlan 1
 
 A continuación, asigne una dirección IPv4 con el comando `ip address {ip-address} {subnet-mask}`.
 
-```js
+```js title="Switch #1"
 SW_1(config-if)# ip address 192.168.1.20 255.255.255.0
 ```
 
 Finalmente, habilite la interfaz virtual utilizando el comando `no shutdown`.
 
-```js
+```js title="Switch #1"
 SW_1(config-if)# no shutdown
 ```

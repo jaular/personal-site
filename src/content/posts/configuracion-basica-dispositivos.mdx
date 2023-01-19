@@ -23,7 +23,7 @@ heroImage:
 
 Accede al Switch con el comando `enable` y después utilice el comando `configure terminal` para acceder al modo de configuración global.
 
-```js
+```js title="Switch #1"
 Switch> enable
 Switch# configure terminal
 ```
@@ -32,7 +32,7 @@ Switch# configure terminal
 
 Utilice el comando `hostname {name}` para cambiar el nombre del equipo.
 
-```js
+```js title="Switch #1"
 Switch(config)# hostname SW_1
 ```
 
@@ -40,7 +40,7 @@ Switch(config)# hostname SW_1
 
 Utilice los comandos `line console 0`, `password {password}` y `login` para crear una contraseña de consola.
 
-```js
+```js title="Switch #1"
 SW_1(config)# line console 0
 SW_1(config-line)# password cisco
 SW_1(config-line)# login
@@ -52,7 +52,7 @@ SW_1(config-line)# login
 
 Utilice los comandos `line vty 0 15`, `password {password}` y `login` para crear una contraseña a las líneas de terminal virtual.
 
-```js
+```js title="Switch #1"
 SW_1(config)# line vty 0 15
 SW_1(config-line)# password abc
 SW_1(config-line)# login
@@ -65,7 +65,7 @@ SW_1(config-line)# login
 
 Utilice el comando `enable secret {password}` para crear una contraseña de usuario privilegiado.
 
-```js
+```js title="Switch #1"
 SW_1(config-line)# enable secret admin
 ```
 
@@ -73,7 +73,7 @@ SW_1(config-line)# enable secret admin
 
 Utilice el comando `service password-encryption` para crear encriptar las contraseñas de texto sin formato.
 
-```js
+```js title="Switch #1"
 SW_1(config)# service password-encryption
 
 // El propósito de este comando es evitar que individuos no autorizados vean las contraseñas en el archivo de configuración.
@@ -83,7 +83,7 @@ SW_1(config)# service password-encryption
 
 Utilice el comando `banner motd #{text}#` para crear un mensaje de aviso.
 
-```js
+```js title="Switch #1"
 SW_1(config)# banner motd #Solo usuarios autorizados pueden acceder al equipo#
 ```
 
@@ -91,7 +91,7 @@ SW_1(config)# banner motd #Solo usuarios autorizados pueden acceder al equipo#
 
 Utilice el comando `show {running-config o startup-config}` para ver la configuración de ejecución y de inicio.
 
-```js
+```js title="Switch #1"
 // Archivo de configuración ubicado en la RAM. Refleja la configuración actual.
 // Pierde todo el contenido cuando el dispositivo se apaga o se reinicia.
 SW_1#show running-config
@@ -107,7 +107,7 @@ SW_1#show startup-config
 
 Utilice el comando `copy running-config startup-config` para guardar los cambios realizados en la configuración en ejecución en el archivo de configuración de inicio.
 
-```js
+```js title="Switch #1"
 SW_1#copy running-config startup-config
 Destination filename [startup-config]?
 Building configuration...
