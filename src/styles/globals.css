@@ -45,7 +45,7 @@
   @apply text-pink-600 dark:text-pink-400;
 }
 .prose pre {
-  @apply rounded rounded-tl-none focus:outline focus:outline-1 focus:outline-blue !important;
+  @apply rounded rounded-tl-none bg-black-600 focus:outline focus:outline-1 focus:outline-blue !important;
 }
 
 pre::-webkit-scrollbar {
