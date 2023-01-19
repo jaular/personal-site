@@ -74,5 +74,3 @@ const SearchNotes: Component<Props> = ({ data }) => {
 };
 
 export default SearchNotes;
-
-// https://www.solidjs.com/tutorial/stores_nested_reactivity
