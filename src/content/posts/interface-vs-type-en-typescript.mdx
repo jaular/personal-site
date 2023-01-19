@@ -1,0 +1,89 @@
+---
+title: Interface vs Type en TypeScript
+publishDate: "2022-08-26T00:00:00"
+author: "José Aular"
+heroImage:
+  src: "https://images.unsplash.com/photo-1611761481480-1944df65807a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+  author: "@joranquinten"
+---
+
+## Tabla de Contenido
+
+1.  [Concepto](/blog/interface-vs-type-en-typescript#concepto)
+1.  [Sugerencia](/blog/interface-vs-type-en-typescript#sugerencia)
+1.  [Ejemplo de Type](/blog/interface-vs-type-en-typescript#ejemplo-de-type)
+1.  [Ejemplo de Interface](/blog/interface-vs-type-en-typescript#ejemplo-de-interface)
+1.  [Referencias](/blog/interface-vs-type-en-typescript#referencias)
+
+## Concepto
+
+Hay dos formas diferentes en TypeScript para declarar tipos de objetos: `interface` y `type`.
+
+Las `interface` y los `type` son muy similares y, en muchos casos, puedes elegir entre ellos libremente.
+Casi todas las funciones de una `interface` están disponibles en `type`, la distinción clave es que un `type`
+**no se puede volver a abrir para agregar nuevas propiedades** frente a una `interface` que **siempre es extensible**.
+
+## Sugerencia
+
+Considera usar `type` para las props y state en los componentes de React, por consistencia y porque está más restringido.
+
+Siempre usa `interface` para la definición de la API pública al crear una biblioteca o definiciones de tipo ambiental de terceros,
+ya que esto permite que un consumidor las amplíe a través de la fusión de declaraciones si faltan algunas definiciones.
+
+## Ejemplo de Type
+
+```ts title="lib/types.ts"
+type Hobby = {
+  name: string;
+};
+type Address = {
+  city: string;
+  street: string;
+};
+type User = {
+  name: string;
+  age: number;
+  email?: string;
+  hobbies: Hobby[];
+};
+// Intersection Type
+type UserData = User & Address;
+const userData: UserData = {
+  name: "Michael Jordan",
+  age: 59,
+  hobbies: [{ name: "Basketball" }, { name: "Golf" }],
+  city: "Chicago",
+  street: "2700 Point Lane",
+};
+```
+
+## Ejemplo de Interface
+
+```ts title="lib/interfaces.ts"
+interface Hobby {
+  name: string;
+}
+interface Address {
+  city: string;
+  street: string;
+}
+// Extends
+interface User extends Address {
+  name: string;
+  age: number;
+  email?: string;
+  hobbies: Hobby[];
+}
+const userData: User = {
+  name: "Michael Jordan",
+  age: 59,
+  hobbies: [{ name: "Basketball" }, { name: "Golf" }],
+  city: "Chicago",
+  street: "2700 Point Lane",
+};
+```
+
+## Referencias
+
+- [TypeScript](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces)
+- [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/basic_type_example#more-advice)
