@@ -1,7 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 import type { Component } from "solid-js";
 import { createSignal, For } from "solid-js";
-import { formattedDate } from "~/lib/utils";
+import Note from "./Note";
 
 type Props = {
   data: CollectionEntry<"posts">[];
@@ -62,32 +62,7 @@ const SearchNotes: Component<Props> = ({ data }) => {
                 class="divide-y divide-gray-200 dark:divide-gray-900"
               >
                 <For each={posts()} fallback={<div>Loading...</div>}>
-                  {(post) => (
-                    <li class="relative py-4 group first:pt-0 last:pb-0">
-                      <div class="flex items-center justify-between space-x-8">
-                        <div class="space-y-1">
-                          <a
-                            href={`/blog/${post.slug}`}
-                            class="text-base text-gray-800 sm:text-lg dark:text-gray group-hover:text-blue dark:group-hover:text-blue focus:outline outline-offset-4 focus:outline-1 focus:outline-blue focus:text-blue dark:focus:text-blue"
-                          >
-                            <span
-                              aria-hidden="true"
-                              class="absolute inset-0"
-                            ></span>
-                            {post.data.title}
-                          </a>
-                          <div>
-                            <time
-                              class="text-xs sm:text-sm text-gray-800 dark:text-gray"
-                              datetime={post.data.publishDate}
-                            >
-                              {formattedDate(post.data.publishDate)}
-                            </time>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  )}
+                  {(post) => <Note note={post} />}
                 </For>
               </ul>
             )}
