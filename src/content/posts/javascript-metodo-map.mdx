@@ -1,0 +1,62 @@
+---
+title: Método map
+publishDate: "2021-11-17T00:00:00"
+author: "José Aular"
+heroImage:
+  src: "https://images.unsplash.com/photo-1489702932289-406b7782113c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
+  author: "@anniespratt"
+---
+
+## Tabla de Contenido
+
+1.  [Concepto](/blog/javascript-metodo-map#concepto)
+2.  [Ejemplo #1](/blog/javascript-metodo-map#ejemplo-1)
+3.  [Ejemplo #2](/blog/javascript-metodo-map#ejemplo-2)
+4.  [Ejemplo #3](/blog/javascript-metodo-map#ejemplo-3)
+5.  [Referencias](/blog/javascript-metodo-map#referencias)
+
+## Concepto
+
+El método `map()` crea un nuevo array con los resultados de la llamada a la función indicada aplicados a cada uno de sus elementos.
+
+`map()` es un método sin mutación que crea una nueva matriz en vez de los métodos con mutación, que solo realizan cambios a la matriz que invoca.
+
+Este método puede tener muchos usos cuando se trabaja con matrices.
+
+## Ejemplo #1
+
+```js title="mapMethod.js"
+const numbers = [1, 2, 3, 4, 5];
+const doubles = numbers.map((number) => number * 2);
+console.log({ doubles });
+// [2, 4, 6, 8, 10]
+```
+
+## Ejemplo #2
+
+```js title="mapMethod.js"
+const drinks = ["coffee soda", "tea", "whiskey"];
+const coldDrinks = drinks.map((drink) => `iced ${drink}`);
+console.log({ coldDrinks });
+// ['iced coffee soda', 'iced tea', 'iced whiskey']
+```
+
+## Ejemplo #3
+
+```js title="mapMethod.js"
+const users = [
+  { firstName: "Homer", lastName: "Simpson", years: 36 },
+  { firstName: "Marge", lastName: "Simpson", years: 34 },
+  { firstName: "Bart", lastName: "Simpson", years: 10 },
+  { firstName: "Lisa", lastName: "Simpson", years: 8 },
+  { firstName: "Maggie", lastName: "Simpson", years: 1 },
+];
+const names = users.map((user) => `${user.firstName} ${user.lastName}`);
+console.log({ names });
+// ['Homer Simpson', 'Marge Simpson', 'Bart Simpson', 'Lisa Simpson', 'Maggie Simpson']
+```
+
+## Referencias
+
+- [MDN Web Docs](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+- [DigitalOcean](https://www.digitalocean.com/community/tutorials/4-uses-of-javascripts-arraymap-you-should-know-es)
