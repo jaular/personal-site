@@ -1,0 +1,51 @@
+---
+title: JSX
+publishDate: "2021-11-18T00:00:00"
+author: "José Aular"
+heroImage:
+  src: "https://images.unsplash.com/photo-1619410283995-43d9134e7656?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+  author: "@juanjodev02"
+---
+
+## Tabla de Contenido
+
+1.  [Concepto](/blog/jsx#concepto)
+2.  [Ejemplo](/blog/jsx#ejemplo)
+3.  [Referencias](/blog/jsx#referencias)
+
+## Concepto
+
+Esta curiosa sintaxis de etiquetas no es ni un string ni HTML.
+
+Se llama JSX, y es una extensión de la sintaxis de JavaScript.
+Recomendamos usarlo con React para describir cómo debería ser la interfaz de usuario.
+JSX puede recordarte a un lenguaje de plantillas, pero viene con todo el poder de JavaScript.
+**Es prácticamente como escribir HTML pero no estás escribiendo HTML, es JavaScript**.
+
+React al basar el desarrollo de apps en componentes,
+necesitamos crear elementos HTML que definan nuestro componente, por ejemplo `<div>`, `<p>`, `<img>`, etc...
+
+También necesitaremos indicar cuando se trata de componentes creados por nosotros con React,
+como puede ser un `<Image />`, `<List />`, etc...
+
+Lo único que has de tener en cuenta es que hay algunas palabras reservadas en JavaScript y JSX te obliga a nombrar
+algunos atributos de otra manera, como es el caso de las `class` que para definir clases de CSS que con JSX debemos
+escribir `className`.
+
+## Ejemplo
+
+```jsx title="components/Badge.jsx"
+const Badge = ({ title }) => {
+  return (
+    <span className="px-2 py-[3px] text-xs font-medium text-white bg-purple-600 rounded">
+      {title}
+    </span>
+  );
+};
+export default Badge;
+```
+
+## Referencias
+
+- [React](https://es.reactjs.org/docs/introducing-jsx.html)
+- [Carlos Azaustre](https://carlosazaustre.es/jsx-para-novatos)
