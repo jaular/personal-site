@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fonts */
 @font-face {
   font-family: "Inter";
   font-style: normal;
@@ -10,10 +11,12 @@
   src: url(/fonts/inter-var.woff2) format("woff2");
 }
 
+/* Alpinejs */
 [x-cloak] {
   display: none !important;
 }
 
+/* Tailwind Prose */
 .prose h1,
 .prose h2,
 .prose h3,
@@ -32,14 +35,26 @@
 .prose a {
   @apply text-blue dark:text-blue-400 font-normal my-0 no-underline hover:underline focus:underline focus:outline-none underline-offset-2 decoration-1;
 }
+.prose ul {
+  @apply list-square;
+}
 .prose ::marker {
   @apply text-gray dark:text-gray-800;
 }
 .prose code {
   @apply text-pink-600 dark:text-pink-400;
 }
-.prose ul {
-  @apply list-square;
+.prose pre {
+  @apply rounded rounded-tl-none bg-black-600 focus:outline focus:outline-1 focus:outline-blue !important;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+}
+
+pre {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 prose > :first-child {
@@ -48,8 +63,24 @@ prose > :first-child {
   margin-bottom: 1.25em !important;
 }
 
-.prose pre {
-  @apply bg-black-700 rounded !important;
+/* Rehype Pretty Code */
+div[data-rehype-pretty-code-title] {
+  display: inline-block;
+  background-color: #05060b;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  color: #f5f5f5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.375rem 1.25rem;
+}
+
+div[data-rehype-pretty-code-title] + pre {
+  margin-top: 0px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 
 /* https://docs.astro.build/en/guides/integrations-guide/tailwind/#configapplybasestyles */

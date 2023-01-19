@@ -1,12 +1,13 @@
 import { defineConfig } from "astro/config";
-import houston from "./houston.json";
-import tailwind from "@astrojs/tailwind";
+import solidJs from "@astrojs/solid-js";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
+import tailwind from "@astrojs/tailwind";
 import image from "@astrojs/image";
-import solidJs from "@astrojs/solid-js";
+// Rehype Pretty Code
+import rehypePrettyCode from "rehype-pretty-code";
+import { rehypePrettyCodeOptions } from "./src/lib/rehypePrettyCode";
 
-// https://astro.build/config
 export default defineConfig({
   site: "https://jaular-apuntes.vercel.app",
   integrations: [
@@ -23,13 +24,9 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    shikiConfig: {
-      theme: {
-        name: "Houston",
-        type: "dark",
-        settings: houston.tokenColors,
-      },
-    },
+    extendDefaultPlugins: true,
+    syntaxHighlight: false,
+    rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
   },
   experimental: {
     contentCollections: true,
