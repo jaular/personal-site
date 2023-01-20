@@ -1,0 +1,44 @@
+---
+import { Icon } from "astro-icon";
+import { cn } from "~/lib/utils";
+
+type Props = {
+  currentPage: number;
+  next?: string;
+  prev?: string;
+};
+
+const { currentPage, next, prev } = Astro.props;
+---
+
+<div class="flex items-center justify-center space-x-4">
+  <a
+    href={prev && `${prev}/`}
+    aria-disabled="true"
+    aria-label="Prev"
+    class={cn(
+      prev ? "opacity-100 hover:opacity-75 focus:opacity-75" : "opacity-40",
+      "p-1.5 text-white rounded outline-none bg-blue"
+    )}
+  >
+    <span>
+      <Icon class="h-5 w-5" name="chevron-left" />
+    </span>
+  </a>
+  <span class="rounded bg-gray-200/50 dark:bg-black-600 px-4 py-1.5 text-sm">
+    {currentPage}
+  </span>
+  <a
+    href={next && `${next}/`}
+    aria-disabled="true"
+    aria-label="Next"
+    class={cn(
+      next ? "opacity-100 hover:opacity-75 focus:opacity-75" : "opacity-40",
+      "p-1.5 text-white rounded outline-none bg-blue"
+    )}
+  >
+    <span>
+      <Icon class="h-5 w-5" name="chevron-right" />
+    </span>
+  </a>
+</div>
