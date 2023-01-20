@@ -14,10 +14,12 @@ const { currentPage, next, prev } = Astro.props;
 <div class="flex items-center justify-center space-x-4">
   <a
     href={prev && `${prev}/`}
-    aria-disabled="true"
-    aria-label="Prev"
+    role="button"
+    aria-label="Previous"
     class={cn(
-      prev ? "opacity-100 hover:opacity-75 focus:opacity-75" : "opacity-40",
+      prev
+        ? "opacity-100 hover:opacity-75 focus:opacity-75"
+        : "opacity-40 cursor-not-allowed",
       "p-1.5 text-white rounded outline-none bg-blue"
     )}
   >
@@ -30,10 +32,12 @@ const { currentPage, next, prev } = Astro.props;
   </span>
   <a
     href={next && `${next}/`}
-    aria-disabled="true"
+    role="button"
     aria-label="Next"
     class={cn(
-      next ? "opacity-100 hover:opacity-75 focus:opacity-75" : "opacity-40",
+      next
+        ? "opacity-100 hover:opacity-75 focus:opacity-75"
+        : "opacity-40 cursor-not-allowed",
       "p-1.5 text-white rounded outline-none bg-blue"
     )}
   >
