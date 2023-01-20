@@ -107,7 +107,8 @@ const currentPage = Astro.url.pathname;
           <a
             href={item.href}
             class={cn(
-              item.href === currentPage
+              item.href === currentPage ||
+                (currentPage.includes(item.href) && item.href !== "/")
                 ? "border-blue"
                 : "border-transparent hover:border-gray-800 dark:hover:border-gray-300 focus:border-gray-800 dark:focus:border-gray-300",
               "block text-sm py-2 pl-3 pr-4 text-gray-800 dark:text-gray border-l-2 hover:bg-gray-100 dark:hover:bg-black-700 focus:outline-none focus:bg-gray-100 dark:focus:bg-black-700 hover:text-black dark:hover:text-white focus:text-black dark:focus:text-white"
