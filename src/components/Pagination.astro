@@ -11,38 +11,40 @@ type Props = {
 const { currentPage, next, prev } = Astro.props;
 ---
 
-<div class="flex items-center justify-center space-x-4">
-  <a
-    href={prev && `${prev}/`}
-    role="button"
-    aria-label="Previous"
-    class={cn(
-      prev
-        ? "opacity-100 hover:opacity-75 focus:opacity-75"
-        : "opacity-40 cursor-not-allowed",
-      "p-1.5 text-white rounded outline-none bg-blue"
-    )}
-  >
-    <span>
+<div class="flex items-center justify-center">
+  <div class="inline-flex rounded">
+    <a
+      href={prev && `${prev}/`}
+      role="button"
+      aria-label="Previous"
+      class={cn(
+        prev
+          ? "opacity-100 hover:opacity-60 focus:opacity-60"
+          : "opacity-40 cursor-not-allowed",
+        "relative inline-flex items-center rounded-l px-1.5 py-1.5 text-sm font-medium text-white outline-none bg-blue"
+      )}
+    >
+      <span class="sr-only">Previous</span>
       <Icon class="h-5 w-5" name="chevron-left" />
+    </a>
+    <span
+      class="relative inline-flex items-center bg-gray-200/50 dark:bg-black-600 px-4 py-1.5 text-sm"
+    >
+      {currentPage}
     </span>
-  </a>
-  <span class="rounded bg-gray-200/50 dark:bg-black-600 px-4 py-1.5 text-sm">
-    {currentPage}
-  </span>
-  <a
-    href={next && `${next}/`}
-    role="button"
-    aria-label="Next"
-    class={cn(
-      next
-        ? "opacity-100 hover:opacity-75 focus:opacity-75"
-        : "opacity-40 cursor-not-allowed",
-      "p-1.5 text-white rounded outline-none bg-blue"
-    )}
-  >
-    <span>
+    <a
+      href={next && `${next}/`}
+      role="button"
+      aria-label="Next"
+      class={cn(
+        next
+          ? "opacity-100 hover:opacity-60 focus:opacity-60"
+          : "opacity-40 cursor-not-allowed",
+        "relative inline-flex items-center rounded-r px-1.5 py-1.5 text-sm font-medium text-white outline-none bg-blue"
+      )}
+    >
+      <span class="sr-only">Next</span>
       <Icon class="h-5 w-5" name="chevron-right" />
-    </span>
-  </a>
+    </a>
+  </div>
 </div>
