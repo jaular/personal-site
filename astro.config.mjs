@@ -1,5 +1,4 @@
 import { defineConfig } from "astro/config";
-import solidJs from "@astrojs/solid-js";
 import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
 import tailwind from "@astrojs/tailwind";
@@ -11,7 +10,6 @@ import { rehypePrettyCodeOptions } from "./src/lib/rehypePrettyCode";
 export default defineConfig({
   site: "https://jaular-apuntes.vercel.app",
   integrations: [
-    solidJs(),
     mdx(),
     alpinejs(),
     tailwind({

@@ -3,12 +3,8 @@
     "importsNotUsedAsValues": "error",
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "src/*"
-      ]
-    },
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+      "~/*": ["src/*"]
+    }
   },
   "extends": "astro/tsconfigs/strict"
 }
