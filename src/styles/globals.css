@@ -75,7 +75,7 @@ div[data-rehype-pretty-code-title] {
   font-size: 0.875rem;
   line-height: 1.25rem;
   padding: 0.25rem 1.25rem;
-  border-bottom: 1.5px solid #0359ee;
+  border-bottom: 1px solid #0359ee;
 }
 
 div[data-rehype-pretty-code-title] + pre {
