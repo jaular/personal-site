@@ -3,8 +3,8 @@ import "~/styles/globals.css";
 import type { CustomMeta } from "~/lib/types";
 import Head from "~/components/Head.astro";
 import Header from "~/components/Header.astro";
-import Footer from "~/components/Footer.astro";
 import ScrollToTopButton from "~/components/ScrollToTopButton.astro";
+import Footer from "~/components/Footer.astro";
 
 type Props = CustomMeta;
 
@@ -21,14 +21,16 @@ const { ...customMeta } = Astro.props;
   <head>
     <Head data={customMeta} />
   </head>
-  <body
-    class="flex flex-col justify-between min-h-screen text-black bg-white dark:text-white dark:bg-black antialiased"
-  >
-    <Header />
-    <main class="w-full max-w-3xl px-4 mx-auto my-10 sm:px-6 md:my-12 lg:px-8">
-      <slot />
-    </main>
-    <ScrollToTopButton />
-    <Footer />
+  <body class="text-black bg-white dark:text-white dark:bg-black antialiased">
+    <div id="__astro">
+      <Header />
+      <main
+        class="w-full max-w-3xl px-4 mx-auto my-10 sm:px-6 md:my-12 lg:px-8"
+      >
+        <slot />
+      </main>
+      <ScrollToTopButton />
+      <Footer />
+    </div>
   </body>
 </html>
