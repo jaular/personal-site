@@ -28,7 +28,7 @@ export async function getStaticPaths({ paginate }: any) {
   );
   return paginate(sortedPosts, {
     props: { totalPosts: posts.length },
-    pageSize: 3,
+    pageSize: 4,
   });
 }
 
@@ -68,6 +68,7 @@ const { page, totalPosts } = Astro.props;
     </div>
     <Pagination
       currentPage={page.currentPage}
+      lastPage={page.lastPage}
       next={page.url.next}
       prev={page.url.prev}
     />
