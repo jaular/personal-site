@@ -3,7 +3,8 @@ import mdx from "@astrojs/mdx";
 import alpinejs from "@astrojs/alpinejs";
 import tailwind from "@astrojs/tailwind";
 import image from "@astrojs/image";
-// Rehype Pretty Code
+import sitemap from "@astrojs/sitemap";
+import robotsTxt from "astro-robots-txt";
 import rehypePrettyCode from "rehype-pretty-code";
 import { rehypePrettyCodeOptions } from "./src/lib/rehypePrettyCode";
 
@@ -20,6 +21,8 @@ export default defineConfig({
     image({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
+    sitemap(),
+    robotsTxt(),
   ],
   markdown: {
     extendDefaultPlugins: true,
