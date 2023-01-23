@@ -3,19 +3,20 @@ import { Icon } from "astro-icon";
 import { cn } from "~/lib/utils";
 
 type Props = {
+  href: string;
   currentPage: number;
   lastPage: number;
   next?: string;
   prev?: string;
 };
 
-const { currentPage, lastPage, next, prev } = Astro.props;
+const { href, currentPage, lastPage, next, prev } = Astro.props;
 ---
 
 <div class="flex items-center justify-center">
   <div class="inline-flex rounded">
     <a
-      href={prev && `/blog/`}
+      href={prev && `${href}`}
       role="button"
       aria-label="First"
       class={cn(
@@ -29,7 +30,7 @@ const { currentPage, lastPage, next, prev } = Astro.props;
       <Icon class="h-5 w-5" name="chevron-double-left" />
     </a>
     <a
-      href={prev && `${prev}/`}
+      href={prev && `${prev}`}
       role="button"
       aria-label="Previous"
       class={cn(
@@ -48,7 +49,7 @@ const { currentPage, lastPage, next, prev } = Astro.props;
       {currentPage} / {lastPage}
     </span>
     <a
-      href={next && `${next}/`}
+      href={next && `${next}`}
       role="button"
       aria-label="Next"
       class={cn(
@@ -62,7 +63,7 @@ const { currentPage, lastPage, next, prev } = Astro.props;
       <Icon class="h-5 w-5" name="chevron-right" />
     </a>
     <a
-      href={next && `/blog/${lastPage}/`}
+      href={next && `${href}/${lastPage}`}
       role="button"
       aria-label="Last"
       class={cn(
