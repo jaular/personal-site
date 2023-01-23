@@ -36,3 +36,16 @@ export type Project = {
   href: string;
   imageUrl: string;
 };
+
+// Pagination pages
+export type Page = {
+  size: number;
+  total: number;
+  currentPage: number;
+  lastPage: number;
+  url: {
+    current: string;
+    next?: string;
+    prev?: string;
+  };
+};
