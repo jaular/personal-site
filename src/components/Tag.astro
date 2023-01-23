@@ -6,8 +6,10 @@ type Props = {
 const { tag } = Astro.props;
 ---
 
-<p class="text-xs lowercase font-medium text-black dark:text-white">
-  <span class="bg-gray-200/50 dark:bg-black-600 rounded px-2 py-0.5">
+<a href={`/blog/${tag}`} class="text-xs lowercase font-medium">
+  <span
+    class="bg-gray-200/50 dark:bg-black-600 rounded px-2 py-0.5 text-black dark:text-white hover:bg-blue hover:text-white dark:hover:bg-blue dar:hover:text-white"
+  >
     {tag}
   </span>
-</p>
+</a>

@@ -11,13 +11,6 @@
   src: url(/fonts/inter-var.woff2) format("woff2");
 }
 
-#__astro {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  justify-content: space-between;
-}
-
 /* Alpinejs */
 [x-cloak] {
   display: none !important;
