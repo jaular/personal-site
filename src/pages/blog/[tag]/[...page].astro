@@ -1,0 +1,86 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Page } from "~/lib/types";
+import { getCollection } from "astro:content";
+import allTags from "~/data/allTags";
+import Layout from "~/layouts/Layout.astro";
+import Note from "~/components/Note.astro";
+import Pagination from "~/components/Pagination.astro";
+
+type Props = {
+  page: {
+    data: CollectionEntry<"posts">[];
+  } & Page;
+  totalPosts: number;
+};
+
+export async function getStaticPaths({ paginate }: any) {
+  const posts = await getCollection("posts");
+  return allTags.map((tag) => {
+    const filteredPosts = posts
+      .filter((post) => post.data.tag === tag)
+      .sort(
+        (a, b) =>
+          new Date(b.data.publishDate).valueOf() -
+          new Date(a.data.publishDate).valueOf()
+      );
+    return paginate(filteredPosts, {
+      params: { tag },
+      pageSize: 4,
+    });
+  });
+}
+
+const { page } = Astro.props;
+const { tag } = Astro.params;
+console.log(page);
+---
+
+<Layout title={`José Aular | Blog [${tag}]`}>
+  <div class="space-y-14">
+    <div class="space-y-4">
+      <h1 class="text-4xl font-bold sm:text-5xl">Blog</h1>
+      <p
+        class="text-base leading-relaxed prose text-gray-800 dark:text-gray max-w-lg"
+      >
+        {`Artículos con la etiqueta:`}
+        <code class="text-base">{tag}</code>
+      </p>
+    </div>
+    <div>
+      <div class="space-y-4">
+        <h2 class="text-2xl font-bold sm:text-3xl">Publicaciones</h2>
+        {
+          !page.data.length ? (
+            <p class="text-gray-800 dark:text-gray">
+              No se han encontrado publicaciones
+            </p>
+          ) : (
+            <ul
+              role="list"
+              class="divide-y divide-gray-200 dark:divide-gray-900"
+            >
+              {page.data.map((item) => (
+                <Note note={item} />
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </div>
+    {
+      page.total > page.size && (
+        <Pagination
+          href={`/blog/${tag}`}
+          currentPage={page.currentPage}
+          lastPage={page.lastPage}
+          next={page.url.next}
+          prev={page.url.prev}
+        />
+      )
+    }
+  </div>
+</Layout>
+
+<!-- https://docs.astro.build/en/reference/api-reference/#paginate -->
+<!-- https://docs.astro.build/en/core-concepts/routing/#nested-pagination -->
