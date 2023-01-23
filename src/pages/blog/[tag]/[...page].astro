@@ -4,6 +4,7 @@ import type { Page } from "~/lib/types";
 import { getCollection } from "astro:content";
 import allTags from "~/data/allTags";
 import Layout from "~/layouts/Layout.astro";
+import Tags from "~/components/Tags.astro";
 import Note from "~/components/Note.astro";
 import Pagination from "~/components/Pagination.astro";
 
@@ -46,6 +47,7 @@ console.log(page);
         {`Artículos con la etiqueta:`}
         <code class="text-base">{tag}</code>
       </p>
+      <Tags />
     </div>
     <div>
       <div class="space-y-4">
