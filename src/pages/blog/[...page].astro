@@ -1,38 +1,36 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import type { Page } from "~/lib/types";
 import { getCollection } from "astro:content";
+import allTags from "~/data/allTags";
 import Layout from "~/layouts/Layout.astro";
 import Note from "~/components/Note.astro";
 import Pagination from "~/components/Pagination.astro";
+import Tag from "~/components/Tag.astro";
 
 type Props = {
   page: {
     data: CollectionEntry<"posts">[];
-    currentPage: number;
-    lastPage: number;
-    url: {
-      current: string;
-      next?: string;
-      prev?: string;
-    };
-  };
+  } & Page;
   totalPosts: number;
+  tags: Array<string>;
 };
 
 export async function getStaticPaths({ paginate }: any) {
   const posts = await getCollection("posts");
+  const tags = allTags.map((tag) => tag);
   const sortedPosts = posts.sort(
     (a, b) =>
       new Date(b.data.publishDate).valueOf() -
       new Date(a.data.publishDate).valueOf()
   );
   return paginate(sortedPosts, {
-    props: { totalPosts: posts.length },
+    props: { totalPosts: posts.length, tags },
     pageSize: 4,
   });
 }
 
-const { page, totalPosts } = Astro.props;
+const { page, totalPosts, tags } = Astro.props;
 ---
 
 <Layout title="José Aular | Blog">
@@ -44,6 +42,9 @@ const { page, totalPosts } = Astro.props;
       >
         {`En total, he escrito ${totalPosts} artículos en mi blog`}
       </p>
+      <div class="flex items-center space-x-4">
+        {tags.map((tag) => <Tag tag={tag} />)}
+      </div>
     </div>
     <div>
       <div class="space-y-4">
@@ -66,12 +67,17 @@ const { page, totalPosts } = Astro.props;
         }
       </div>
     </div>
-    <Pagination
-      currentPage={page.currentPage}
-      lastPage={page.lastPage}
-      next={page.url.next}
-      prev={page.url.prev}
-    />
+    {
+      page.total > page.size && (
+        <Pagination
+          href={`/blog`}
+          currentPage={page.currentPage}
+          lastPage={page.lastPage}
+          next={page.url.next}
+          prev={page.url.prev}
+        />
+      )
+    }
   </div>
 </Layout>
 
