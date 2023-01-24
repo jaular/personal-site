@@ -9,7 +9,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { rehypePrettyCodeOptions } from "./src/lib/rehypePrettyCode";
 
 export default defineConfig({
-  site: "https://jaular-apuntes.vercel.app",
+  site: "https://jaular.netlify.app",
   integrations: [
     mdx(),
     alpinejs(),
