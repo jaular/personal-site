@@ -51,7 +51,7 @@
   @apply px-4 border border-gray-300 dark:border-gray-800  border-l-4 border-l-blue dark:border-l-blue;
 }
 .prose blockquote > p {
-  @apply font-normal not-italic before:content-none after:content-none;
+  @apply font-normal not-italic my-2.5 before:content-none after:content-none;
 }
 
 pre::-webkit-scrollbar {

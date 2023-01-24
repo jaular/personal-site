@@ -90,7 +90,7 @@ SW_1(config)# banner motd #Solo usuarios autorizados pueden acceder al equipo#
 
 ## Mostrar configuración
 
-Utilice el comando `show {running-config o startup-config}` para ver la configuración de ejecución y de inicio.
+Utilice el comando `show {running-config | startup-config}` para ver la configuración de ejecución y de inicio.
 
 ```js title="Switch #1"
 // Archivo de configuración ubicado en la RAM. Refleja la configuración actual.
@@ -100,9 +100,9 @@ SW_1#show running-config
 // Archivo de configuración ubicado en la VRAM.
 // No pierde su contenido cuando el dispositivo está apagado.
 SW_1#show startup-config
-
-// Extra: La configuración de inicio se elimina mediante el comando `erase startup-config`
 ```
+
+> Extra: La configuración de inicio se elimina mediante el comando `erase startup-config`.
 
 ## Guardar configuración
 
