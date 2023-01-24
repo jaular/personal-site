@@ -1,77 +1,34 @@
-<p>
-  Here's an example of a Netlify Form! When you fill this out, the submissions
-  can be found in the Netlify Admin site.
-</p>
-<div class="feedback-form">
+<div class="max-w-lg mx-auto">
   <form
+    class="grid grid-cols-1 gap-y-6"
     data-netlify="true"
     netlify-honeypot
     name="feedback"
     method="POST"
-    action="/success"
+    action="/contact/success"
+    autocomplete="off"
   >
     <p class="hidden">
       <label>
-        Don’t fill this out if you’re human: <input name="bot-field" />
+        Do not fill this out if you are human: <input name="bot-field" />
       </label>
     </p>
     <input type="hidden" name="form-name" value="feedback" />
-    <label for="name">Name</label>
-    <input id="name" type="text" name="name" />
-    <label for="email">Email</label>
-    <input id="email" type="email" name="email" required />
-    <label for="feedback">What is your feedback?</label>
-    <textarea id="feedback" wrap="soft" name="feedback" required></textarea>
-    <button type="submit">Submit</button>
-  </form>
-</div>
 
-<style>
-  .feedback-form {
-    margin: 40px 40px;
-    min-width: 250px;
-    width: 45%;
-  }
-  input,
-  textarea,
-  button {
-    font-size: inherit;
-    margin: 15px 0;
-    padding: 12px 20px;
-    width: 100%;
-  }
-  .hidden {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-  }
-</style>
-
-<!-- <div class="max-w-xs mx-auto">
-  <form
-    class="grid grid-cols-1 gap-y-6"
-    action="https://formcarry.com/s/PxeKh8Y0Ee"
-    method="POST"
-    enctype="multipart/form-data"
-    autocomplete="off"
-  >
     <div>
       <label
         for="name"
-        class="block text-base leading-relaxed text-slate-700 dark:text-slate-400 after:content-['*'] after:ml-0.5 after:text-rose-700 dark:after:text-rose-500"
+        class="block text-base text-black dark:text-white after:content-['*'] after:ml-0.5 after:text-rose-700 dark:after:text-rose-500"
       >
         Nombre
       </label>
       <div class="mt-1">
         <input
+          class="block w-full px-4 py-2 text-base text-black placeholder-gray-600 bg-gray-200/50 rounded dark:placeholder:text-gray-800 dark:text-white dark:bg-black-600 focus:outline focus:outline-1 focus:outline-blue"
+          id="name"
           type="text"
           name="name"
-          id="name"
-          class="block w-full px-4 py-2 text-base text-black placeholder-gray-600 bg-gray-200/50 rounded dark:placeholder:text-gray-800 dark:text-white dark:bg-black-600 focus:outline focus:outline-1 focus:outline-blue"
+          required
         />
       </div>
     </div>
@@ -79,27 +36,44 @@
     <div>
       <label
         for="email"
-        class="block text-base leading-relaxed text-slate-700 dark:text-slate-400 after:content-['*'] after:ml-0.5 after:text-rose-700 dark:after:text-rose-500"
+        class="block text-base text-black dark:text-white after:content-['*'] after:ml-0.5 after:text-rose-700 dark:after:text-rose-500"
       >
-        Correo
+        Correo electrónico
       </label>
       <div class="mt-1">
         <input
+          class="block w-full px-4 py-2 text-base text-black placeholder-gray-600 bg-gray-200/50 rounded dark:placeholder:text-gray-800 dark:text-white dark:bg-black-600 focus:outline focus:outline-1 focus:outline-blue"
+          id="email"
           type="email"
           name="email"
-          id="email"
-          class="block w-full px-4 py-2 text-base text-black placeholder-gray-600 bg-gray-200/50 rounded dark:placeholder:text-gray-800 dark:text-white dark:bg-black-600 focus:outline focus:outline-1 focus:outline-blue"
+          required
         />
       </div>
     </div>
 
+    <div>
+      <label
+        for="message"
+        class="block text-base text-black dark:text-white after:content-['*'] after:ml-0.5 after:text-rose-700 dark:after:text-rose-500"
+      >
+        Mensaje
+      </label>
+      <textarea
+        class="block w-full px-4 py-2 text-base text-black placeholder-gray-600 bg-gray-200/50 rounded dark:placeholder:text-gray-800 dark:text-white dark:bg-black-600 focus:outline focus:outline-1 focus:outline-blue"
+        id="message"
+        wrap="soft"
+        name="message"
+        rows="4"
+        required></textarea>
+    </div>
+
     <div class="mx-auto">
       <button
-        type="submit"
         class="flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-white rounded outline-none bg-blue hover:opacity-75 focus:opacity-75"
+        type="submit"
       >
-        Enviar mensaje
-      </button>
+        Enviar mensaje</button
+      >
     </div>
   </form>
-</div> -->
+</div>
