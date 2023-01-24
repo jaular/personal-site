@@ -1,0 +1,37 @@
+---
+title: Deshabilitar puertos en desuso
+publishDate: "2023-01-24T00:00:00"
+author: "José Aular"
+tag: "cisco"
+heroImage:
+  src: "https://res.cloudinary.com/jaular/image/upload/v1674566521/blog/deshabilitar-puertos-desuso/deshabilitar-puertos-desuso_axczis.png"
+  author: "@jaular14"
+---
+
+Navegue hasta el puerto utilizando el comando `interface {fastEthernet | GigabitEthernet} {number}`.
+
+```js title="Switch #1"
+SW_1(config)#interface fastEthernet 0/5
+```
+
+> Extra: también puede acceder por rango. Ejemplo: `interface range fastEthernet 0/7-24`,
+> del puerto #7 al #24.
+
+Seguidamente utilice el comando `shutdown` para deshabilitar el puerto.
+
+> Nota: `no shutdown` para habilitar el puerto.
+
+```js title="Switch #1"
+SW_1(config-if)#shutdown
+
+SW_1(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/5, changed state to administratively down
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/5, changed state to down
+```
+
+Finalmente, utilice el comando `description {text}` para agregar una descripción al puerto.
+
+```js title="Switch #1"
+SW_1(config-if)#description PUERTO DESHABILITADO
+```
