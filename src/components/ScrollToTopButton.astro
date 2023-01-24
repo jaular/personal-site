@@ -17,9 +17,9 @@
 </button>
 
 <script>
-  const scrollToTopButton: HTMLElement = document.getElementById(
+  const scrollToTopButton = document.getElementById(
     "scrollToTop"
-  ) as HTMLElement;
+  ) as HTMLButtonElement;
   const scrollFunction = () => {
     if (window.pageYOffset > 300) {
       scrollToTopButton.style.display = "block";
