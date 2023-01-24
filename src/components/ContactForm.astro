@@ -5,7 +5,6 @@
     netlify-honeypot
     name="feedback"
     method="POST"
-    action="/contact/success"
     autocomplete="off"
   >
     <p class="hidden">
@@ -77,3 +76,26 @@
     </div>
   </form>
 </div>
+
+<script>
+  const handleSubmit = (event: SubmitEvent) => {
+    event.preventDefault();
+
+    const myForm = event.target as HTMLFormElement;
+    const formData: any = new FormData(myForm);
+
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(formData).toString(),
+    })
+      .then(() => (window.location.href = "/contact/success"))
+      .catch((error) => alert(error));
+  };
+
+  let form = document.querySelector("form") as HTMLFormElement;
+  form.addEventListener("submit", handleSubmit);
+</script>
+
+<!-- https://www.netlify.com/blog/deploy-an-astro-site-with-forms-serverless-functions-and-redirects/ -->
+<!-- https://docs.netlify.com/forms/setup/?_ga=2.263594826.738482257.1674580923-1503961310.1674580923#html-forms -->
