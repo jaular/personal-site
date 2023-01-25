@@ -1,8 +1,12 @@
+---
+const email = import.meta.env.SECRET_EMAIL;
+const site = import.meta.env.SITE;
+---
+
 <div class="max-w-lg mx-auto">
   <form
     class="grid grid-cols-1 gap-y-6"
-    data-netlify="true"
-    netlify-honeypot
+    action={`https://formsubmit.co/${email}`}
     name="feedback"
     method="POST"
     autocomplete="off"
@@ -12,7 +16,11 @@
         Do not fill this out if you are human: <input name="bot-field" />
       </label>
     </p>
-    <input type="hidden" name="form-name" value="feedback" />
+    <input type="hidden" name="feedback" value="feedback" />
+
+    <input type="hidden" name="_subject" value="Contacto | Mensaje" />
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_next" value={`${site}/contact/success`} />
 
     <div>
       <label
@@ -76,26 +84,3 @@
     </div>
   </form>
 </div>
-
-<script>
-  const handleSubmit = (event: SubmitEvent) => {
-    event.preventDefault();
-
-    const myForm = event.target as HTMLFormElement;
-    const formData: any = new FormData(myForm);
-
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(formData).toString(),
-    })
-      .then(() => (window.location.href = "/contact/success"))
-      .catch((error) => alert(error));
-  };
-
-  let form = document.querySelector("form") as HTMLFormElement;
-  form.addEventListener("submit", handleSubmit);
-</script>
-
-<!-- https://www.netlify.com/blog/deploy-an-astro-site-with-forms-serverless-functions-and-redirects/ -->
-<!-- https://docs.netlify.com/forms/setup/?_ga=2.263594826.738482257.1674580923-1503961310.1674580923#html-forms -->
