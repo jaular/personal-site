@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # vs code config
 .vscode
+
+# astro
+.astro

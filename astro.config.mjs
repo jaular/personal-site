@@ -29,9 +29,6 @@ export default defineConfig({
     syntaxHighlight: false,
     rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
   },
-  experimental: {
-    contentCollections: true,
-  },
 });
 
 // https://docs.astro.build/en/guides/markdown-content/#syntax-highlighting
