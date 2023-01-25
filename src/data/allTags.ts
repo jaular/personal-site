@@ -1,5 +1,3 @@
-import type { Tag } from "~/lib/types";
-
-const allTags: Tag[] = ["redes", "cisco", "js", "ts"];
+const allTags = ["redes", "cisco", "ts", "js"] as const;
 
 export default allTags;

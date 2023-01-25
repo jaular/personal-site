@@ -24,7 +24,7 @@ const { title, publishDate, tag } = note.data;
       <div>
         <time
           class="text-xs sm:text-sm text-gray-800 dark:text-gray"
-          datetime={publishDate}
+          datetime={publishDate.toISOString()}
         >
           {formattedDate(publishDate)}
         </time>

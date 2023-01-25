@@ -37,9 +37,6 @@ export type Project = {
   imageUrl: string;
 };
 
-// All tags data
-export type Tag = "redes" | "cisco" | "ts" | "js";
-
 // Pagination pages
 export type Page = {
   size: number;
