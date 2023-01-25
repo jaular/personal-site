@@ -8,7 +8,7 @@ const projects: Project[] = [
   },
   {
     title: "J&C Consulting Group C.A.",
-    href: "https://jc-consgrp.com/",
+    href: "https://jc-consgrp.vercel.app/",
     imageUrl: `https://res.cloudinary.com/jaular/image/upload/v1660852286/J_C_Consulting_Group_C.A_te9ncs.jpg`,
   },
   {
