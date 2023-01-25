@@ -9,7 +9,7 @@ const posts = defineCollection({
     tag: z.enum(allTags),
     heroImage: z
       .object({
-        src: z.string(),
+        src: z.string().url(),
         author: z.string(),
       })
       .optional(),
