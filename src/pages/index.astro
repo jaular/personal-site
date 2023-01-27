@@ -6,7 +6,7 @@ import MySkills from "~/components/MySkills.astro";
 <Layout>
   <div class="space-y-14">
     <div class="space-y-4">
-      <h1 class="text-4xl font-bold sm:text-5xl">José Aular</h1>
+      <h1 id="jaular" class="text-4xl font-bold sm:text-5xl">José Aular</h1>
       <p
         class="text-base leading-relaxed text-gray-800 dark:text-gray max-w-lg"
       >
@@ -28,7 +28,7 @@ import MySkills from "~/components/MySkills.astro";
       <div>
         <a
           href="/projects"
-          class="flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-white rounded outline-none bg-blue hover:opacity-75 focus:opacity-75"
+          class="button flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-white rounded outline-none bg-blue hover:opacity-75 focus:opacity-75"
           aria-label="Proyectos"
         >
           <span>Proyectos</span>
@@ -37,7 +37,7 @@ import MySkills from "~/components/MySkills.astro";
       <div>
         <a
           href="/blog"
-          class="flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-black bg-gray-100 rounded outline-none dark:text-white hover:bg-gray-200 focus:bg-gray-200 dark:bg-black-600 dark:hover:bg-black-700 dark:focus:bg-black-700"
+          class="button flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-black bg-gray-100 rounded outline-none dark:text-white hover:bg-gray-200 focus:bg-gray-200 dark:bg-black-600 dark:hover:bg-black-700 dark:focus:bg-black-700"
           aria-label="Blog"
         >
           <span>Blog</span>
@@ -46,3 +46,34 @@ import MySkills from "~/components/MySkills.astro";
     </div>
   </div>
 </Layout>
+
+<script>
+  import { animate, stagger, spring } from "motion";
+
+  animate(
+    "#jaular",
+    { opacity: [0, 1], transform: ["translateY(-20px)", "translateY(0px)"] },
+    {
+      duration: 1,
+    }
+  );
+
+  animate(
+    "#skill",
+    { opacity: [0, 1], x: [-40, 0] },
+    {
+      delay: stagger(0.25, { start: 0.25 }),
+      duration: 0.5,
+      easing: spring(),
+    }
+  );
+
+  animate(
+    ".button",
+    { opacity: [0, 1], transform: ["scale(0)", "scale(1)"] },
+    {
+      delay: stagger(0.5),
+      duration: 0.5,
+    }
+  );
+</script>
