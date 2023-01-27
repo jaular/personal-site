@@ -4,6 +4,7 @@
 - **Deployment**: [Vercel](https://vercel.com)
 - **Content**: [Content collection - MDX](https://docs.astro.build/en/guides/content-collections/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Animation**: [Motion One](https://motion.dev/)
 
 ## 🧞 Commands
 
