@@ -53,6 +53,9 @@
 .prose blockquote > p {
   @apply font-normal not-italic my-2.5 before:content-none after:content-none;
 }
+.prose img {
+  @apply m-0;
+}
 
 pre::-webkit-scrollbar {
   display: none;
