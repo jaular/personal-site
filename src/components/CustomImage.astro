@@ -6,9 +6,11 @@ type Props = {
   src: string;
   title: string;
   alt: string;
+  loading?: boolean;
 };
 
-const { src, title, alt } = Astro.props;
+const { src, title, alt, loading } = Astro.props;
+const loadingAttribute = loading ? "eager" : "lazy";
 
 const { svg, img } = await getPlaiceholder(src, { size: 10 });
 const [Svg, svgProps, svgChildren] = svg;
@@ -38,7 +40,7 @@ const [Svg, svgProps, svgChildren] = svg;
     aspectRatio="16:9"
     format="avif"
     alt={alt}
-    loading="lazy"
+    loading={loadingAttribute}
   />
 </div>
 

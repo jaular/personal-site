@@ -17,8 +17,9 @@ import Card from "~/components/Card.astro";
     {
       projects.length > 0 && (
         <div class="grid gap-10">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <Card
+              index={index}
               title={project.title}
               href={project.href}
               imageSrc={project.imageUrl}

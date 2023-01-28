@@ -2,12 +2,14 @@
 import CustomImage from "./CustomImage.astro";
 
 type Props = {
+  index: number;
   title: string;
   imageSrc: string;
   href: string;
 };
 
-const { title, imageSrc, href } = Astro.props;
+const { index, title, imageSrc, href } = Astro.props;
+const loading = index < 1 ? true : false;
 ---
 
 <a
@@ -17,7 +19,7 @@ const { title, imageSrc, href } = Astro.props;
   rel="noopener noreferrer"
 >
   <div class="group-hover:opacity-75">
-    <CustomImage src={imageSrc} alt={title} title={title} />
+    <CustomImage src={imageSrc} alt={title} title={title} loading={loading} />
   </div>
   <div class="pt-2">
     <p class="text-base text-black dark:text-white">
