@@ -6,11 +6,10 @@ type Props = {
   src: string;
   title: string;
   alt: string;
-  loading?: boolean;
 };
 
-const { src, title, alt, loading } = Astro.props;
-const loadingAttribute = loading ? "eager" : "lazy";
+const { src, title, alt } = Astro.props;
+// const loadingAttribute = loading ? "eager" : "lazy";
 
 const { base64, img } = await getPlaiceholder(src, { size: 10 });
 ---
@@ -33,7 +32,7 @@ const { base64, img } = await getPlaiceholder(src, { size: 10 });
     aspectRatio="16:9"
     format="avif"
     alt={alt}
-    loading={loadingAttribute}
+    loading="lazy"
   />
 </div>
 
