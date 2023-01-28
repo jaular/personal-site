@@ -9,21 +9,27 @@ type Props = {
 };
 
 const { src, title, alt } = Astro.props;
-// const loadingAttribute = loading ? "eager" : "lazy";
 
-const { base64, img } = await getPlaiceholder(src, { size: 10 });
+const { svg, img } = await getPlaiceholder(src, { size: 10 });
+const [Svg, svgProps, svgChildren] = svg;
 ---
 
 <div class="aspect-video rounded relative block overflow-hidden">
-  <img
-    aria-hidden
-    alt="sdf"
-    src={base64}
-    class="absolute inset-0 w-full h-full cover blur-2xl z-[-1]"
-  />
+  <Svg
+    {...svgProps}
+    style={{ ...svgProps.style }}
+    class="absolute inset-0 w-full h-full blur-2xl z-[-1]"
+  >
+    {
+      svgChildren.map((child) => {
+        const [Path, pathProps] = child;
+        return <Path {...pathProps} />;
+      })
+    }
+  </Svg>
   <Picture
     {...img}
-    class="w-full h-full cover"
+    class="w-full cover"
     background="white"
     src={src}
     title={title}
@@ -37,4 +43,4 @@ const { base64, img } = await getPlaiceholder(src, { size: 10 });
 </div>
 
 <!-- https://docs.astro.build/en/guides/images/#examples-1 -->
-<!-- https://github.com/joe-bell/plaiceholder/blob/main/examples/astro/src/pages/base64/single.astro -->
+<!-- https://github.com/joe-bell/plaiceholder/blob/main/examples/astro/src/pages/svg/single.astro -->
