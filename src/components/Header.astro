@@ -56,26 +56,32 @@ const currentPage = Astro.url.pathname;
           }
         </div>
       </div>
-      <div class="hidden sm:ml-6 sm:flex sm:items-center">
-        <ThemeButton />
-      </div>
-      <div class="flex items-center sm:hidden">
+
+      <div class="flex items-center space-x-5">
         <ThemeButton />
         <!-- Mobile menu button -->
         <button
           x-on:click="menuOpen = !menuOpen"
           type="button"
-          class="inline-flex items-center justify-center ml-6 text-gray-800 dark:text-gray hover:text-black dark:hover:text-white focus:outline outline-offset-4 focus:outline-1 focus:outline-blue"
+          class="inline-flex sm:hidden items-center justify-center text-gray-800 dark:text-gray hover:text-black dark:hover:text-white focus:outline outline-offset-4 focus:outline-1 focus:outline-blue"
           aria-controls="mobile-menu"
           aria-expanded="false"
         >
           <span class="sr-only">Open main menu</span>
+          <!--
+            Icon when menu is closed.
+            Menu open: "hidden", Menu closed: "block"
+          -->
           <Icon
             class="block w-6 h-6"
             x-bind:class="{hidden: menuOpen}"
             name="menu"
             aria-hidden="true"
           />
+          <!--
+            Icon when menu is open.
+            Menu open: "block", Menu closed: "hidden"
+          -->
           <Icon
             class="hidden h-6 w-6"
             x-bind:class="{hidden: !menuOpen}"
