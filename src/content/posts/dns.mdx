@@ -8,6 +8,10 @@ heroImage:
   author: Cloudflare
 ---
 
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
 ## Tabla de Contenido
 
 1.  [Concepto](/blog/dns#concepto)
