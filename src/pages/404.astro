@@ -4,14 +4,27 @@ import Layout from "~/layouts/Layout.astro";
 
 <Layout title="404: No se pudo encontrar esta página">
   <div class="space-y-14">
-    <h1 class="text-3xl font-bold sm:text-4xl">
-      No se pudo encontrar esta página
-    </h1>
-    <a
-      href="/"
-      class="inline-flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-white rounded outline-none sm:w-auto bg-blue hover:opacity-75 focus:opacity-75"
-    >
-      <span>Regresar</span>
-    </a>
+    <div class="space-y-4">
+      <h1 class="text-9xl text-center font-bold">
+        <span
+          class="bg-clip-text text-transparent bg-blue bg-gradient-to-br from-blue to-purple-800"
+        >
+          404
+        </span>
+      </h1>
+      <p
+        class="text-lg sm:text-xl text-center leading-relaxed text-gray-800 dark:text-gray"
+      >
+        No se pudo encontrar esta página
+      </p>
+    </div>
+    <div class="flex items-center justify-center">
+      <a
+        href="/"
+        class="px-8 py-2 text-sm font-medium text-white rounded outline-none bg-blue hover:opacity-75 focus:opacity-75"
+      >
+        <span>Regresar</span>
+      </a>
+    </div>
   </div>
 </Layout>
