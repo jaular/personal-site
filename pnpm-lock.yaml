@@ -12,8 +12,10 @@ specifiers:
   astro: ^2.0.5
   astro-icon: ^0.8.0
   astro-robots-txt: ^0.3.11
+  mdast-util-to-string: ^3.1.1
   motion: ^10.15.5
   plaiceholder: ^2.5.0
+  reading-time: ^1.5.0
   rehype-pretty-code: ^0.9.2
   sharp: ^0.31.3
   tailwindcss: ^3.2.4
@@ -29,8 +31,10 @@ dependencies:
   astro: 2.0.5
   astro-icon: 0.8.0
   astro-robots-txt: 0.3.11
+  mdast-util-to-string: 3.1.1
   motion: 10.15.5
   plaiceholder: 2.5.0_sharp@0.31.3
+  reading-time: 1.5.0
   rehype-pretty-code: 0.9.2
   sharp: 0.31.3
   tailwindcss: 3.2.4
@@ -2421,7 +2425,7 @@ packages:
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
       decode-named-character-reference: 1.0.2
-      mdast-util-to-string: 3.1.0
+      mdast-util-to-string: 3.1.1
       micromark: 3.1.0
       micromark-util-decode-numeric-character-reference: 1.0.0
       micromark-util-decode-string: 1.0.2
@@ -2565,14 +2569,16 @@ packages:
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
       longest-streak: 3.1.0
-      mdast-util-to-string: 3.1.0
+      mdast-util-to-string: 3.1.1
       micromark-util-decode-string: 1.0.2
       unist-util-visit: 4.1.1
       zwitch: 2.0.4
     dev: false
 
-  /mdast-util-to-string/3.1.0:
-    resolution: {integrity: sha512-n4Vypz/DZgwo0iMHLQL49dJzlp7YtAJP+N07MZHpjPf/5XJuHUWstviF4Mn2jEiR/GNmtnRRqnwsXExk3igfFA==}
+  /mdast-util-to-string/3.1.1:
+    resolution: {integrity: sha512-tGvhT94e+cVnQt8JWE9/b3cUQZWS732TJxXHktvP+BYo62PpYD53Ls/6cC60rW21dW+txxiM4zMdc6abASvZKA==}
+    dependencies:
+      '@types/mdast': 3.0.10
     dev: false
 
   /mdn-data/2.0.14:
@@ -3448,6 +3454,10 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
+
+  /reading-time/1.5.0:
+    resolution: {integrity: sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==}
+    dev: false
 
   /rehype-parse/8.0.4:
     resolution: {integrity: sha512-MJJKONunHjoTh4kc3dsM1v3C9kGrrxvA3U8PxZlP2SjH8RNUSrb+lF7Y0KVaUDnGH2QZ5vAn7ulkiajM9ifuqg==}

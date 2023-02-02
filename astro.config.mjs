@@ -7,6 +7,7 @@ import sitemap from "@astrojs/sitemap";
 import robotsTxt from "astro-robots-txt";
 import rehypePrettyCode from "rehype-pretty-code";
 import { rehypePrettyCodeOptions } from "./src/lib/rehypePrettyCode";
+import { remarkReadingTime } from "./remark-reading-time.mjs";
 
 export default defineConfig({
   site: "https://jaular.vercel.app",
@@ -28,6 +29,7 @@ export default defineConfig({
     extendDefaultPlugins: true,
     syntaxHighlight: false,
     rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
+    remarkPlugins: [remarkReadingTime],
   },
 });
 
