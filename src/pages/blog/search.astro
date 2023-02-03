@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "~/layouts/Layout.astro";
+import SearchPosts from "~/components/SearchPosts";
+
+const posts = await getCollection("posts");
+
+const data = posts.map((post) => {
+  const result = {
+    slug: post.slug,
+    title: post.data.title,
+    publishDate: post.data.publishDate,
+  };
+  return result;
+});
+
+const sortedPosts = data.sort(
+  (a, b) => b.publishDate.valueOf() - a.publishDate.valueOf()
+);
+---
+
+<Layout title="José Aular | Buscador">
+  <h1 class="text-4xl font-bold sm:text-5xl">Buscador</h1>
+  <SearchPosts data={sortedPosts} client:load />
+</Layout>
