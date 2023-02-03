@@ -3,6 +3,7 @@ import { Icon } from "astro-icon";
 import { cn } from "~/lib/utils";
 import navigationLinks from "~/data/navigationLinks";
 import ThemeButton from "./ThemeButton.astro";
+import SearchButton from "./SearchButton.astro";
 
 const currentPage = Astro.url.pathname;
 ---
@@ -58,6 +59,7 @@ const currentPage = Astro.url.pathname;
       </div>
 
       <div class="flex items-center space-x-5">
+        <SearchButton />
         <ThemeButton />
         <!-- Mobile menu button -->
         <button
