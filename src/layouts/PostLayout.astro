@@ -10,7 +10,7 @@ type Props = {
 
 const { post } = Astro.props;
 
-const { Content, remarkPluginFrontmatter } = await post.render();
+const { Content } = await post.render();
 const { title, heroImage, publishDate, author } = post.data;
 ---
 
@@ -22,17 +22,10 @@ const { title, heroImage, publishDate, author } = post.data;
   <article class="space-y-8">
     <div class="space-y-4">
       <h1 class="text-3xl font-bold sm:text-4xl">{title}</h1>
-      <div class="flex justify-between">
-        <div>
-          <p class="text-sm text-gray-800 capitalize dark:text-gray">
-            {author} / {formattedDate(publishDate)}
-          </p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-800 dark:text-gray">
-            {remarkPluginFrontmatter.minutesRead.slice(0, -5)} de lectura
-          </p>
-        </div>
+      <div>
+        <p class="text-sm text-gray-800 capitalize dark:text-gray">
+          {author} / {formattedDate(publishDate)}
+        </p>
       </div>
     </div>
 
