@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
+import solidJs from "@astrojs/solid-js";
 import alpinejs from "@astrojs/alpinejs";
 import tailwind from "@astrojs/tailwind";
 import image from "@astrojs/image";
@@ -12,6 +13,7 @@ export default defineConfig({
   site: "https://jaular.vercel.app",
   integrations: [
     mdx(),
+    robotsTxt(),
     alpinejs(),
     tailwind({
       config: {
@@ -22,7 +24,7 @@ export default defineConfig({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
     sitemap(),
-    robotsTxt(),
+    solidJs(),
   ],
   markdown: {
     extendDefaultPlugins: true,
