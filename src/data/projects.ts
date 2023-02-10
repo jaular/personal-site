@@ -2,6 +2,11 @@ import type { Project } from "~/lib/types";
 
 const projects: Project[] = [
   {
+    title: "T3 App CRUD",
+    href: "https://crud-mantine.vercel.app/",
+    imageUrl: `https://res.cloudinary.com/jaular/image/upload/v1676055521/projects/t3app-crud_je5lwj.png`,
+  },
+  {
     title: "Next.js (Preview mode)",
     href: "https://next-datocms-preview.vercel.app/",
     imageUrl: `https://res.cloudinary.com/jaular/image/upload/v1674914652/projects/next-preview_o6ruhy.png`,

@@ -31,7 +31,12 @@ const { title, heroImage, publishDate, author } = post.data;
 
     {
       heroImage && (
-        <CustomImage src={heroImage.src} title={heroImage.author} alt={title} />
+        <CustomImage
+          src={heroImage.src}
+          title={heroImage.author}
+          alt={title}
+          loading
+        />
       )
     }
 
