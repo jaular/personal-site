@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import type { Page } from "~/lib/types";
 import { getCollection } from "astro:content";
-import allTags from "~/data/allTags";
+import tags from "~/data/tags";
 import Layout from "~/layouts/Layout.astro";
 import Tags from "~/components/Tags.astro";
 import Note from "~/components/Note.astro";
@@ -17,7 +17,7 @@ type Props = {
 
 export async function getStaticPaths({ paginate }: any) {
   const posts = await getCollection("posts");
-  return allTags.map((tag) => {
+  return tags.map((tag) => {
     const filteredPosts = posts
       .filter((post) => post.data.tag === tag)
       .sort(
