@@ -20,7 +20,7 @@ pnpm-debug.log*
 .DS_Store
 .vercel
 
-# vs code config
+# visual studio code
 .vscode
 
 # astro
