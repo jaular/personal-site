@@ -40,7 +40,7 @@ const SearchPosts: Component<Props> = ({ data }) => {
               setPosts(filteredBlogPosts);
             }}
             placeholder="Buscar publicaciones"
-            class="block w-full px-4 py-2 text-base text-black placeholder-gray-600 bg-gray-200/50 rounded dark:placeholder:text-gray-800 dark:text-white dark:bg-black-700 focus:outline focus:outline-1 focus:outline-blue"
+            class="block w-full px-4 py-2 text-base text-black placeholder-gray-600 bg-gray-200/50 rounded dark:placeholder:text-gray-800 dark:text-white dark:bg-black-600 focus:outline focus:outline-1 focus:outline-blue"
           />
           <svg
             class="absolute w-5 h-5 text-gray-600 dark:text-gray-800 right-3 top-2.5"

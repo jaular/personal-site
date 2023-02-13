@@ -45,7 +45,7 @@
   @apply text-pink-600 dark:text-pink-400;
 }
 .prose pre {
-  @apply rounded rounded-tl-none bg-black-700 focus:outline focus:outline-1 focus:outline-blue !important;
+  @apply rounded rounded-tl-none bg-black-600 focus:outline focus:outline-1 focus:outline-blue !important;
 }
 .prose blockquote {
   @apply px-4 border border-gray-300 dark:border-gray-800 border-b-4 rounded;
@@ -75,7 +75,7 @@ prose > :first-child {
 /* Rehype Pretty Code */
 div[data-rehype-pretty-code-title] {
   display: inline-block;
-  background-color: #020203;
+  background-color: #05060b;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
   color: #f5f5f5;
