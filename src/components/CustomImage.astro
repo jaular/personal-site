@@ -12,17 +12,23 @@ type Props = {
 const { src, title, alt, loading } = Astro.props;
 const loadingAttribute = loading ? "eager" : "lazy";
 
-const { css, img } = await getPlaiceholder(src, { size: 10 });
+const { svg, img } = await getPlaiceholder(src, { size: 10 });
+const [Svg, svgProps, svgChildren] = svg;
 ---
 
 <div class="aspect-video rounded relative block overflow-hidden">
-  <div
-    aria-hidden
-    style={css}
+  <Svg
+    {...svgProps}
+    style={{ ...svgProps.style }}
     class="absolute inset-0 w-full h-auto blur-2xl z-[-1]"
   >
-  </div>
-
+    {
+      svgChildren.map((child) => {
+        const [Path, pathProps] = child;
+        return <Path {...pathProps} />;
+      })
+    }
+  </Svg>
   <Picture
     {...img}
     class="w-full h-auto cover"
