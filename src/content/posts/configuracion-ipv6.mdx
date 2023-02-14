@@ -1,0 +1,70 @@
+---
+title: Configuración de IPv6
+publishDate: "2023-02-15T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://images.unsplash.com/photo-1582954820640-42c30eeabe35?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80
+  author: idgeek
+---
+
+## Tabla de Contenido
+
+1.  [Habilitar IPv6 globalmente](/blog/configuracion-ipv6#habilitar-ipv6-globalmente)
+2.  [Configuación manual de una dirección link-local](/blog/configuracion-ipv6#configuación-manual-de-una-dirección-link-local)
+3.  [Verificar configuración](/blog/configuracion-ipv6#verificar-configuración)
+
+## Habilitar IPv6 globalmente
+
+Para habilitar IPv6 en un enrutador Cisco, se utiliza el comando `ipv6 unicast-routing`.
+
+```js title="Router #1"
+R_1(config)# ipv6 unicast-routing
+```
+
+## Configuación manual de una dirección link-local
+
+> Una dirección link-local es una dirección de unidifusión IPv6, creada únicamente para comunicaciones dentro de una subred local.
+
+Navegue hasta el puerto utilizando el comando `interface {fastEthernet | GigabitEthernet} {number}`.
+
+```js title="Router #1"
+R_1(config)# interface gigabitEthernet 0/0/0
+```
+
+Seguidamente utilice el comando `ipv6 address {ipv6-address}` para asignar la dirección IPv6.
+
+```js title="Router #1"
+R_1(config-if)# ipv6 address 2001:DB8:1:1::1/64
+```
+
+Finalmente, utilice el comando `ipv6 address {prefix} link-local`.
+
+```js title="Router #1"
+R_1(config-if)# ipv6 address FE80::1 link-local
+R_1(config-if)# no shutdown
+```
+
+> Nota: Una dirección link-local tiene un prefijo dentro del rango **FE80** a **FEBF**. Cuando una dirección comienza con este hexteto (segmento de 16 bits), la palabra clave `link-local` debe escribirse después de la dirección.
+
+## Verificar configuración
+
+Utilice el comando `show ipv6 interface brief` para mostrar la información de IPv6 sobre una interfaz.
+
+```js title="Router #1"
+R_1(config-if)# show ipv6 interface brief
+```
+
+El siguiente es un resultado de muestra del comando `show ipv6 interface`.
+
+```js title="Router #1"
+GigabitEthernet0/0/0       [up/down]
+    FE80::1
+    2001:DB8:1:1::1
+GigabitEthernet0/0/1       [administratively down/down]
+    unassigned
+GigabitEthernet0/0/2       [administratively down/down]
+    unassigned
+Vlan1                      [administratively down/down]
+    unassigned
+```
