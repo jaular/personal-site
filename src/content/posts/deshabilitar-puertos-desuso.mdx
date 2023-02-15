@@ -14,12 +14,9 @@ Navegue hasta el puerto utilizando el comando `interface {fastEthernet | Gigabit
 SW_1(config)# interface fastEthernet 0/5
 ```
 
-> Extra: también puede acceder por rango. Ejemplo: `interface range fastEthernet 0/7-24`,
-> del puerto #7 al #24.
+> También puedes acceder por rango, ejemplo: `interface range fastEthernet 0/7-24`.
 
 Seguidamente utilice el comando `shutdown` para deshabilitar el puerto.
-
-> Nota: `no shutdown` para habilitar el puerto.
 
 ```js title="Switch #1"
 SW_1(config-if)# shutdown
