@@ -8,11 +8,12 @@ heroImage:
   author: idgeek
 ---
 
-## Tabla de Contenido
+## Tabla de contenido
 
 1.  [Habilitar IPv6 globalmente](/blog/configuracion-ipv6#habilitar-ipv6-globalmente)
-2.  [Configuación manual de una dirección link-local](/blog/configuracion-ipv6#configuación-manual-de-una-dirección-link-local)
-3.  [Verificar configuración](/blog/configuracion-ipv6#verificar-configuración)
+2.  [Dirección link-local](/blog/configuracion-ipv6#dirección-link-local)
+3.  [Configuación manual de una dirección Link-Local](/blog/configuracion-ipv6#configuación-manual-de-una-dirección-link-local)
+4.  [Verificar configuración](/blog/configuracion-ipv6#verificar-configuración)
 
 ## Habilitar IPv6 globalmente
 
@@ -22,9 +23,13 @@ Para habilitar IPv6 en un enrutador Cisco, se utiliza el comando `ipv6 unicast-r
 R_1(config)# ipv6 unicast-routing
 ```
 
-## Configuación manual de una dirección link-local
+## Dirección link-local
 
-> Una dirección link-local es una dirección de unidifusión IPv6, creada únicamente para comunicaciones dentro de una subred local.
+Es una dirección de unidifusión IPv6, creada únicamente para comunicaciones dentro de una subred local.
+
+Una dirección link-local tiene un prefijo dentro del rango **FE80** a **FEBF**. Cuando una dirección comienza con este hexteto (segmento de 16 bits), la palabra clave `link-local` debe escribirse después de la dirección.
+
+## Configuación manual de una dirección link-local
 
 Navegue hasta el puerto utilizando el comando `interface {fastEthernet | GigabitEthernet} {number}`.
 
@@ -44,8 +49,6 @@ Finalmente, utilice el comando `ipv6 address {prefix} link-local`.
 R_1(config-if)# ipv6 address FE80::1 link-local
 R_1(config-if)# no shutdown
 ```
-
-> Nota: Una dirección link-local tiene un prefijo dentro del rango **FE80** a **FEBF**. Cuando una dirección comienza con este hexteto (segmento de 16 bits), la palabra clave `link-local` debe escribirse después de la dirección.
 
 ## Verificar configuración
 
