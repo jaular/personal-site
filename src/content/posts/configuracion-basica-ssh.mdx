@@ -1,0 +1,104 @@
+---
+title: Configuración básica de SSH
+publishDate: "2023-02-17T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://images.unsplash.com/photo-1493129922668-fcb1a8514643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=925&q=80
+  author: josenothose
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+export const components = { a: CustomLink };
+
+## Tabla de contenido
+
+1.  [Nombre de dominio](/blog/configuracion-basica-ssh#nombre-de-dominio)
+2.  [Claves RSA](/blog/configuracion-basica-ssh#claves-rsa)
+3.  [SSH2](/blog/configuracion-basica-ssh#ssh2)
+4.  [Configuración VTY](/blog/configuracion-basica-ssh#configuración-vty)
+5.  [Crear usuario](/blog/configuracion-basica-ssh#crear-usuario)
+6.  [Referencias](/blog/configuracion-basica-ssh#referencias)
+
+## Nombre de dominio
+
+Utilice el comando `ip domain name {name}` para establecer un nombre de dominio al enrutador.
+
+```js title="Router #1"
+R_1(config)# ip domain name cisco.com
+```
+
+## Claves RSA
+
+utilice el comando `crypto key generate rsa` para generar pares de claves RSA para su dispositivo.
+Las claves RSA se generan en pares: una **clave RSA pública** y una **clave RSA privada**.
+
+> Antes de usar el comando `crypto key generate rsa`, el quipo debe tener asignado un [nombre de host](/blog/configuracion-basica-dispositivos#nombre-de-host).
+
+Cuando genere claves RSA, se le pedirá que ingrese una longitud de módulo. Cuanto más largo sea el módulo, más fuerte será la seguridad.
+
+> Se recomienda usar claves de al menos 1024 bits.
+
+```js title="Router #1"
+R_1(config)# crypto key generate rsa
+The name for the keys will be: R_1.cisco.com
+Choose the size of the key modulus in the range of 360 to 2048 for your
+  General Purpose Keys. Choosing a key modulus greater than 512 may take
+  a few minutes.
+
+How many bits in the modulus [512]: 1024
+% Generating 1024 bit RSA keys, keys will be non-exportable...[OK]
+
+R_1(config)#
+*Mar 1 0:8:20.132: %SSH-5-ENABLED: SSH 1.99 has been enabled
+R_1(config)#
+```
+
+## SSH2
+
+Es una versión mucho más segura y eficiente de SSH que incluye SFTP, que es funcionalmente similar a FTP con la adición de cifrado SSH2.
+
+Utilice el comando `ip ssh version 2` para habilitar la versión 2 de SSH.
+
+```js title="Router #1"
+R_1(config)# ip ssh version 2
+```
+
+El siguiente es un resultado de muestra del comando `show ip ssh`.
+
+```js title="Router #1"
+R_1# show ip ssh
+SSH Enabled - version 2.0
+Authentication timeout: 120 secs; Authentication retries: 3
+```
+
+## Configuración VTY
+
+Utilice los comandos `line vty 0 4`, `transport input {all | none | telnet | ssh}` y `login local` para configurar y establecer qué protocolos pueden acceder a las líneas de terminal virtual.
+
+```js title="Router #1"
+R_1(config)# line vty 0 4
+R_1(config-line)# transport input ssh
+R_1(config-line)# login local
+```
+
+## Crear usuario
+
+Utilice el comando `username {user} privilege 15 password {password}` para crear un usuario.
+Hay 16 niveles de privilegios de acceso de administradores, 0-15. Siendo 0 el menos privilegiado y 15 el más privilegiado.
+
+> El equipo debe tener creado una [contraseña de usuario privilegiado](/blog/configuracion-basica-dispositivos#contraseña-de-usuario-privilegiado).
+
+```js title="Router #1"
+R_1(config)# username jaular privilege 15 password secreto
+
+// El nivel 15 proporciona un control completo sobre el enrutador.
+```
+
+## Referencias
+
+- [eClassVirtual](https://eclassvirtual.com/configuracion-ssh-switch-router-cisco/)
+- [Cisco](https://content.cisco.com/chapter.sjs?uri=/searchable/chapter/content/en/us/td/docs/ios-xml/ios/security/a1/sec-a1-xe-3se-5700-cr-book/sec-a1-xe-3se-5700-cr-book_chapter_0110.html.xml)
+- [O'Reilly](https://www.oreilly.com/library/view/cisco-ios-cookbook/0596527225/ch12s08.html)
+- [Study-CCNP](https://study-ccnp.com/transport-input-ssh-telnet-all-none-keywords/#:~:text=We%20can%20use%20the%20Cisco,TCP%2FIP%20SSH%20protocol%20only)
+- [Study-CCNA](https://study-ccna.com/cisco-privilege-levels/)
