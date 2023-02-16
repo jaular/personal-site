@@ -16,7 +16,7 @@ export const components = { a: CustomLink };
 1.  [Nombre de dominio](/blog/configuracion-basica-ssh#nombre-de-dominio)
 2.  [Claves RSA](/blog/configuracion-basica-ssh#claves-rsa)
 3.  [SSH2](/blog/configuracion-basica-ssh#ssh2)
-4.  [Configuración VTY](/blog/configuracion-basica-ssh#configuración-vty)
+4.  [Líneas de terminal virtual](/blog/configuracion-basica-ssh#líneas-de-terminal-virtual)
 5.  [Crear usuario](/blog/configuracion-basica-ssh#crear-usuario)
 6.  [Referencias](/blog/configuracion-basica-ssh#referencias)
 
@@ -30,7 +30,7 @@ R_1(config)# ip domain name cisco.com
 
 ## Claves RSA
 
-utilice el comando `crypto key generate rsa` para generar pares de claves RSA para su dispositivo.
+Utilice el comando `crypto key generate rsa` para generar pares de claves RSA para su dispositivo.
 Las claves RSA se generan en pares: una **clave RSA pública** y una **clave RSA privada**.
 
 > Antes de usar el comando `crypto key generate rsa`, el quipo debe tener asignado un [nombre de host](/blog/configuracion-basica-dispositivos#nombre-de-host).
@@ -72,7 +72,7 @@ SSH Enabled - version 2.0
 Authentication timeout: 120 secs; Authentication retries: 3
 ```
 
-## Configuración VTY
+## Líneas de terminal virtual
 
 Utilice los comandos `line vty 0 4`, `transport input {all | none | telnet | ssh}` y `login local` para configurar y establecer qué protocolos pueden acceder a las líneas de terminal virtual.
 

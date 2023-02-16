@@ -13,11 +13,11 @@ heroImage:
 1.  [Habilitar IPv6 globalmente](/blog/configuracion-basica-ipv6#habilitar-ipv6-globalmente)
 2.  [Dirección link-local](/blog/configuracion-basica-ipv6#dirección-link-local)
 3.  [Configuación manual de una dirección link-local](/blog/configuracion-basica-ipv6#configuación-manual-de-una-dirección-link-local)
-4.  [Verificar configuración](/blog/configuracion-basica-ipv6#verificar-configuración)
+4.  [Mostrar configuración](/blog/configuracion-basica-ipv6#mostrar-configuración)
 
 ## Habilitar IPv6 globalmente
 
-Para habilitar IPv6 en un enrutador Cisco, se utiliza el comando `ipv6 unicast-routing`.
+Para habilitar IPv6 en un enrutador, se utiliza el comando `ipv6 unicast-routing`.
 
 ```js title="Router #1"
 R_1(config)# ipv6 unicast-routing
@@ -50,7 +50,7 @@ R_1(config-if)# ipv6 address FE80::1 link-local
 R_1(config-if)# no shutdown
 ```
 
-## Verificar configuración
+## Mostrar configuración
 
 Utilice el comando `show ipv6 interface brief` para mostrar la información de IPv6 sobre una interfaz.
 
