@@ -11,10 +11,10 @@ heroImage:
 ## Tabla de contenido
 
 1.  [Acceso](/blog/configuracion-basica-dispositivos#acceso)
-2.  [Hostname](/blog/configuracion-basica-dispositivos#hostname)
+2.  [Nombre de host](/blog/configuracion-basica-dispositivos#nombre-de-host)
 3.  [Contraseña consola](/blog/configuracion-basica-dispositivos#contraseña-consola)
 4.  [Contraseña VTY](/blog/configuracion-basica-dispositivos#contraseña-vty)
-5.  [Contraseña enable](/blog/configuracion-basica-dispositivos#contraseña-enable)
+5.  [Contraseña de usuario privilegiado](/blog/configuracion-basica-dispositivos#contraseña-de-usuario-privilegiado)
 6.  [Encriptar contraseñas](/blog/configuracion-basica-dispositivos#encriptar-contraseñas)
 7.  [Mensaje de aviso](/blog/configuracion-basica-dispositivos#mensaje-de-aviso)
 8.  [Mostrar configuración](/blog/configuracion-basica-dispositivos#mostrar-configuración)
@@ -29,9 +29,9 @@ Switch> enable
 Switch# configure terminal
 ```
 
-## Hostname
+## Nombre de host
 
-Utilice el comando `hostname {name}` para cambiar el nombre del equipo.
+Utilice el comando `hostname {name}` para asignar un nombre de host.
 
 ```js title="Switch #1"
 Switch(config)# hostname SW_1
@@ -62,7 +62,7 @@ SW_1(config-line)# login
 // Switch (0-15) | Router (0-4).
 ```
 
-## Contraseña enable
+## Contraseña de usuario privilegiado
 
 Utilice el comando `enable secret {password}` para crear una contraseña de usuario privilegiado.
 
