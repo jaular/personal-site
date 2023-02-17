@@ -4,7 +4,7 @@ export const cn = (...classes: string[]) => {
 
 export const formattedDate = (date: Date) =>
   date
-    .toLocaleDateString("es-VE", {
+    .toLocaleDateString("es-US", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
