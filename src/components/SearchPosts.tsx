@@ -60,7 +60,7 @@ const SearchPosts: Component<Props> = ({ data }) => {
             {posts().length > 0 && (
               <ul
                 role="list"
-                class="divide-y divide-gray-200 dark:divide-gray-900"
+                class="divide-y divide-gray-200 dark:divide-gray-900 list-square list-inside"
               >
                 <For each={posts()} fallback={<div>Loading...</div>}>
                   {(post) => <Note note={post} />}
