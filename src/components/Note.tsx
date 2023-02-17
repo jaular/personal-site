@@ -1,8 +1,10 @@
 import type { Component } from "solid-js";
+import { formattedDate } from "~/lib/utils";
 
 type NoteProps = {
   slug: string;
   title: string;
+  publishDate: Date;
 };
 
 type Props = {
@@ -10,7 +12,7 @@ type Props = {
 };
 
 const Note: Component<Props> = ({ note }) => {
-  const { slug, title } = note;
+  const { slug, title, publishDate } = note;
 
   return (
     <li class="relative py-4 first:pt-0 last:pb-0">
@@ -22,6 +24,14 @@ const Note: Component<Props> = ({ note }) => {
           >
             {title}
           </a>
+          <div>
+            <time
+              class="text-xs sm:text-sm text-gray-800 dark:text-gray"
+              datetime={publishDate.toISOString()}
+            >
+              {formattedDate(publishDate)}
+            </time>
+          </div>
         </div>
       </div>
     </li>
