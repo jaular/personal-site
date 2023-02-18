@@ -33,7 +33,7 @@ R_1(config)# ip domain name cisco.com
 Utilice el comando `crypto key generate rsa` para generar pares de claves RSA para su dispositivo.
 Las claves RSA se generan en pares: una **clave RSA pública** y una **clave RSA privada**.
 
-> Antes de usar el comando `crypto key generate rsa`, el quipo debe tener asignado un [nombre de host](/blog/configuracion-basica-dispositivos#nombre-de-host).
+> Antes de usar el comando `crypto key generate rsa`, debe asignar un [nombre de host](/blog/configuracion-basica-dispositivos#nombre-de-host) al quipo.
 
 Cuando genere claves RSA, se le pedirá que ingrese una longitud de módulo. Cuanto más largo sea el módulo, más fuerte será la seguridad.
 
@@ -87,7 +87,7 @@ R_1(config-line)# login local
 Utilice el comando `username {user} privilege {level} password {password}` para crear un usuario.
 Hay 16 niveles de privilegios de acceso de administradores, 0-15. Siendo 0 el menos privilegiado y 15 el más privilegiado.
 
-> El equipo debe tener creado una [contraseña de usuario privilegiado](/blog/configuracion-basica-dispositivos#contraseña-de-usuario-privilegiado).
+> Se recomienda tener creada una [contraseña de usuario privilegiado](/blog/configuracion-basica-dispositivos#contraseña-de-usuario-privilegiado) en el equipo.
 
 ```js title="Router #1"
 R_1(config)# username jaular privilege 15 password secreto
