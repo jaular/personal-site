@@ -10,7 +10,7 @@ import MySkills from "~/components/MySkills.astro";
       <h1 class="text-4xl font-bold sm:text-5xl">
         <span class="relative">
           <Icon
-            class="absolute fill-blue -bottom-0.5"
+            class="absolute -z-10 fill-blue bottom-0"
             name="highlight-underline"
             aria-hidden="true"
           />
@@ -26,12 +26,12 @@ import MySkills from "~/components/MySkills.astro";
     </div>
 
     <div class="space-y-4">
-      <div class="flex items-end space-x-2">
+      <div class="inline-block relative">
         <p class="text-base font-bold text-gray-800 dark:text-gray">
           Habilidades
         </p>
         <Icon
-          class="w-4 h-4 fill-gray-800 dark:fill-gray"
+          class="w-4 h-4 absolute -right-6 -bottom-1 fill-gray-800 dark:fill-gray"
           name="highlight-arrow"
           aria-hidden="true"
         />
