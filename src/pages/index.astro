@@ -1,12 +1,22 @@
 ---
+import { Icon } from "astro-icon";
 import Layout from "~/layouts/Layout.astro";
 import MySkills from "~/components/MySkills.astro";
 ---
 
 <Layout>
   <div class="space-y-14">
-    <div class="space-y-4">
-      <h1 id="jaular" class="text-4xl font-bold sm:text-5xl">José Aular</h1>
+    <div class="space-y-6">
+      <h1 class="text-4xl font-bold sm:text-5xl">
+        <span class="relative">
+          <Icon
+            class="absolute fill-blue -bottom-0.5"
+            name="highlight-underline"
+            aria-hidden="true"
+          />
+          <span>José Aular</span>
+        </span>
+      </h1>
       <p
         class="text-base leading-relaxed text-gray-800 dark:text-gray max-w-lg"
       >
@@ -15,10 +25,17 @@ import MySkills from "~/components/MySkills.astro";
       </p>
     </div>
 
-    <div class="space-y-2">
-      <p class="text-base font-semibold text-gray-800 dark:text-gray">
-        Habilidades
-      </p>
+    <div class="space-y-4">
+      <div class="flex items-end space-x-2">
+        <p class="text-base font-bold text-gray-800 dark:text-gray">
+          Habilidades
+        </p>
+        <Icon
+          class="w-4 h-4 fill-gray-800 dark:fill-gray"
+          name="highlight-arrow"
+          aria-hidden="true"
+        />
+      </div>
       <MySkills />
     </div>
 
@@ -49,14 +66,6 @@ import MySkills from "~/components/MySkills.astro";
 
 <script>
   import { animate, stagger, spring } from "motion";
-
-  animate(
-    "#jaular",
-    { opacity: [0, 1], transform: ["translateY(-20px)", "translateY(0px)"] },
-    {
-      duration: 1,
-    }
-  );
 
   animate(
     ".skill",
