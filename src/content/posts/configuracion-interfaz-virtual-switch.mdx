@@ -5,6 +5,9 @@ author: José Aular
 tag: cisco
 ---
 
+import CustomBlockquote from "~/components/CustomBlockquote.astro";
+export const components = { blockquote: CustomBlockquote };
+
 Una SVI es una interfaz definida en el quipo y asociada a una VLAN concreta.
 Para acceder al switch de manera remota, se deben configurar una dirección IP y una máscara de subred en la SVI.
 
