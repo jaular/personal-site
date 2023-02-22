@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import type { Page } from "~/lib/types";
 import { getCollection } from "astro:content";
+import { Icon } from "astro-icon";
 import tags from "~/data/tags";
 import Layout from "~/layouts/Layout.astro";
 import Tags from "~/components/Tags.astro";
@@ -42,7 +43,23 @@ const { tag } = Astro.params;
         class="text-base leading-relaxed prose text-gray-800 dark:text-gray max-w-lg"
       >
         Artículos con la etiqueta:
-        <code class="text-base">{tag}</code>
+        <!-- <code class="text-base">{tag}</code> -->
+
+        <span
+          class="relative text-base font-medium text-black dark:text-white ml-6"
+        >
+          <Icon
+            class="w-3 h-3 absolute -left-4 bottom-2 fill-blue -scale-x-100"
+            name="highlight-doodle"
+            aria-hidden="true"
+          />
+          {tag}
+          <Icon
+            class="w-3 h-3 absolute -right-4 bottom-2 fill-blue"
+            name="highlight-doodle"
+            aria-hidden="true"
+          />
+        </span>
       </p>
       <Tags />
     </div>
