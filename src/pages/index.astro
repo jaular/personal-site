@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon";
 import Layout from "~/layouts/Layout.astro";
 import MySkills from "~/components/MySkills.astro";
 ---
@@ -17,16 +16,9 @@ import MySkills from "~/components/MySkills.astro";
     </div>
 
     <div class="space-y-4">
-      <div class="inline-block relative">
-        <p class="text-base font-semibold text-gray-800 dark:text-gray">
-          Habilidades
-        </p>
-        <Icon
-          class="w-4 h-4 absolute -right-5 -bottom-1 fill-gray-800 dark:fill-gray"
-          name="highlight-arrow"
-          aria-hidden="true"
-        />
-      </div>
+      <p class="text-base font-semibold text-gray-800 dark:text-gray">
+        Habilidades
+      </p>
       <MySkills />
     </div>
 
