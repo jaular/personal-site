@@ -9,7 +9,8 @@ heroImage:
 ---
 
 import CustomLink from "~/components/CustomLink.astro";
-export const components = { a: CustomLink };
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
 
 ## Tabla de contenido
 
@@ -18,7 +19,8 @@ export const components = { a: CustomLink };
 3.  [Puerta de enlace predeterminada](/blog/configuracion-interfaz-virtual-switch#puerta-de-enlace-predeterminada)
 4.  [Asignar VLAN](/blog/configuracion-interfaz-virtual-switch#asignar-vlan)
 5.  [Mostrar información](/blog/configuracion-interfaz-virtual-switch#mostrar-información)
-6.  [Referencias](/blog/configuracion-interfaz-virtual-switch#referencias)
+6.  [Conexión por Telnet](/blog/configuracion-interfaz-virtual-switch#conexión-por-telnet)
+7.  [Referencias](/blog/configuracion-interfaz-virtual-switch#referencias)
 
 ## SVI
 
@@ -74,7 +76,7 @@ SW_1(config-if-range)# switchport access vlan 99
 
 ## Mostrar información
 
-Utilice el comando `show vlan brief` para mostrar la información.
+Utilice el comando `show vlan brief` para mostrar una linea para cada VLAN con el nombre, estado y los puertos de la misma.
 
 ```js title="Switch #1"
 SW_1# show vlan brief
@@ -101,6 +103,18 @@ VLAN Name                             Status    Ports
 
 > Observe en el resultado anterior que la interfaz VLAN 1 se cae porque ninguno
 > de los puertos están asignados a la VLAN 1
+
+## Conexión por Telnet
+
+![paso 1](https://res.cloudinary.com/jaular/image/upload/v1677173956/blog/configuracion-interfaz-virtual-switch/telnet-1_teogmh.png "Paso #1")
+
+---
+
+![paso 2](https://res.cloudinary.com/jaular/image/upload/v1677173956/blog/configuracion-interfaz-virtual-switch/telnet-2_aazmb8.png "Paso #2")
+
+---
+
+![paso 3](https://res.cloudinary.com/jaular/image/upload/v1677173956/blog/configuracion-interfaz-virtual-switch/telnet-3_vtcjoi.png "Paso #3")
 
 ## Referencias
 
