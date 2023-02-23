@@ -30,7 +30,6 @@ Para configurar una SVI en un switch, utilice los comando `vlan {vlan-id}` para 
 > Se recomienda utilizar una VLAN distinta de la VLAN 1 para la **VLAN de administración**, como la VLAN 99.
 
 ```js title="Switch #1"
-SW_1# configure terminal
 SW_1(config)# vlan 99
 SW_1(config-vlan)# name management
 SW_1(config-vlan)# exit
