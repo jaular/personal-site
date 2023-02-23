@@ -12,6 +12,9 @@ const { post } = Astro.props;
 
 const { Content } = await post.render();
 const { title, heroImage, publishDate, author } = post.data;
+
+//  https://docs.astro.build/en/guides/markdown-content/#assigning-custom-components-to-html-elements
+//  https://docs.astro.build/en/guides/markdown-content/#custom-components-with-imported-mdx
 ---
 
 <Layout
@@ -45,6 +48,3 @@ const { title, heroImage, publishDate, author } = post.data;
     </div>
   </article>
 </Layout>
-
-<!-- https://docs.astro.build/en/guides/markdown-content/#assigning-custom-components-to-html-elements -->
-<!-- https://docs.astro.build/en/guides/markdown-content/#custom-components-with-imported-mdx -->

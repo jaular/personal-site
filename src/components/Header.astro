@@ -61,7 +61,6 @@ const currentPage = Astro.url.pathname;
       <div class="flex items-center space-x-5">
         <SearchButton />
         <ThemeButton />
-        <!-- Mobile menu button -->
         <button
           x-on:click="menuOpen = !menuOpen"
           type="button"
@@ -70,20 +69,12 @@ const currentPage = Astro.url.pathname;
           aria-expanded="false"
         >
           <span class="sr-only">Open main menu</span>
-          <!--
-            Icon when menu is closed.
-            Menu open: "hidden", Menu closed: "block"
-          -->
           <Icon
             class="block w-6 h-6"
             x-bind:class="{hidden: menuOpen}"
             name="menu"
             aria-hidden="true"
           />
-          <!--
-            Icon when menu is open.
-            Menu open: "block", Menu closed: "hidden"
-          -->
           <Icon
             class="hidden h-6 w-6"
             x-bind:class="{hidden: !menuOpen}"
@@ -94,7 +85,6 @@ const currentPage = Astro.url.pathname;
       </div>
     </div>
   </div>
-  <!-- Mobile menu, show/hide based on menu state. -->
   <div
     class="bg-white dark:bg-black hidden sm:hidden"
     x-bind:class="{hidden: !menuOpen}"

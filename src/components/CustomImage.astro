@@ -14,6 +14,9 @@ const loadingAttribute = loading ? "eager" : "lazy";
 
 const { svg, img } = await getPlaiceholder(src, { size: 10 });
 const [Svg, svgProps, svgChildren] = svg;
+
+// https://docs.astro.build/en/guides/images/#examples-1
+//  https://github.com/joe-bell/plaiceholder/blob/main/examples/astro/src/pages/svg/single.astro
 ---
 
 <div class="aspect-video rounded relative block overflow-hidden">
@@ -43,6 +46,3 @@ const [Svg, svgProps, svgChildren] = svg;
     loading={loadingAttribute}
   />
 </div>
-
-<!-- https://docs.astro.build/en/guides/images/#examples-1 -->
-<!-- https://github.com/joe-bell/plaiceholder/blob/main/examples/astro/src/pages/svg/single.astro -->

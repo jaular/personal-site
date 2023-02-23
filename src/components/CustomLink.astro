@@ -18,6 +18,8 @@ let props = { class: "inline-block", ...attrs };
     rel: "noopener noreferrer",
     ...attrs,
   });
+
+// https://docs.astro.build/es/guides/typescript/#atributos-html-integrados
 ---
 
 <a href={href} {...props}>
@@ -30,5 +32,3 @@ let props = { class: "inline-block", ...attrs };
     )
   }
 </a>
-
-<!-- https://docs.astro.build/es/guides/typescript/#atributos-html-integrados -->

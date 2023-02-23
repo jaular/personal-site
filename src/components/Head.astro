@@ -22,6 +22,10 @@ const ogImage =
 meta.image = meta.image ? meta.image : ogImage;
 
 const { title, description, image, type, siteName, date } = meta;
+
+// https://axellarsson.com/blog/astrojs-prevent-dark-mode-flicker/
+// https://dev.to/rinas/toggle-dark-and-sunny-mode-using-alpinejs-tailwindcss-and-localstorage-7fo
+// https://caffeinecreations.ca/blog/dark-mode-with-alpinejs-and-tailwind/
 ---
 
 <!-- Global Metadata -->
@@ -73,7 +77,3 @@ const { title, description, image, type, siteName, date } = meta;
   const theme = isDarkMode === true ? "dark" : "light";
   document.querySelector("html").className = theme;
 </script>
-
-<!-- https://axellarsson.com/blog/astrojs-prevent-dark-mode-flicker/ -->
-<!-- https://dev.to/rinas/toggle-dark-and-sunny-mode-using-alpinejs-tailwindcss-and-localstorage-7fo -->
-<!-- https://caffeinecreations.ca/blog/dark-mode-with-alpinejs-and-tailwind/ -->
