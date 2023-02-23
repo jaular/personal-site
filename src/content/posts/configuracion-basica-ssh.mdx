@@ -22,7 +22,7 @@ export const components = { a: CustomLink };
 
 ## Nombre de dominio
 
-Utilice el comando `ip domain name {name}` para establecer un nombre de dominio al enrutador.
+Utilice el comando `ip domain name {name}` para establecer un nombre de dominio al equipo.
 
 ```js title="Router #1"
 R_1(config)# ip domain name cisco.com
@@ -74,25 +74,28 @@ Authentication timeout: 120 secs; Authentication retries: 3
 
 ## Líneas de terminal virtual
 
-Utilice los comandos `line vty 0 4`, `transport input {all | none | telnet | ssh}` y `login local` para configurar y establecer qué protocolos pueden acceder a las líneas de terminal virtual.
+Utilice los comandos `line vty {numbers}`, `transport input {all | none | telnet | ssh}` y `login local` para configurar y establecer qué protocolos pueden acceder a las líneas de terminal virtual.
 
 ```js title="Router #1"
 R_1(config)# line vty 0 4
 R_1(config-line)# transport input ssh
 R_1(config-line)# login local
+
+// Switch (0-15) | Router (0-4).
 ```
 
 ## Crear usuario
 
-Utilice el comando `username {user} privilege {level} password {password}` para crear un usuario.
+Utilice el comando `username {user} secret {password}` o el comando `username {user} privilege {level} password {password}` para crear un usuario.
 Hay 16 niveles de privilegios de acceso de administradores, 0-15. Siendo 0 el menos privilegiado y 15 el más privilegiado.
 
 > Se recomienda tener creada una [contraseña de usuario privilegiado](/blog/configuracion-basica-dispositivos#contraseña-de-usuario-privilegiado) en el equipo.
 
 ```js title="Router #1"
-R_1(config)# username jaular privilege 15 password secreto
+R_1(config)# username jaular secret secreto
 
-// El nivel 15 proporciona un control completo sobre el enrutador.
+R_1(config)# username jaular privilege 15 password secreto
+// El nivel 15 proporciona un control completo sobre el equipo.
 ```
 
 ## Referencias

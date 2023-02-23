@@ -3,33 +3,54 @@ title: Configuración de Interfaz Virtual de Switch (SVI)
 publishDate: "2023-01-06T00:10:00"
 author: José Aular
 tag: cisco
+heroImage:
+  src: https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80
+  author: christinhumephoto
 ---
+
+import CustomLink from "~/components/CustomLink.astro";
+export const components = { a: CustomLink };
+
+## Tabla de contenido
+
+1.  [SVI](/blog/configuracion-interfaz-virtual-switch#svi)
+2.  [Dirección IP](/blog/configuracion-interfaz-virtual-switch#dirección-ip)
+3.  [Puerta de enlace predeterminada](/blog/configuracion-interfaz-virtual-switch#puerta-de-enlace-predeterminada)
+4.  [Asignar VLAN](/blog/configuracion-interfaz-virtual-switch#asignar-vlan)
+5.  [Mostrar información](/blog/configuracion-interfaz-virtual-switch#mostrar-información)
+6.  [Referencias](/blog/configuracion-interfaz-virtual-switch#referencias)
+
+## SVI
 
 Una SVI es una interfaz definida en el quipo y asociada a una VLAN concreta.
 Para acceder al switch de manera remota, se deben configurar una dirección IP y una máscara de subred en la SVI.
 
-Para configurar una SVI en un switch, utilice el comando `interface vlan {number}`.
+Para configurar una SVI en un switch, utilice los comando `vlan {vlan-id}` para crear la VLAN, `name {vlan-name}` para asignarle un nombre y `interface vlan {vlan-id}` para acceder a la VLAN.
+
+> Se recomienda utilizar una VLAN distinta de la VLAN 1 para la **VLAN de administración**, como la VLAN 99.
 
 ```js title="Switch #1"
 SW_1# configure terminal
-SW_1(config)# interface vlan 1
+SW_1(config)# vlan 99
+SW_1(config-vlan)# name management
+SW_1(config-vlan)# exit
+SW_1(config)# interface vlan 99
 
-// La "vlan 1" no es una interfaz física real, sino una virtual.
+// La "vlan 99" no es una interfaz física real, sino una virtual.
 ```
 
-A continuación, asigne una dirección IPv4 con el comando `ip address {ip-address} {subnet-mask}`.
+## Dirección IP
+
+Asigne una dirección IPv4 con el comando `ip address {ip-address} {subnet-mask}` y luego habilite la interfaz virtual utilizando el comando `no shutdown`.
 
 ```js title="Switch #1"
-SW_1(config-if)# ip address 192.168.0.10 255.255.255.0
-```
-
-Habilite la interfaz virtual utilizando el comando `no shutdown`.
-
-```js title="Switch #1"
+SW_1(config-if)# ip address 192.169.10.10 255.255.255.0
 SW_1(config-if)# no shutdown
 ```
 
-Finalmente, utilice el comando `ip default-gateway {ip-address}` para configurar una puerta de enlace predeterminada.
+## Puerta de enlace predeterminada
+
+Utilice el comando `ip default-gateway {ip-address}` para configurar una puerta de enlace predeterminada.
 Todos los dispositivos que requieren el uso de un enrutador utilizan una puerta de enlace predeterminada
 para determinar la **mejor ruta a un destino remoto**.
 
@@ -38,3 +59,51 @@ para determinar la **mejor ruta a un destino remoto**.
 ```js title="Switch #1"
 SW_1(config-if)# ip default-gateway 192.168.0.1
 ```
+
+## Asignar VLAN
+
+La interfaz está inactiva actualmente porque no hay puertos de switch asignados a la VLAN 99.
+Debe acceder a los puertos y asignar la VLAN con el comando `switchport access vlan {vlan-id}`.
+
+```js title="Switch #1"
+SW_1(config-if)# interface range FastEthernet 0/1-24, GigabitEthernet 0/1-2
+```
+
+```js title="Switch #1"
+SW_1(config-if-range)# switchport access vlan 99
+```
+
+## Mostrar información
+
+Utilice el comando `show vlan brief` para mostrar la información.
+
+```js title="Switch #1"
+SW_1# show vlan brief
+```
+
+El siguiente es un resultado de muestra del comando `show vlan brief`.
+
+```js title="Switch #1"
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active
+99   management                       active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gig0/1, Gig0/2
+1002 fddi-default                     active
+1003 token-ring-default               active
+1004 fddinet-default                  active
+1005 trnet-default                    active
+```
+
+> Observe en el resultado anterior que la interfaz VLAN 1 se cae porque ninguno
+> de los puertos están asignados a la VLAN 1
+
+## Referencias
+
+- [KSU Faculty](https://faculty.ksu.edu.sa/sites/default/files/lab05_vlan.pdf)
+- [Radford University](https://sites.radford.edu/~hlee3/classes/backup/itec451_spring2017/Cisco/CCNA2_RSE_spring2017/Lab%20Source%20Files_solutions/5.1.1.6%20Lab%20-%20Configuring%20Basic%20Switch%20Settings%20-%20solution.pdf)

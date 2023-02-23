@@ -48,7 +48,7 @@ Switch(config)# hostname SW_1
 
 ## Contraseña de consola
 
-Utilice los comandos `line console 0`, `password {password}` y `login` para crear una contraseña de consola.
+Utilice los comandos `line console {number}`, `password {password}` y `login` para crear una contraseña de consola.
 
 ```js title="Switch #1"
 SW_1(config)# line console 0
@@ -60,7 +60,7 @@ SW_1(config-line)# login
 
 ## Contraseña de líneas de terminal virtual
 
-Utilice los comandos `line vty 0 15`, `password {password}` y `login` para crear una contraseña a las líneas de terminal virtual.
+Utilice los comandos `line vty {numbers}`, `password {password}` y `login` para crear una contraseña a las líneas de terminal virtual.
 
 ```js title="Switch #1"
 SW_1(config)# line vty 0 15
