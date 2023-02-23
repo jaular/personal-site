@@ -45,7 +45,7 @@ SW_1(config)# interface vlan 99
 Asigne una dirección IPv4 con el comando `ip address {ip-address} {subnet-mask}` y luego habilite la interfaz virtual utilizando el comando `no shutdown`.
 
 ```js title="Switch #1"
-SW_1(config-if)# ip address 192.169.10.10 255.255.255.0
+SW_1(config-if)# ip address 192.168.11.10 255.255.255.0
 SW_1(config-if)# no shutdown
 ```
 
@@ -58,7 +58,7 @@ para determinar la **mejor ruta a un destino remoto**.
 > La puerta de enlace predeterminada es la dirección IP de la interfaz del router a la que está conectado el switch.
 
 ```js title="Switch #1"
-SW_1(config-if)# ip default-gateway 192.168.10.1
+SW_1(config-if)# ip default-gateway 192.168.11.1
 ```
 
 ## Asignar VLAN
