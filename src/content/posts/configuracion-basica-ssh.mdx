@@ -9,7 +9,8 @@ heroImage:
 ---
 
 import CustomLink from "~/components/CustomLink.astro";
-export const components = { a: CustomLink };
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
 
 ## Tabla de contenido
 
@@ -18,7 +19,8 @@ export const components = { a: CustomLink };
 3.  [SSH2](/blog/configuracion-basica-ssh#ssh2)
 4.  [Líneas de terminal virtual](/blog/configuracion-basica-ssh#líneas-de-terminal-virtual)
 5.  [Crear usuario](/blog/configuracion-basica-ssh#crear-usuario)
-6.  [Referencias](/blog/configuracion-basica-ssh#referencias)
+6.  [Conexión por SSH](/blog/configuracion-basica-ssh#conexión-por-ssh)
+7.  [Referencias](/blog/configuracion-basica-ssh#referencias)
 
 ## Nombre de dominio
 
@@ -97,6 +99,18 @@ R_1(config)# username jaular secret secreto
 R_1(config)# username jaular privilege 15 password secreto
 // El nivel 15 proporciona un control completo sobre el equipo.
 ```
+
+## Conexión por SSH
+
+![paso 1](https://res.cloudinary.com/jaular/image/upload/v1677177717/blog/configuracion-basica-ssh/ssh-1_cvtbc4.png "Paso #1")
+
+---
+
+![paso 2](https://res.cloudinary.com/jaular/image/upload/v1677177978/blog/configuracion-basica-ssh/ssh-2_jvyr3o.png "Paso #2")
+
+---
+
+![paso 3](https://res.cloudinary.com/jaular/image/upload/v1677177978/blog/configuracion-basica-ssh/ssh-3_irki8f.png "Paso #3")
 
 ## Referencias
 
