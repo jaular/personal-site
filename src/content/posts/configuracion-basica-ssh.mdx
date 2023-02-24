@@ -12,7 +12,7 @@ import CustomLink from "~/components/CustomLink.astro";
 import CustomImage from "~/components/CustomImage.astro";
 export const components = { a: CustomLink, img: CustomImage };
 
-> Recuerde configurar la [SVI](/blog/configuracion-interfaz-virtual-switch#svi).
+> Recuerde configurar la [SVI](/blog/configuracion-interfaz-virtual-switch#svi) o agregar una [dirección IP](/blog/configuracion-interfaz-virtual-switch#direcci%C3%B3n-ip) al puerto que se esta utilizando.
 
 ## Tabla de contenido
 
@@ -28,8 +28,8 @@ export const components = { a: CustomLink, img: CustomImage };
 
 Utilice el comando `ip domain name {name}` para establecer un nombre de dominio al equipo.
 
-```js title="Router #1"
-R_1(config)# ip domain name cisco.com
+```js title="Switch #1"
+SW_1(config)# ip domain name cisco.com
 ```
 
 ## Claves RSA
@@ -43,9 +43,9 @@ Cuando genere claves RSA, se le pedirá que ingrese una longitud de módulo. Cua
 
 > Se recomienda usar claves de al menos 1024 bits.
 
-```js title="Router #1"
-R_1(config)# crypto key generate rsa
-The name for the keys will be: R_1.cisco.com
+```js title="Switch #1"
+SW_1(config)# crypto key generate rsa
+The name for the keys will be: SW_1.cisco.com
 Choose the size of the key modulus in the range of 360 to 2048 for your
   General Purpose Keys. Choosing a key modulus greater than 512 may take
   a few minutes.
@@ -53,9 +53,9 @@ Choose the size of the key modulus in the range of 360 to 2048 for your
 How many bits in the modulus [512]: 1024
 % Generating 1024 bit RSA keys, keys will be non-exportable...[OK]
 
-R_1(config)#
+SW_1(config)#
 *Mar 1 0:8:20.132: %SSH-5-ENABLED: SSH 1.99 has been enabled
-R_1(config)#
+SW_1(config)#
 ```
 
 ## SSH2
@@ -64,14 +64,14 @@ Es una versión mucho más segura y eficiente de SSH que incluye SFTP, que es fu
 
 Utilice el comando `ip ssh version 2` para habilitar la versión 2 de SSH.
 
-```js title="Router #1"
-R_1(config)# ip ssh version 2
+```js title="Switch #1"
+SW_1(config)# ip ssh version 2
 ```
 
 El siguiente es un resultado de muestra del comando `show ip ssh`.
 
-```js title="Router #1"
-R_1# show ip ssh
+```js title="Switch #1"
+SW_1# show ip ssh
 SSH Enabled - version 2.0
 Authentication timeout: 120 secs; Authentication retries: 3
 ```
@@ -80,10 +80,10 @@ Authentication timeout: 120 secs; Authentication retries: 3
 
 Utilice los comandos `line vty {number}`, `transport input {all | none | telnet | ssh}` y `login local` para configurar y establecer qué protocolos pueden acceder a las líneas de terminal virtual.
 
-```js title="Router #1"
-R_1(config)# line vty 0 4
-R_1(config-line)# transport input ssh
-R_1(config-line)# login local
+```js title="Switch #1"
+SW_1(config)# line vty 0 4
+SW_1(config-line)# transport input ssh
+SW_1(config-line)# login local
 
 // Switch (0-15) | Router (0-4).
 ```
@@ -95,10 +95,10 @@ Hay 16 niveles de privilegios de acceso de administradores, 0-15. Siendo 0 el me
 
 > Se recomienda tener creada una [contraseña de usuario privilegiado](/blog/configuracion-basica-dispositivos#contraseña-de-usuario-privilegiado) en el equipo.
 
-```js title="Router #1"
-R_1(config)# username jaular secret secreto
+```js title="Switch #1"
+SW_1(config)# username jaular secret secreto
 
-R_1(config)# username jaular privilege 15 password secreto
+SW_1(config)# username jaular privilege 15 password secreto
 // El nivel 15 proporciona un control completo sobre el equipo.
 ```
 

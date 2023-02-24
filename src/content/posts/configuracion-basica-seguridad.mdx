@@ -1,0 +1,73 @@
+---
+title: Configuración básica de seguridad
+publishDate: "2023-02-24T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://images.unsplash.com/photo-1570044389283-6713c3b1c48b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80
+  author: florianolv
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de contenido
+
+1.  [Lóngitud mínima de una contraseña](/blog/configuracion-basica-seguridad#lóngitud-mínima-de-una-contraseña)
+2.  [Restringir los intentos de inicio de sesión](/blog/configuracion-basica-seguridad#restringir-los-intentos-de-inicio-de-sesión)
+3.  [Tiempo de espera](/blog/configuracion-basica-seguridad#tiempo-de-espera)
+4.  [Referencias](/blog/configuracion-basica-seguridad#referencias)
+
+## Lóngitud mínima de una contraseña
+
+Utilice el comando `security passwords min-length {number}` para configurar la longitud mínima de una contraseña.
+
+```js title="Router #1"
+R_1(config)# security passwords min-length 8
+
+// Longitud mínima de 0 a 16.
+```
+
+El siguiente es un resultado de muestra al crear una contraseña con menos de 8 caracteres.
+
+```js title="Router #1"
+R_1(config)# line console 0
+R_1(config-line)# password 12345
+% Password too short - must be at least 8 characters. Password not configured.
+```
+
+## Restringir los intentos de inicio de sesión
+
+Utilice el comando `login block-for {block-time-period} attempts {fail-attempts} within {login-attempt-time-period}` para restringir los intentos de inicio de sesión de **Telnet / SSH** e impedir los inicio de sesión por fuerza bruta.
+
+```js title="Router #1"
+R_1(config)# login block-for 120 attempts 3 within 60
+
+// block-time-period: tiempo para bloquear el inicio de sesión (seg).
+// fail-attempts max: número de intentos de inicio de sesión.
+// login-attempt-time-period: tiempo para observar los intentos de inicio de sesión (seg).
+```
+
+![Usuario bloqueado](https://res.cloudinary.com/jaular/image/upload/v1677265417/blog/configuracion-basica-seguridad/block-1_ybgxmt.png "Usuario bloqueado")
+
+Si alguien falla en tres intentos en un período de 60 segundos, el router bloquea los intentos de inicio de sesión por 120 segundos.
+
+## Tiempo de espera
+
+Utilice el comando `exec-timeout {minutes} {seconds}` para establecee un tiempo específico para desconectar las sesiones inactivas.
+
+> El valor predeterminado para el tiempo de espera es de 10 minutos.
+
+```js title="Router #1"
+R_1(config)# line console 0
+R_1(config-line)# exec-timeout 1 30
+
+// Desconecta al usuario de la consola después de 90 segundos de inactividad.
+```
+
+## Referencias
+
+- [IMD.guru](https://www.imd.guru/redes/cisco/ios/forzar-la-longitud-minima-de-una-contrasena-en-el-ios.html)
+- [N-Study](https://www.n-study.com/en/cisco-basic/restrict-login-attempts/)
+- [Study-CCNA](https://study-ccna.com/exec-timeout-command/)
