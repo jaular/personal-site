@@ -42,7 +42,7 @@ SW_1(config)# interface vlan 99
 
 ## Dirección IP
 
-Asigne una dirección IPv4 con el comando `ip address {ip-address} {subnet-mask}` y luego habilite la interfaz virtual utilizando el comando `no shutdown`.
+Asigne una dirección IPv4 a la VLAN con el comando `ip address {ip-address} {subnet-mask}` y luego habilite la interfaz virtual utilizando el comando `no shutdown`.
 
 ```js title="Switch #1"
 SW_1(config-if)# ip address 192.168.11.10 255.255.255.0
@@ -64,14 +64,22 @@ SW_1(config-if)# ip default-gateway 192.168.11.1
 ## Asignar VLAN
 
 La interfaz está inactiva actualmente porque no hay puertos de switch asignados a la VLAN 99.
-Debe acceder a los puertos y asignar la VLAN con el comando `switchport access vlan {vlan-id}`.
+
+Debe acceder al puerto con el comando `interface {FastEthernet | GigabitEthernet} {number}`.
+
+> Utilice el comando `interface range {number}` para configurar varias interfaces simultáneamente.
 
 ```js title="Switch #1"
-SW_1(config-if)# interface range FastEthernet 0/1-24, GigabitEthernet 0/1-2
+SW_1(config)# interface FastEthernet 0/1
 ```
 
+Seguidamente debe cambiar el puerto a modo de acceso permanente con el comando `switchport mode access` y luego asignar la VLAN con el comando `switchport access vlan {vlan-id}`.
+
+> El comando `switchport mode access` es optativo, pero se aconseja como práctica recomendada de seguridad.
+
 ```js title="Switch #1"
-SW_1(config-if-range)# switchport access vlan 99
+SW_1(config-if)# switchport mode access
+SW_1(config-if)# switchport access vlan 99
 ```
 
 ## Mostrar información
@@ -87,22 +95,21 @@ El siguiente es un resultado de muestra del comando `show vlan brief`.
 ```js title="Switch #1"
 VLAN Name                             Status    Ports
 ---- -------------------------------- --------- -------------------------------
-1    default                          active
-99   management                       active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
-                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
-                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
-                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
-                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
-                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
-                                                Gig0/1, Gig0/2
+1    default                          active    Fa0/2, Fa0/3, Fa0/4, Fa0/5
+                                                Fa0/6, Fa0/7, Fa0/8, Fa0/9
+                                                Fa0/10, Fa0/11, Fa0/12, Fa0/13
+                                                Fa0/14, Fa0/15, Fa0/16, Fa0/17
+                                                Fa0/18, Fa0/19, Fa0/20, Fa0/21
+                                                Fa0/22, Fa0/23, Fa0/24, Gig0/1
+                                                Gig0/2
+99   management                       active    Fa0/1
 1002 fddi-default                     active
 1003 token-ring-default               active
 1004 fddinet-default                  active
 1005 trnet-default                    active
 ```
 
-> Observe en el resultado anterior que la interfaz VLAN 1 se cae porque ninguno
-> de los puertos están asignados a la VLAN 1
+Observe en el resultado anterior que la interfaz VLAN 99 ahora está asignada al puerto Fa0/1.
 
 ## Conexión por Telnet
 
