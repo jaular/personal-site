@@ -59,6 +59,21 @@
 .prose hr {
   @apply my-0 border-gray dark:border-gray-800;
 }
+.prose th {
+  @apply px-6 py-4 uppercase font-semibold text-xs align-middle whitespace-nowrap text-black dark:text-white bg-gray-100 dark:bg-black-600 border-b border-gray-300 dark:border-gray-800;
+}
+.prose tbody tr {
+  @apply border-b border-gray-300 dark:border-gray-800 last:border-b-0 hover:bg-gray-100 dark:hover:bg-black-600;
+}
+.prose tbody td {
+  @apply align-middle py-2 text-sm text-gray-800 dark:text-gray;
+}
+
+.custom-scrollbar {
+  @apply scrollbar:!w-2 scrollbar:!h-2 scrollbar:bg-transparent 
+ scrollbar-track:!bg-gray-100 scrollbar-track:!rounded dark:scrollbar-track:!bg-black-600
+  scrollbar-thumb:!rounded scrollbar-thumb:!bg-gray-300 dark:scrollbar-thumb:!bg-gray-800;
+}
 
 pre::-webkit-scrollbar {
   display: none;
@@ -97,3 +112,4 @@ div[data-rehype-pretty-code-title] + pre {
 }
 
 /* https://docs.astro.build/en/guides/integrations-guide/tailwind/#configapplybasestyles */
+/* https://github.com/tailwindlabs/tailwindcss/issues/8200 */
