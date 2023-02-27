@@ -33,7 +33,7 @@
   @apply font-medium text-black dark:text-white;
 }
 .prose a {
-  @apply my-0 font-normal no-underline text-blue dark:text-blue-400 hover:underline focus:underline focus:outline-none underline-offset-2 decoration-1;
+  @apply font-normal no-underline text-blue dark:text-blue-400 my-0 hover:underline focus:underline focus:outline-none underline-offset-2 decoration-1;
 }
 .prose ul {
   @apply list-square;
@@ -60,13 +60,13 @@
   @apply my-0 border-gray dark:border-gray-800;
 }
 .prose th {
-  @apply px-6 py-4 uppercase font-semibold text-xs align-middle whitespace-nowrap text-black dark:text-white bg-gray-100 dark:bg-black-600 border-b border-gray-300 dark:border-gray-800;
+  @apply text-xs text-black dark:text-white whitespace-nowrap uppercase font-semibold align-middle px-6 py-4 bg-gray-100 dark:bg-black-600 border-b border-gray-300 dark:border-gray-800;
 }
 .prose tbody tr {
   @apply border-b border-gray-300 dark:border-gray-800 last:border-b-0 hover:bg-gray-100 dark:hover:bg-black-600;
 }
 .prose tbody td {
-  @apply align-middle py-2 text-sm text-gray-800 dark:text-gray;
+  @apply text-sm text-gray-800 dark:text-gray align-middle px-6 py-2;
 }
 
 .custom-scrollbar {
@@ -112,4 +112,4 @@ div[data-rehype-pretty-code-title] + pre {
 }
 
 /* https://docs.astro.build/en/guides/integrations-guide/tailwind/#configapplybasestyles */
-/* https://github.com/tailwindlabs/tailwindcss/issues/8200 */
+/* Scrollbar: https://github.com/tailwindlabs/tailwindcss/issues/8200 */
