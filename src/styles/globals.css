@@ -70,7 +70,7 @@
 }
 
 .custom-scrollbar {
-  @apply scrollbar:!w-2 scrollbar:!h-2 scrollbar:bg-transparent 
+  @apply scrollbar:!w-1.5 scrollbar:!h-1.5 scrollbar:bg-transparent 
  scrollbar-track:!bg-gray-100 scrollbar-track:!rounded dark:scrollbar-track:!bg-black-600
   scrollbar-thumb:!rounded scrollbar-thumb:!bg-gray-300 dark:scrollbar-thumb:!bg-gray-800;
 }
