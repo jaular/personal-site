@@ -26,21 +26,23 @@ export const components = { img: CustomImage, table: CustomTable };
 
 Tabla de asignación de direcciones.
 
-| Dispositivo | Interfaz        | Dirección                   | Máscara de subred                 | Puerta de enlace predeterminada |
-| ----------- | --------------- | --------------------------- | --------------------------------- | ------------------------------- |
-| RTA         | G0/0 <br/> G0/1 | 10.10.10.1 <br/> 10.10.20.1 | 255.255.255.0 <br/> 255.255.255.0 | N/D <br/> N/D                   |
-| SW1         | VLAN1           | 10.10.10.2                  | 255.255.255.0                     | **10.10.10.1**                  |
-| SW2         | VLAN1           | 10.10.20.2                  | 255.255.255.0                     | **10.10.20.1**                  |
-| PC-1        | NIC             | **10.10.10.21**             | 255.255.255.0                     | **10.10.10.1**                  |
-| PC-2        | NIC             | **10.10.20.21**             | 255.255.255.0                     | **10.10.20.1**                  |
+| Dispositivo | Interfaz | Dirección       | Máscara de subred | Puerta de enlace predeterminada |
+| ----------- | -------- | --------------- | ----------------- | ------------------------------- |
+| RTA         | G0/0     | 10.10.10.1      | 255.255.255.0     | N/D                             |
+| RTA         | G0/1     | 10.10.20.1      | 255.255.255.0     | N/D                             |
+| SW1         | VLAN1    | 10.10.10.2      | 255.255.255.0     | **10.10.10.1**                  |
+| SW2         | VLAN1    | 10.10.20.2      | 255.255.255.0     | **10.10.20.1**                  |
+| PC-1        | NIC      | **10.10.10.21** | 255.255.255.0     | **10.10.10.1**                  |
+| PC-2        | NIC      | **10.10.20.21** | 255.255.255.0     | **10.10.20.1**                  |
 
 Tabla de conexión de los dispositivos.
 
-| Desde el dispositivo | Interfaz        | Hacia el dispositivo | Interfaz        |
-| -------------------- | --------------- | -------------------- | --------------- |
-| RTA                  | G0/0 <br/> G0/1 | SW1 <br/> SW2        | G0/1 <br/> G0/1 |
-| SW1                  | F0/1            | PC-1                 | Fastethernet0   |
-| SW2                  | F0/1            | PC-2                 | Fastethernet0   |
+| Desde el dispositivo | Interfaz | Hacia el dispositivo | Interfaz      |
+| -------------------- | -------- | -------------------- | ------------- |
+| RTA                  | G0/0     | SW1                  | G0/1          |
+| RTA                  | G0/1     | SW2                  | G0/1          |
+| SW1                  | F0/1     | PC-1                 | Fastethernet0 |
+| SW2                  | F0/1     | PC-2                 | Fastethernet0 |
 
 ## RTA
 
