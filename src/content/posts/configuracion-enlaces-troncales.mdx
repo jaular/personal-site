@@ -1,0 +1,231 @@
+---
+title: Configuración de enlaces troncales
+publishDate: "2023-03-03T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://res.cloudinary.com/jaular/image/upload/v1677869078/blog/configuracion-enlaces-troncales/pkt-1_fgkewc.png
+  author: jaular14
+---
+
+import CustomImage from "~/components/CustomImage.astro";
+import CustomTable from "~/components/CustomTable.astro";
+export const components = { img: CustomImage, table: CustomTable };
+
+## Tabla de contenido
+
+1.  [Tablas de información](/blog/configuracion-enlaces-troncales#tablas-de-información)
+2.  [SW1](/blog/configuracion-enlaces-troncales#sw1)
+3.  [SW2 y SW3](/blog/configuracion-enlaces-troncales#sw2-y-sw3)
+4.  [Resultado](/blog/configuracion-enlaces-troncales#resultado)
+
+## Tablas de información
+
+Tabla de VLAN.
+
+| VLAN | Nombre         |
+| ---- | -------------- |
+| 10   | TI             |
+| 20   | RRHH           |
+| 30   | SOPORTE        |
+| 88   | ADMINISTRACION |
+| 99   | NATIVA         |
+
+Tabla de asignación de direcciones.
+
+| Dispositivo | Interfaz | Dirección    | Máscara de subred | Puerto del switch | VLAN |
+| ----------- | -------- | ------------ | ----------------- | ----------------- | ---- |
+| PC1         | NIC      | 172.17.10.21 | 255.255.255.0     | SW2 F0/1          | 10   |
+| PC2         | NIC      | 172.17.20.22 | 255.255.255.0     | SW2 F0/2          | 20   |
+| PC3         | NIC      | 172.17.30.23 | 255.255.255.0     | SW2 F0/3          | 30   |
+| PC4         | NIC      | 172.17.10.24 | 255.255.255.0     | SW3 F0/1          | 10   |
+| PC5         | NIC      | 172.17.20.25 | 255.255.255.0     | SW3 F0/2          | 20   |
+| PC6         | NIC      | 172.17.30.26 | 255.255.255.0     | SW3 F0/3          | 30   |
+
+Tabla de conexión de los dispositivos.
+
+| Desde el dispositivo | Interfaz        | Hacia el dispositivo | Interfaz        |
+| -------------------- | --------------- | -------------------- | --------------- |
+| SW1                  | G0/1 <br/> G0/2 | SW2 <br/> SW3        | G0/1 <br/> G0/1 |
+
+## SW1
+
+```js title="SW1"
+SW1(config)# vlan 10
+SW1(config-vlan)# name TI
+SW1(config-vlan)# exit
+SW1(config)# vlan 20
+SW1(config-vlan)# name RRHH
+SW1(config-vlan)# exit
+SW1(config)# vlan 30
+SW1(config-vlan)# name SOPORTE
+SW1(config-vlan)# exit
+SW1(config)# vlan 88
+SW1(config-vlan)# name ADMINISTRACION
+SW1(config-vlan)# exit
+SW1(config)# vlan 99
+SW1(config-vlan)# name NATIVA
+SW1(config-vlan)# exit
+```
+
+Interfaz G0/1 y G0/2.
+
+```js title="SW1"
+SW1(config)# interface range GigabitEthernet 0/1-2
+```
+
+Utilice el comando `switchport mode trunk` para establecer el puerto en modo de enlace troncal permanente y el comando `switchport trunk native vlan {vlan-id}` para cambiar la configuración de la VLAN nativa a otra opción que no sea VLAN 1.
+
+```js title="SW1"
+SW1(config-if-range)# switchport mode trunk
+SW1(config-if-range)# switchport trunk native vlan 99
+SW1(config-if-range)# end
+```
+
+Utilice el comando `show vlan brief` para mostrar la lista de todas las VLAN configuradas.
+
+```js title="SW1"
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/1, Fa0/2, Fa0/3, Fa0/4
+                                                Fa0/5, Fa0/6, Fa0/7, Fa0/8
+                                                Fa0/9, Fa0/10, Fa0/11, Fa0/12
+                                                Fa0/13, Fa0/14, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+10   TI                               active
+20   RRHH                             active
+30   SOPORTE                          active
+88   ADMINISTRACION                   active
+99   NATIVA                           active
+1002 fddi-default                     active
+1003 token-ring-default               active
+1004 fddinet-default                  active
+1005 trnet-default                    active
+```
+
+Utilice el comando `show interface trunk` para mostrar la configuración de los enlaces troncales.
+
+```js title="SW1"
+Port        Mode         Encapsulation  Status        Native vlan
+Gig0/1      on           802.1q         trunking      99
+Gig0/2      on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gig0/1      1-1005
+Gig0/2      1-1005
+
+Port        Vlans allowed and active in management domain
+Gig0/1      1,10,20,30,88,99
+Gig0/2      1,10,20,30,88,99
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Gig0/1      1,10,20,30,88,99
+Gig0/2      1,10,20,30,88,99
+```
+
+## SW2 y SW3
+
+```js title="SW2"
+SW2(config)# vlan 10
+SW2(config-vlan)# name TI
+SW2(config-vlan)# exit
+SW2(config)# vlan 20
+SW2(config-vlan)# name RRHH
+SW2(config-vlan)# exit
+SW2(config)# vlan 30
+SW2(config-vlan)# name SOPORTE
+SW2(config-vlan)# exit
+SW2(config)# vlan 88
+SW2(config-vlan)# name ADMINISTRACION
+SW2(config-vlan)# exit
+SW2(config)# vlan 99
+SW2(config-vlan)# name NATIVA
+SW2(config-vlan)# exit
+```
+
+Interfaz GigabitEthernet 0/1.
+
+```js title="SW2"
+SW2(config)# interface GigabitEthernet 0/1
+```
+
+```js title="SW2"
+SW2(config-if)# switchport mode trunk
+SW2(config-if)# switchport trunk native vlan 99
+SW2(config-if)# exit
+```
+
+Interfaz FastEthernet 0/1.
+
+```js title="SW2"
+SW2(config)# interface FastEthernet 0/1
+```
+
+```js title="SW2"
+SW2(config-if)# switchport mode access
+SW2(config-if)# switchport access vlan 10
+SW2(config-if)# exit
+```
+
+Interfaz FastEthernet 0/2.
+
+```js title="SW2"
+SW2(config)# interface FastEthernet 0/2
+```
+
+```js title="SW2"
+SW2(config-if)# switchport mode access
+SW2(config-if)# switchport access vlan 20
+SW2(config-if)# exit
+```
+
+Interfaz FastEthernet 0/3.
+
+```js title="SW2"
+SW2(config)# interface FastEthernet 0/3
+```
+
+```js title="SW2"
+SW2(config-if)# switchport mode access
+SW2(config-if)# switchport access vlan 30
+SW2(config-if)# end
+```
+
+Mostrar lista de todas las VLAN configuradas.
+
+```js title="SW2"
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Fa0/4, Fa0/5, Fa0/6, Fa0/7
+                                                Fa0/8, Fa0/9, Fa0/10, Fa0/11
+                                                Fa0/12, Fa0/13, Fa0/14, Fa0/15
+                                                Fa0/16, Fa0/17, Fa0/18, Fa0/19
+                                                Fa0/20, Fa0/21, Fa0/22, Fa0/23
+                                                Fa0/24, Gig0/2
+10   TI                               active    Fa0/1
+20   RRHH                             active    Fa0/2
+30   SOPORTE                          active    Fa0/3
+88   ADMINISTRACION                   active
+99   NATIVA                           active
+1002 fddi-default                     active
+1003 token-ring-default               active
+1004 fddinet-default                  active
+1005 trnet-default                    active
+```
+
+Mostrar configuración de los enlaces troncales.
+
+```js title="SW2"
+Port        Mode         Encapsulation  Status        Native vlan
+Gig0/1      on           802.1q         trunking      99
+
+Port        Vlans allowed on trunk
+Gig0/1      1-1005
+
+Port        Vlans allowed and active in management domain
+Gig0/1      1,10,20,30,88,99
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Gig0/1      1,10,20,30,88,99
+```
