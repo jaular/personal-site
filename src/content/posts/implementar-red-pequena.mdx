@@ -24,7 +24,7 @@ export const components = { img: CustomImage, table: CustomTable };
 
 ## Tablas de información
 
-Tabla de asignación de direcciones
+Tabla de asignación de direcciones.
 
 | Dispositivo | Interfaz        | Dirección                   | Máscara de subred                 | Puerta de enlace predeterminada |
 | ----------- | --------------- | --------------------------- | --------------------------------- | ------------------------------- |
@@ -34,7 +34,7 @@ Tabla de asignación de direcciones
 | PC-1        | NIC             | **10.10.10.21**             | 255.255.255.0                     | **10.10.10.1**                  |
 | PC-2        | NIC             | **10.10.20.21**             | 255.255.255.0                     | **10.10.20.1**                  |
 
-Tabla de conexión de los dispositivos
+Tabla de conexión de los dispositivos.
 
 | Desde el dispositivo | Interfaz        | Hacia el dispositivo | Interfaz        |
 | -------------------- | --------------- | -------------------- | --------------- |
@@ -61,7 +61,7 @@ RTA(config-line)# exit
 RTA(config)# banner motd #SOLO USUARIOS AUTORIZADOS#
 ```
 
-Interfaz G0/0
+Interfaz GigabitEthernet 0/0.
 
 ```js title="RTA"
 RTA(config)# interface GigabitEthernet 0/0
@@ -74,7 +74,7 @@ RTA(config-if)# description ENLACE CON SW1
 RTA(config-if)# exit
 ```
 
-Interfaz G0/1
+Interfaz GigabitEthernet 0/1.
 
 ```js title="RTA"
 RTA(config)# interface GigabitEthernet 0/1
@@ -87,7 +87,7 @@ RTA(config-if)# description ENLACE CON SW2
 RTA(config-if)# end
 ```
 
-Guardar configuración
+Guardar configuración.
 
 ```js title="RTA"
 RTA# copy running-config startup-config
@@ -113,7 +113,7 @@ SW1(config-line)# login
 SW1(config-line)# exit
 ```
 
-VLAN 1
+VLAN 1.
 
 ```js title="SW1"
 SW1(config)# interface vlan 1
@@ -126,7 +126,7 @@ SW1(config-if)# ip default-gateway 10.10.10.1
 SW1(config-if)# end
 ```
 
-Guardar configuración
+Guardar configuración.
 
 ```js title="SW1"
 SW1# copy running-config startup-config
@@ -152,7 +152,7 @@ SW2(config-line)# login
 SW2(config-line)# exit
 ```
 
-VLAN 1
+VLAN 1.
 
 ```js title="SW2"
 SW2(config)# interface vlan 1
@@ -165,7 +165,7 @@ SW2(config-if)# ip default-gateway 10.10.20.1
 SW2(config-line)# end
 ```
 
-Guardar configuración
+Guardar configuración.
 
 ```js title="SW2"
 SW2# copy running-config startup-config
