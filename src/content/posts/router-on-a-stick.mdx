@@ -1,0 +1,248 @@
+---
+title: Router-on-a-Stick
+publishDate: "2023-03-07T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://res.cloudinary.com/jaular/image/upload/v1678214400/blog/router-on-a-stick/pkt-1_w56oty.png
+  author: jaular14
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+import CustomTable from "~/components/CustomTable.astro";
+export const components = {
+  a: CustomLink,
+  img: CustomImage,
+  table: CustomTable,
+};
+
+## Tabla de contenido
+
+1.  [Concepto](/blog/router-on-a-stick#concepto)
+2.  [Subinterfaces](/blog/router-on-a-stick#subinterfaces)
+3.  [Tablas de información](/blog/router-on-a-stick#tablas-de-información)
+4.  [SW1](/blog/router-on-a-stick#sw1)
+5.  [SW2](/blog/router-on-a-stick#sw2)
+6.  [RTA](/blog/router-on-a-stick#rta)
+7.  [Referencias](/blog/router-on-a-stick#referencias)
+
+## Concepto
+
+El método **router-on-a-stick** inter-VLAN routing supera la limitación del método de enrutamiento interVLAN heredado. Solo requiere una interfaz Ethernet física para enrutar el tráfico entre varias VLAN de una red.
+
+Una interfaz Ethernet del router se configura como un **troncal 802.1Q** y se conecta a un puerto troncal en un switch de capa 2. Específicamente, la interfaz del router se configura mediante subinterfaces para identificar VLAN enrutables.
+
+> El método **router-on-a-stick** de inter-VLAN routing no escala mas allá de **50 VLANs**.
+
+## Subinterfaces
+
+Son interfaces virtuales basadas en software. Cada uno está asociado a una única interfaz Ethernet física. Cada una se configura de forma independiente con sus propias direcciones IP y una asignación de VLAN. Las subinterfaces se configuran para subredes diferentes que corresponden a su asignación de VLAN. Esto facilita el enrutamiento lógico.
+
+## Tablas de información
+
+Tabla de asignación de direcciones.
+
+| Dispositivo | Interfaz | Dirección     | Máscara de subred | Puerta de enlace predeterminada |
+| ----------- | -------- | ------------- | ----------------- | ------------------------------- |
+| SW1         | VLAN 99  | 192.168.99.2  | 255.255.255.0     | 192.168.99.1                    |
+| SW2         | VLAN 99  | 192.168.99.3  | 255.255.255.0     | 192.168.99.1                    |
+| PC1         | NIC      | 192.168.10.10 | 255.255.255.0     | 192.168.10.1                    |
+| PC2         | NIC      | 192.168.20.10 | 255.255.255.0     | 192.168.20.1                    |
+
+Tabla de conexión de los dispositivos.
+
+| Desde el dispositivo | Interfaz | Hacia el dispositivo | Interfaz | Nota           |
+| -------------------- | -------- | -------------------- | -------- | -------------- |
+| RTA                  | G0/0/1   | SW1                  | G0/1     | Enlace troncal |
+| SW1                  | F0/1     | SW2                  | F0/1     | Enlace troncal |
+| SW1                  | F0/5     | PC1                  | NIC      | VLAN 10        |
+| SW2                  | F0/5     | PC2                  | NIC      | VLAN 20        |
+
+Tabla de subinterfaces para el equipo RTA.
+
+| Subinterfaz | VLAN | Dirección       |
+| ----------- | ---- | --------------- |
+| G0/0/1.10   | 10   | 192.168.10.1/24 |
+| G0/0/1.20   | 20   | 192.168.20.1/24 |
+| G0/0/1.99   | 99   | 192.168.99.1/24 |
+
+## SW1
+
+### Crear y nombrar los VLANs
+
+```js title="SW1"
+SW1(config)# vlan 10
+SW1(config-vlan)# name LAN10
+SW1(config-vlan)# exit
+SW1(config)# vlan 20
+SW1(config-vlan)# name LAN20
+SW1(config-vlan)# exit
+SW1(config)# vlan 99
+SW1(config-vlan)# name Management
+SW1(config-vlan)# exit
+```
+
+### Crear la interfaz de administración
+
+```js title="SW1"
+SW1(config)# interface vlan 99
+```
+
+```js title="SW1"
+SW1(config-if)# ip address 192.168.99.2 255.255.255.0
+SW1(config-if)# ip default-gateway 192.168.99.1
+```
+
+### Configurar puertos de acceso
+
+```js title="SW1"
+SW1(config)# interface FastEthernet 0/5
+
+// Enlace con el equipo PC-1.
+```
+
+```js title="SW1"
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 10
+SW1(config-if)# exit
+```
+
+### Configurar puertos de enlace troncal
+
+```js title="SW1"
+SW1(config)# interface FastEthernet 0/1
+
+// Enlace troncal con el equipo SW2.
+```
+
+```js title="SW1"
+SW1(config-if)# switchport mode trunk
+SW1(config-if)# exit
+```
+
+```js title="SW1"
+SW1(config)# interface GigabitEthernet 0/1
+
+// Enlace troncal con el equipo RTA.
+```
+
+```js title="SW1"
+SW1(config-if)# switchport mode trunk
+SW1(config-if)# end
+```
+
+## SW2
+
+### Crear y nombrar los VLANs
+
+```js title="SW2"
+SW2(config)# vlan 10
+SW2(config-vlan)# name LAN10
+SW2(config-vlan)# exit
+SW2(config)# vlan 20
+SW2(config-vlan)# name LAN20
+SW2(config-vlan)# exit
+SW2(config)# vlan 99
+SW2(config-vlan)# name Management
+SW2(config-vlan)# exit
+```
+
+### Crear la interfaz de administración
+
+```js title="SW2"
+SW2(config)# interface vlan 99
+```
+
+```js title="SW2"
+SW2(config-if)# ip address 192.168.99.3 255.255.255.0
+SW2(config-if)# ip default-gateway 192.168.99.1
+```
+
+### Configurar puertos de acceso
+
+```js title="SW2"
+SW2(config)# interface FastEthernet 0/5
+
+// Enlace con el equipo PC-2.
+```
+
+```js title="SW2"
+SW2(config-if)# switchport mode access
+SW2(config-if)# switchport access vlan 20
+SW2(config-if)# exit
+```
+
+### Configurar puertos de enlace troncal
+
+```js title="SW2"
+SW2(config)# interface FastEthernet 0/1
+
+// Enlace troncal con el equipo SW1.
+```
+
+```js title="SW2"
+SW2(config-if)# switchport mode trunk
+SW2(config-if)# end
+```
+
+## RTA
+
+Para el método de **router-on-a-stick**, se requieren subinterfaces configuradas para cada VLAN que se pueda enrutar.
+
+### Crear subinterfaces
+
+Subinterfaz G0/0/1.10.
+
+```js title="RTA"
+RTA(config)# interface GigabitEthernet 0/0/1.10
+```
+
+```js title="RTA"
+RTA(config-subif)# description Puerta de enlace para VLAN 10
+RTA(config-subif)# encapsulation dot1Q 10
+RTA(config-subif)# ip address 192.168.10.1 255.255.255.0
+RTA(config-subif)# exit
+```
+
+Subinterfaz G0/0/1.20.
+
+```js title="RTA"
+RTA(config)# interface GigabitEthernet 0/0/1.20
+```
+
+```js title="RTA"
+RTA(config-subif)# description Puerta de enlace para VLAN 20
+RTA(config-subif)# encapsulation dot1Q 20
+RTA(config-subif)# ip address 192.168.20.1 255.255.255.0
+RTA(config-subif)# exit
+```
+
+Subinterfaz G0/0/1.99.
+
+```js title="RTA"
+RTA(config)# interface GigabitEthernet 0/0/1.99
+```
+
+```js title="RTA"
+RTA(config-subif)# description Puerta de enlace para VLAN 99
+RTA(config-subif)# encapsulation dot1Q 99
+RTA(config-subif)# ip address 192.168.99.1 255.255.255.0
+RTA(config-subif)# exit
+```
+
+### Habilitar interfaces
+
+```js title="RTA"
+RTA(config)# interface GigabitEthernet 0/0/1
+```
+
+```js title="RTA"
+RTA(config-if)# description Enlace troncal a SW1
+RTA(config-if)# no shutdown
+RTA(config-if)# end
+```
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
