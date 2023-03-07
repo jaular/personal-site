@@ -8,9 +8,14 @@ heroImage:
   author: jaular14
 ---
 
+import CustomLink from "~/components/CustomLink.astro";
 import CustomImage from "~/components/CustomImage.astro";
 import CustomTable from "~/components/CustomTable.astro";
-export const components = { img: CustomImage, table: CustomTable };
+export const components = {
+  a: CustomLink,
+  img: CustomImage,
+  table: CustomTable,
+};
 
 ## Tabla de contenido
 
@@ -21,6 +26,7 @@ export const components = { img: CustomImage, table: CustomTable };
 5.  [PC-1](/blog/implementar-red-pequena#pc-1)
 6.  [PC-2](/blog/implementar-red-pequena#pc-2)
 7.  [Resultado](/blog/implementar-red-pequena#resultado)
+8.  [Referencias](/blog/implementar-red-pequena#referencias)
 
 ## Tablas de información
 
@@ -30,8 +36,8 @@ Tabla de asignación de direcciones.
 | ----------- | -------- | --------------- | ----------------- | ------------------------------- |
 | RTA         | G0/0     | 10.10.10.1      | 255.255.255.0     | N/D                             |
 | RTA         | G0/1     | 10.10.20.1      | 255.255.255.0     | N/D                             |
-| SW1         | VLAN1    | 10.10.10.2      | 255.255.255.0     | **10.10.10.1**                  |
-| SW2         | VLAN1    | 10.10.20.2      | 255.255.255.0     | **10.10.20.1**                  |
+| SW1         | VLAN 1   | 10.10.10.2      | 255.255.255.0     | **10.10.10.1**                  |
+| SW2         | VLAN 1   | 10.10.20.2      | 255.255.255.0     | **10.10.20.1**                  |
 | PC-1        | NIC      | **10.10.10.21** | 255.255.255.0     | **10.10.10.1**                  |
 | PC-2        | NIC      | **10.10.20.21** | 255.255.255.0     | **10.10.20.1**                  |
 
@@ -63,7 +69,7 @@ RTA(config-line)# exit
 RTA(config)# banner motd #SOLO USUARIOS AUTORIZADOS#
 ```
 
-Interfaz GigabitEthernet 0/0.
+Interfaz G0/0.
 
 ```js title="RTA"
 RTA(config)# interface GigabitEthernet 0/0
@@ -76,7 +82,7 @@ RTA(config-if)# description ENLACE CON SW1
 RTA(config-if)# exit
 ```
 
-Interfaz GigabitEthernet 0/1.
+Interfaz G0/1.
 
 ```js title="RTA"
 RTA(config)# interface GigabitEthernet 0/1
@@ -190,3 +196,7 @@ Building configuration...
 ---
 
 ![Puntaje](https://res.cloudinary.com/jaular/image/upload/v1677519829/blog/implementar-red-pequena/pkt-3_eocakr.png "Puntaje")
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)

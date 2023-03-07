@@ -8,26 +8,18 @@ heroImage:
   author: jaular14
 ---
 
+import CustomLink from "~/components/CustomLink.astro";
 import CustomTable from "~/components/CustomTable.astro";
-export const components = { table: CustomTable };
+export const components = { a: CustomLink, table: CustomTable };
 
 ## Tabla de contenido
 
 1.  [Tablas de información](/blog/configuracion-enlaces-troncales#tablas-de-información)
 2.  [SW1](/blog/configuracion-enlaces-troncales#sw1)
 3.  [SW2 y SW3](/blog/configuracion-enlaces-troncales#sw2-y-sw3)
+4.  [Referencias](/blog/configuracion-enlaces-troncales#referencias)
 
 ## Tablas de información
-
-Tabla de VLAN.
-
-| VLAN | Nombre         |
-| ---- | -------------- |
-| 10   | TI             |
-| 20   | RRHH           |
-| 30   | SOPORTE        |
-| 88   | ADMINISTRACION |
-| 99   | NATIVA         |
 
 Tabla de asignación de direcciones.
 
@@ -49,6 +41,8 @@ Tabla de conexión de los dispositivos.
 
 ## SW1
 
+### Crear y nombrar los VLANs
+
 ```js title="SW1"
 SW1(config)# vlan 10
 SW1(config-vlan)# name TI
@@ -67,7 +61,7 @@ SW1(config-vlan)# name NATIVA
 SW1(config-vlan)# exit
 ```
 
-Interfaz GigabitEthernet 0/1 y GigabitEthernet 0/2.
+### Configurar puertos de enlace troncal
 
 ```js title="SW1"
 SW1(config)# interface range GigabitEthernet 0/1-2
@@ -81,7 +75,7 @@ SW1(config-if-range)# switchport trunk native vlan 99
 SW1(config-if-range)# end
 ```
 
-Utilice el comando `show vlan brief` para mostrar la lista de todas las VLAN configuradas.
+Utilice el comando `show vlan brief` para mostrar la lista de todas las VLANs configuradas.
 
 ```js title="SW1"
 VLAN Name                             Status    Ports
@@ -125,6 +119,8 @@ Gig0/2      1,10,20,30,88,99
 
 ## SW2 y SW3
 
+### Crear y nombrar los VLANs
+
 ```js title="SW2"
 SW2(config)# vlan 10
 SW2(config-vlan)# name TI
@@ -143,7 +139,7 @@ SW2(config-vlan)# name NATIVA
 SW2(config-vlan)# exit
 ```
 
-Interfaz GigabitEthernet 0/1.
+### Configurar puertos de enlace troncal
 
 ```js title="SW2"
 SW2(config)# interface GigabitEthernet 0/1
@@ -155,7 +151,9 @@ SW2(config-if)# switchport trunk native vlan 99
 SW2(config-if)# exit
 ```
 
-Interfaz FastEthernet 0/1.
+### Configurar puertos de acceso
+
+Interfaz F0/1.
 
 ```js title="SW2"
 SW2(config)# interface FastEthernet 0/1
@@ -167,7 +165,7 @@ SW2(config-if)# switchport access vlan 10
 SW2(config-if)# exit
 ```
 
-Interfaz FastEthernet 0/2.
+Interfaz F0/2.
 
 ```js title="SW2"
 SW2(config)# interface FastEthernet 0/2
@@ -179,7 +177,7 @@ SW2(config-if)# switchport access vlan 20
 SW2(config-if)# exit
 ```
 
-Interfaz FastEthernet 0/3.
+Interfaz F0/3.
 
 ```js title="SW2"
 SW2(config)# interface FastEthernet 0/3
@@ -191,7 +189,7 @@ SW2(config-if)# switchport access vlan 30
 SW2(config-if)# end
 ```
 
-Mostrar lista de todas las VLAN configuradas.
+Mostrar lista de todas las VLANs configuradas.
 
 ```js title="SW2"
 VLAN Name                             Status    Ports
@@ -228,3 +226,7 @@ Gig0/1      1,10,20,30,88,99
 Port        Vlans in spanning tree forwarding state and not pruned
 Gig0/1      1,10,20,30,88,99
 ```
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
