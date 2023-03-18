@@ -1,0 +1,81 @@
+---
+title: VLAN de voz
+publishDate: "2023-03-04T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://res.cloudinary.com/jaular/image/upload/v1679147582/blog/vlan-voz/pkt-1_ghsktn.png
+  author: jaular14
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+export const components = { a: CustomLink };
+
+## Tabla de contenido
+
+1.  [Concepto](/blog/vlan-voz#concepto)
+2.  [SW1](/blog/vlan-voz#sw1)
+3.  [Referencias](/blog/vlan-voz#referencias)
+
+## Concepto
+
+Un puerto de acceso puede pertenecer a sólo una VLAN a la vez. Sin embargo, un puerto también se puede asociar a una VLAN de voz. Por ejemplo, un puerto conectado a un teléfono IP y un dispositivo final se asociaría con dos VLAN: una para voz y otra para datos.
+
+## SW1
+
+### Crear y nombrar las VLANs
+
+```js title="SW1"
+SW1(config-if)# vlan 99
+SW1(config-vlan)# name ADMIN
+SW1(config-vlan)# exit
+SW1(config-if)# vlan 150
+SW1(config-vlan)# name VOICE
+SW1(config-vlan)# exit
+```
+
+### Configurar puertos de acceso y VLAN de voz
+
+```js title="SW1"
+SW1(config)# interface FastEthernet 0/1
+```
+
+Utilice el comando `switchport voice vlan {vlan-id}` para asignar una VLAN de voz a un puerto.
+
+Las redes LAN que admiten tráfico de voz por lo general también tienen la **Calidad de Servicio (QoS)** habilitada. El tráfico de voz **debe etiquetarse como confiable** apenas ingrese en la red. Use el comando `mls qos trust {cos | device cisco-phone | dscp | ip-precedence}` para establecer el estado confiable de una interfaz, y para indicar qué campos del paquete se usan para clasificar el tráfico.
+
+```js title="SW1"
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 99
+SW1(config-if)# mls qos trust cos
+SW1(config-if)# switchport voice vlan 150
+```
+
+### Verificar información
+
+```js title="SW1"
+SW1# show interfaces FastEthernet 0/1 switchport
+
+// Enlace con el equipo IP Phone y PC1.
+```
+
+El siguiente es un resultado de muestra del comando `show interfaces FastEthernet 0/1 switchport`.
+
+```js title="SW1"
+Name: Fa0/1
+Switchport: Enabled
+Administrative Mode: static access
+Operational Mode: static access
+Administrative Trunking Encapsulation: dot1q
+Operational Trunking Encapsulation: native
+Negotiation of Trunking: Off
+Access Mode VLAN: 99 (ADMIN)
+Trunking Native Mode VLAN: 1 (default)
+Voice VLAN: 150
+Administrative private-vlan host-association: none
+(Output omitted)
+```
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
