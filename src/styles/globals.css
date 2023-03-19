@@ -95,11 +95,11 @@ prose > :first-child {
 }
 
 [data-rehype-pretty-code-fragment] .line {
-  @apply px-4 my-0.5 py-[1px];
+  @apply px-4 my-[1px] py-[1px];
 }
 
 [data-rehype-pretty-code-fragment] .line--highlighted {
-  @apply bg-orange-500 bg-opacity-10;
+  @apply bg-pink-300 bg-opacity-25;
 }
 
 [data-rehype-pretty-code-fragment] .line-highlighted span {
