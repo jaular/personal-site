@@ -44,9 +44,6 @@
 .prose code {
   @apply text-pink-600 dark:text-pink-400;
 }
-.prose pre {
-  @apply rounded rounded-tl-none bg-black-600 focus:outline focus:outline-1 focus:outline-blue !important;
-}
 .prose blockquote {
   @apply px-4 rounded border border-l-4 border-gray-300 dark:border-gray-800;
 }
@@ -91,25 +88,30 @@ prose > :first-child {
 }
 
 /* Rehype Pretty Code */
+[data-rehype-pretty-code-fragment] code {
+  @apply grid min-w-full break-words rounded-none border-0 bg-transparent p-0 text-sm text-black;
+  counter-reset: line;
+  box-decoration-break: clone;
+}
+
+[data-rehype-pretty-code-fragment] .line {
+  @apply px-4 my-0.5 py-[1px];
+}
+
+[data-rehype-pretty-code-fragment] .line--highlighted {
+  @apply bg-orange-500 bg-opacity-10;
+}
+
+[data-rehype-pretty-code-fragment] .line-highlighted span {
+  @apply relative;
+}
+
 div[data-rehype-pretty-code-title] {
-  display: inline-block;
-  background-color: #05060b;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
-  color: #f5f5f5;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  padding: 0.25rem 1.25rem;
-  border-bottom: 1px solid #0359ee;
+  @apply inline-block text-white font-mono text-sm bg-black-700 rounded-t px-5 py-1 border-b border-b-blue;
 }
 
 div[data-rehype-pretty-code-title] + pre {
-  margin-top: 0px;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
+  @apply rounded rounded-tl-none mt-0 px-0 py-3 bg-black-600 focus:outline focus:outline-1 focus:outline-blue !important;
 }
-
 /* https://docs.astro.build/en/guides/integrations-guide/tailwind/#configapplybasestyles */
 /* Scrollbar: https://github.com/tailwindlabs/tailwindcss/issues/8200 */
