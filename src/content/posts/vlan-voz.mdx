@@ -19,7 +19,7 @@ export const components = { a: CustomLink };
 
 ## Concepto
 
-Un puerto de acceso puede pertenecer a sólo una VLAN a la vez. Sin embargo, un puerto también se puede asociar a una VLAN de voz. Por ejemplo, un puerto conectado a un teléfono IP y un dispositivo final se asociaría con dos VLAN: una para voz y otra para datos.
+Es la VLAN definida en el enlace para reenviar el tráfico del teléfono. El tráfico en esta VLAN usa usualmente un encabezado de etiqueta 802.1Q. Un puerto de acceso puede pertenecer a sólo una VLAN a la vez. Sin embargo, un puerto también se puede asociar a una VLAN de voz. Por ejemplo, un puerto conectado a un teléfono IP y un dispositivo final se asociaría con dos VLAN: una para voz y otra para datos.
 
 ## SW1
 
@@ -38,6 +38,8 @@ SW1(config-vlan)# exit
 
 ```js title="SW1"
 SW1(config)# interface FastEthernet 0/1
+
+// Enlace con el equipo IP Phone.
 ```
 
 Utilice el comando `switchport voice vlan {vlan-id}` para asignar una VLAN de voz a un puerto.
@@ -55,13 +57,11 @@ SW1(config-if)# switchport voice vlan 150
 
 ```js title="SW1"
 SW1# show interfaces FastEthernet 0/1 switchport
-
-// Enlace con el equipo IP Phone y PC1.
 ```
 
 El siguiente es un resultado de muestra del comando `show interfaces FastEthernet 0/1 switchport`.
 
-```js title="SW1"
+```js title="SW1" {8,10}
 Name: Fa0/1
 Switchport: Enabled
 Administrative Mode: static access
