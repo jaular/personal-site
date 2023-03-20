@@ -99,7 +99,7 @@ prose > :first-child {
 }
 
 [data-rehype-pretty-code-fragment] .line--highlighted {
-  @apply bg-pink-300 bg-opacity-25;
+  @apply bg-pink-400 bg-opacity-20;
 }
 
 [data-rehype-pretty-code-fragment] .line-highlighted span {
