@@ -17,7 +17,8 @@ export const components = { a: CustomLink, img: CustomImage };
 1.  [Concepto](/blog/dhcpv4#concepto)
 2.  [R1](/blog/dhcpv4#r1)
 3.  [PC](/blog/dhcpv4#pc)
-4.  [Referencias](/blog/dhcpv4#referencias)
+4.  [Mostrar información](/blog/dhcpv4#mostrar-información)
+5.  [Referencias](/blog/dhcpv4#referencias)
 
 ## Concepto
 
@@ -36,6 +37,8 @@ R1(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.50
 ### Definir un nombre de grupo DHCPv4
 
 El comando `ip dhcp pool {pool-name}` crea el nombre y coloca al router en el modo de configuración de DHCPv4.
+
+> Para deshabilitar el servicio DHCP use el comando `no service dhcp`.
 
 ```js title="R1"
 R1(config)# ip dhcp pool LAN-POOL-1
@@ -90,6 +93,50 @@ Habilitar DHCP en todas las computadoras.
 ---
 
 ![Verificar información](https://res.cloudinary.com/jaular/image/upload/v1679327845/blog/dhcpv4/pkt-3_jez2qp.png "Verificar información")
+
+## Mostrar información
+
+### Verificar el direccionamiento IPv4
+
+Utilice el comando `show running-config | section dhcp` para mostrar los comandos de DHCPv4 configurados en el equipo.
+
+```js title="R1"
+R1# show running-config | section dhcp
+```
+
+El siguiente es un resultado de muestra del comando `show running-config | section dhcp`.
+
+```js title="R1" {3,7}
+ip dhcp excluded-address 192.168.10.1 192.168.10.50
+ip dhcp excluded-address 192.168.20.1 192.168.20.50
+ip dhcp pool LAN-POOL-1
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ domain-name jaular.com
+ip dhcp pool LAN-POOL-2
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ domain-name jaular.com
+```
+
+### Verificar las asignaciones de DHCP
+
+Utilice el `show ip dhcp binding` para mostrar una lista de todas las vinculaciones de la dirección IPv4 con la dirección MAC que fueron proporcionadas por el servicio DHCPv4
+
+```js title="R1"
+R1# show ip dhcp binding
+```
+
+El siguiente es un resultado de muestra del comando `show ip dhcp binding`.
+
+```js title="R1" {3-6}
+IP address       Client-ID/              Lease expiration        Type
+                 Hardware address
+192.168.10.51    00D0.97C8.678D           --                     Automatic
+192.168.10.52    00D0.BA34.A29C           --                     Automatic
+192.168.20.52    0004.9AC0.7702           --                     Automatic
+192.168.20.51    00D0.FFC1.E5CE           --                     Automatic
+```
 
 ## Referencias
 
