@@ -1,0 +1,154 @@
+---
+title: DHCPv6
+publishDate: "2023-03-24T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://images.unsplash.com/photo-1591808216268-ce0b82787efe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80
+  author: nate_dumlao
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de contenido
+
+1.  [Concepto](/blog/dhcpv6#concepto)
+2.  [Stateless](/blog/dhcpv6#stateless)
+3.  [Stateful](/blog/dhcpv6#stateful)
+4.  [Referencias](/blog/dhcpv6#referencias)
+
+## Concepto
+
+Los routers de cisco se puede configurar para que sea uno de los siguientes:
+
+- **Servidor DHCPv6**: El router proporciona servicios DHCPv6 stateless o stateful.
+- **Cliente DHCPv6**: La interfaz del router adquiere una configuración IPv6 de un servidor DHCPv6.
+- **Agente de retransmisión DHCPv6**: El router proporciona servicios de reenvío DHCPv6 cuando el cliente y el servidor se encuentran en diferentes redes.
+
+## Stateless
+
+![Stateless](https://res.cloudinary.com/jaular/image/upload/v1679582361/blog/dhcpv6/pkt-1_ie4ib7.png "Stateless")
+
+### Configurar un servidor DHCPv6 stateless
+
+```js title="R1"
+R1(config)# ipv6 unicast-routing
+R1(config)# ipv6 dhcp pool IPV6-STATELESS
+R1(config-dhcpv6)# dns-server 2001:db8:acad:1::254
+R1(config-dhcpv6)# domain-name jaular.com
+```
+
+Interfaz G0/1.
+
+```js title="R1"
+R1(config)# interface GigabitEthernet 0/1
+```
+
+Utilice los comandos `ipv6 nd other-config-flag` para habilitar DHCPv6 stateless y `ipv6 dhcp server {pool-name}` para vincular el grupo DHCPv6 con la interfaz.
+
+```js title="R1" {4,5}
+R1(config-if)# description LINK TO LAN
+R1(config-if)# ipv6 address fe80::1 link-local
+R1(config-if)# ipv6 address 2001:db8:acad:1::1/64
+R1(config-if)# ipv6 nd other-config-flag
+R1(config-if)# ipv6 dhcp server IPV6-STATELESS
+R1(config-if)# no shutdown
+```
+
+### Configurar un cliente DHCPv6 stateless
+
+```js title="R2"
+R2(config)# ipv6 unicast-routing
+```
+
+Interfaz G0/1.
+
+```js title="R2"
+R2(config)# interface GigabitEthernet 0/1
+```
+
+Utilice el comando `ipv6 address autoconfig` para habilitar la configuración automática del direccionamiento IPv6 mediante SLAAC.
+
+```js title="R2"
+R2(config-if)# ipv6 enable
+R2(config-if)# ipv6 address autoconfig
+R2(config-if)# no shutdown
+```
+
+### PC
+
+Habilitar DHCP en todas las computadoras.
+
+![Habilitar DHCP](https://res.cloudinary.com/jaular/image/upload/v1679582361/blog/dhcpv6/pkt-2_igsze2.png "Habilitar DHCP")
+
+---
+
+![Verificar información](https://res.cloudinary.com/jaular/image/upload/v1679582361/blog/dhcpv6/pkt-3_skuwu1.png "Verificar información")
+
+## Stateful
+
+![Stateful](https://res.cloudinary.com/jaular/image/upload/v1680183064/blog/dhcpv6/pkt-4_nddofn.png "Stateful")
+
+### Configurar un servidor DHCPv6 stateful
+
+Utilice el comando `address prefix {prefix}` para indicar el conjunto de direcciones que debe asignar el servidor.
+
+```js title="R1"
+R1(config)# ipv6 unicast-routing
+R1(config)# ipv6 dhcp pool IPV6-STATEFUL
+R1(config-dhcpv6)# address prefix 2001:db8:acad:1::/64
+R1(config-dhcpv6)# dns-server 2001:4860:4860::8888
+R1(config-dhcpv6)# domain-name jaular.com
+```
+
+Interfaz G0/1.
+
+```js title="R1"
+R1(config)# interface GigabitEthernet 0/1
+```
+
+```js title="R1" {4-5}
+R1(config-if)# description LINK TO LAN
+R1(config-if)# ipv6 address fe80::1 link-local
+R1(config-if)# ipv6 address 2001:db8:acad:1::1/64
+R1(config-if)# ipv6 nd managed-config-flag
+R1(config-if)# ipv6 nd prefix default no-autoconfig // Comando no funciona.
+R1(config-if)# ipv6 dhcp server IPV6-STATEFUL
+R1(config-if)# no shutdown
+```
+
+### Configurar un cliente DHCPv6 stateful
+
+```js title="R2"
+R2(config)# ipv6 unicast-routing
+```
+
+Interfaz G0/1.
+
+```js title="R2"
+R2(config)# interface GigabitEthernet 0/1
+```
+
+Utilice el comando `ipv6 address dhcp` para solicitar información de direccionamiento IPv6 de un servidor DHCPv6.
+
+```js title="R2" {2}
+R2(config-if)# ipv6 enable
+R2(config-if)# ipv6 address dhcp
+R2(config-if)# no shutdown
+```
+
+### PC
+
+Habilitar DHCP en todas las computadoras.
+
+![Habilitar DHCP](https://res.cloudinary.com/jaular/image/upload/v1680182898/blog/dhcpv6/pkt-5_diodch.png "Habilitar DHCP")
+
+---
+
+![Verificar información](https://res.cloudinary.com/jaular/image/upload/v1680182898/blog/dhcpv6/pkt-6_ziwlu6.png "Verificar información")
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
