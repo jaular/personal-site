@@ -1,0 +1,168 @@
+---
+title: OSPF
+publishDate: "2023-06-30T00:00:00"
+author: José Aular
+tag: cisco
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de contenido
+
+1.  [Modo de configuración de OSPF del router](/blog/ospf#modo-de-configuración-de-ospf-del-router)
+2.  [Redes punto a punto OSPF](/blog/ospf#redes-punto-a-punto-ospf)
+3.  [Referencias](/blog/ospf#referencias)
+
+## Modo de configuración de OSPF del router
+
+OSPFv2 se habilita con el comando `router ospf {process-id}`, el valor `process-id` representa un número entre **1 y 65.535** y lo selecciona el administrador de la red.
+
+> Se considera una práctica recomendada utilizar el mismo `process-id` en todos los routers OSPF.
+
+```js title="R1"
+R1(config)# router ospf 10
+R1(config-router)#
+```
+
+### Router IDs
+
+El router ID de OSPF es un valor de 32 bits, representado como una **dirección IPv4**. EL router ID se utilizan para identificar un router OSPF.
+
+Para participar en un dominio OSPF, cada router requiere un router ID. El router ID puede estar definido por un administrador o puede ser asignado en forma automática por el router.
+
+#### a) Interfaz loopback como el router ID
+
+```js title="R1"
+R1(config-if)# interface Loopback 1
+```
+
+```js title="R1"
+R1(config-if)# ip address 1.1.1.1 255.255.255.255
+R1(config-if)# end
+R1# show ip protocols | include Router ID
+  Router ID 1.1.1.1
+R1#
+```
+
+#### b) Configurar explícitamente un router ID
+
+Utilice el comando `router-id {rid}` para asignar manualmente un router ID.
+
+```js title="R1" {2}
+R1(config)# router ospf 10
+R1(config-router)# router-id 1.1.1.1
+R1(config-router)# end
+R1# show ip protocols | include Router ID
+Router ID 1.1.1.1
+
+// Ejemplo: R2 router ID 2.2.2.2 - R3 router ID 3.3.3.3
+```
+
+Para modificar el router ID debe utilizar el comando `clear ip ospf process` y asi restablecer las adyacencias.
+
+```js title="R1"
+R1# clear ip ospf process
+```
+
+## Redes punto a punto OSPF
+
+![Redes punto a punto OSPF](https://res.cloudinary.com/jaular/image/upload/v1688155993/blog/ospf/ospf_punto_a_punto_mryzfg.png "Redes punto a punto OSPF")
+
+Un tipo de red que utiliza OSPF es la red punto a punto. Puede especificar las interfaces que pertenecen a una red punto a punto utlizando el comando `network`. También puede configurar OSPF directamente en la interfaz con el comando `ip ospf`.
+
+### Parte 1: Configurar router ID
+
+```js title="R1"
+R1(config)# router ospf 10
+R1(config-router)# router-id 1.1.1.1
+```
+
+```js title="R2"
+R2(config)# router ospf 10
+R2(config-router)# router-id 2.2.2.2
+```
+
+```js title="R3"
+R3(config)# router ospf 10
+R3(config-router)# router-id 3.3.3.3
+```
+
+### Parte 2: Configurar redes para enrutamiento OSPF
+
+#### - Paso 1: Configurar redes para enrutamiento OSPF mediante comandos de red y máscaras comodín.
+
+```js title="R1"
+R1(config-router)# netwrok 192.168.10.0 0.0.0.255 area 0
+R1(config-router)# netwrok 10.1.1.0 0.0.0.3 area 0
+R1(config-router)# netwrok 10.1.1.4 0.0.0.3 area 0
+```
+
+#### - Paso 2: Configure las redes para el enrutamiento OSPF mediante direcciones IP de interfaz y máscaras cuádruple cero.
+
+```js title="R2"
+R2(config-router)# netwrok 192.168.20.1 0.0.0.0 area 0
+R2(config-router)# netwrok 10.1.1.2 0.0.0.0 area 0
+R2(config-router)# netwrok 10.1.1.9 0.0.0.0 area 0
+```
+
+#### - Paso 3: Configurar el enrutamiento OSPF en las interfaces del router
+
+```js title="R3"
+R3(config-router)# no netwrok 192.168.20.1 0.0.0.0 area 0
+R3(config-router)# no netwrok 10.1.1.1 0.0.0.0 area 0
+R3(config-router)# no netwrok 10.1.1.9 0.0.0.0 area 0
+```
+
+Interfaz G0/0/0
+
+```js title="R3"
+R3(config)# interface GigabitEthernet 0/0/0
+```
+
+```js title="R3"
+R3(config-if)# ip ospf 10 area 0
+```
+
+Interfaz S0/1/0
+
+```js title="R3"
+R3(config)# interface serial 0/1/0
+```
+
+```js title="R3"
+R3(config-if)# ip ospf 10 area 0
+```
+
+Interfaz S0/1/1
+
+```js title="R3"
+R3(config)# interface serial 0/1/1
+```
+
+```js title="R3"
+R3(config-if)# ip ospf 10 area 0
+```
+
+### Parte 3: Configurar las interfaces pasivas
+
+```js title="R1"
+R1(config-router)# passive-interface GigabitEthernet 0/0/0
+```
+
+```js title="R2"
+R2(config-router)# passive-interface GigabitEthernet 0/0/0
+```
+
+```js title="R3"
+R3(config-router)# passive-interface GigabitEthernet 0/0/0
+```
+
+### Resultado
+
+![Resultado redes punto a punto OSPF](https://res.cloudinary.com/jaular/image/upload/v1688156317/blog/ospf/resultado_1_dxyg3f.png "Resultado redes punto a punto OSPF")
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
