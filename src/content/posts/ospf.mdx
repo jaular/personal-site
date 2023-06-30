@@ -96,6 +96,10 @@ R3(config-router)# router-id 3.3.3.3
 
 #### - Paso 1: Configurar redes para enrutamiento OSPF mediante comandos de red y máscaras comodín.
 
+Cuando configure OSPFv2 de área única, el `network` deben configurarse con el mismo valor `area-id` en todos los routers. Si bien se puede usar cualquier ID de área, es aconsejable utilizar una ID de área **0** con OSPFv2 de área única.
+
+El wildcard mask suele ser la inversa de la máscara de subred configurada en esa interfaz.
+
 ```js title="R1"
 R1(config-router)# netwrok 192.168.10.0 0.0.0.255 area 0
 R1(config-router)# netwrok 10.1.1.0 0.0.0.3 area 0
@@ -117,6 +121,8 @@ R3(config-router)# no netwrok 192.168.20.1 0.0.0.0 area 0
 R3(config-router)# no netwrok 10.1.1.1 0.0.0.0 area 0
 R3(config-router)# no netwrok 10.1.1.9 0.0.0.0 area 0
 ```
+
+Para configurar OSPF directamente en la interfaz, utilice el comando `ip ospf`.
 
 Interfaz G0/0/0
 
@@ -149,6 +155,10 @@ R3(config-if)# ip ospf 10 area 0
 ```
 
 ### Parte 3: Configurar las interfaces pasivas
+
+De manera predeterminada, los mensajes OSPF se reenvían por todas las interfaces con OSPF habilitado. Sin embargo, estos mensajes solo necesitan enviarse por las interfaces que se conectan a otros routers con OSPF habilitado.
+
+Use el comando `passive-interface` para evitar la transmisión de mensajes de enrutamiento a través de una interfaz del router, pero aún así permitir que esa red se anuncie a otros routers.
 
 ```js title="R1"
 R1(config-router)# passive-interface GigabitEthernet 0/0/0
