@@ -15,8 +15,9 @@ export const components = { a: CustomLink, img: CustomImage };
 ## Tabla de contenido
 
 1.  [Modo de configuración de OSPF del router](/blog/ospf#modo-de-configuración-de-ospf-del-router)
-2.  [Redes punto a punto OSPF](/blog/ospf#redes-punto-a-punto-ospf)
-3.  [Referencias](/blog/ospf#referencias)
+2.  [Redes OSPF punto a punto](/blog/ospf#redes-ospf-punto-a-punto)
+3.  [Redes OSPF de acceso múltiple](/blog/ospf#redes-ospf-de-acceso-múltiple)
+4.  [Referencias](/blog/ospf#referencias)
 
 ## Modo de configuración de OSPF del router
 
@@ -69,9 +70,9 @@ Para modificar el router ID debe utilizar el comando `clear ip ospf process` y a
 R1# clear ip ospf process
 ```
 
-## Redes punto a punto OSPF
+## Redes OSPF punto a punto
 
-![Redes punto a punto OSPF](https://res.cloudinary.com/jaular/image/upload/v1688155993/blog/ospf/ospf_punto_a_punto_mryzfg.png "Redes punto a punto OSPF")
+![Redes OSPF punto a punto](https://res.cloudinary.com/jaular/image/upload/v1688155993/blog/ospf/ospf_punto_a_punto_mryzfg.png "Redes OSPF punto a punto")
 
 Un tipo de red que utiliza OSPF es la red punto a punto. Puede especificar las interfaces que pertenecen a una red punto a punto utlizando el comando `network`. También puede configurar OSPF directamente en la interfaz con el comando `ip ospf`.
 
@@ -101,25 +102,25 @@ Cuando configure OSPFv2 de área única, el `network` deben configurarse con el 
 El wildcard mask suele ser la inversa de la máscara de subred configurada en esa interfaz.
 
 ```js title="R1"
-R1(config-router)# netwrok 192.168.10.0 0.0.0.255 area 0
-R1(config-router)# netwrok 10.1.1.0 0.0.0.3 area 0
-R1(config-router)# netwrok 10.1.1.4 0.0.0.3 area 0
+R1(config-router)# network 192.168.10.0 0.0.0.255 area 0
+R1(config-router)# network 10.1.1.0 0.0.0.3 area 0
+R1(config-router)# network 10.1.1.4 0.0.0.3 area 0
 ```
 
 #### - Paso 2: Configure las redes para el enrutamiento OSPF mediante direcciones IP de interfaz y máscaras cuádruple cero.
 
 ```js title="R2"
-R2(config-router)# netwrok 192.168.20.1 0.0.0.0 area 0
-R2(config-router)# netwrok 10.1.1.2 0.0.0.0 area 0
-R2(config-router)# netwrok 10.1.1.9 0.0.0.0 area 0
+R2(config-router)# network 192.168.20.1 0.0.0.0 area 0
+R2(config-router)# network 10.1.1.2 0.0.0.0 area 0
+R2(config-router)# network 10.1.1.9 0.0.0.0 area 0
 ```
 
 #### - Paso 3: Configurar el enrutamiento OSPF en las interfaces del router
 
 ```js title="R3"
-R3(config-router)# no netwrok 192.168.20.1 0.0.0.0 area 0
-R3(config-router)# no netwrok 10.1.1.1 0.0.0.0 area 0
-R3(config-router)# no netwrok 10.1.1.9 0.0.0.0 area 0
+R3(config-router)# no network 192.168.20.1 0.0.0.0 area 0
+R3(config-router)# no network 10.1.1.1 0.0.0.0 area 0
+R3(config-router)# no network 10.1.1.9 0.0.0.0 area 0
 ```
 
 Para configurar OSPF directamente en la interfaz, utilice el comando `ip ospf`.
@@ -174,7 +175,165 @@ R3(config-router)# passive-interface GigabitEthernet 0/0/0
 
 ### Resultado
 
-![Resultado redes punto a punto OSPF](https://res.cloudinary.com/jaular/image/upload/v1688156317/blog/ospf/resultado_1_dxyg3f.png "Resultado redes punto a punto OSPF")
+![Resultado redes OSPF punto a punto](https://res.cloudinary.com/jaular/image/upload/v1688156317/blog/ospf/resultado_1_dxyg3f.png "Resultado redes OSPF punto a punto")
+
+## Redes OSPF de acceso múltiple
+
+![Redes OSPF de acceso múltiple](https://res.cloudinary.com/jaular/image/upload/v1688236137/blog/ospf/ospf_acceso_multiple_axesy0.png "Redes OSPF de acceso múltiple")
+
+Las redes OSPF de acceso múltiple son únicas, ya que un router controla la distribución de los LSA. El router elegido para este rol debe ser determinado por el administrador de red a través de la configuración adecuada.
+
+En redes de acceso múltiple, OSPF elige una DR y BDR como solución para administrar el número de adyacencias y la inundación de anuncios de estado de enlace (LSA).
+
+- El **DR** es responsable de recolectar y distribuir los LSA enviados y recibidos. El DR usa la dirección IPv4 multicast **224.0.0.5** que está destinada a todos los routers OSPF.
+
+- El **BDR** escucha pasivamente y mantiene una relación con todos los routers. Si el DR deja de producir paquetes Hello, el BDR se asciende a sí mismo y asume la función de DR.
+
+- Todos los demás routers se convierten en **DROTHER** (un router que no es DR ni BDR). Los DROTHER utilizan la dirección de acceso múltiple **224.0.0.6** (todos los routers designados) para enviar paquetes OSPF al DR y al BDR.
+
+### Parte 1: Examine DR y BDR Cambio de roles
+
+#### - Paso 2: Verificar los estados actuales de los vecinos OSPF
+
+Use el comando `show ip ospf neighbor` para verificar las adyacencias OSPFv2.
+
+¿Qué router es el DR? **RC**.
+
+¿Qué router es el BDR? **RB**.
+
+¿Cuál es el estado OSPF del router RA? **DROTHER**.
+
+#### - Paso 3: Activar la depuración de adyacencias OSPF IP
+
+Se puede controlar el proceso de elección del DR y el BDR con un comando `debug ip ospf adj`.
+
+```js title="RA" {1}
+RA# debug ip ospf adj
+OSPF adjacency events debugging is on
+```
+
+```js title="RB" {1}
+RB# debug ip ospf adj
+OSPF adjacency events debugging is on
+```
+
+#### - Paso 4: Deshabilitar la interfaz Gigabit Ethernet 0/0 en el RC
+
+```js title="RC"
+RC(config)# interface GigabitEthernet 0/0
+```
+
+```js title="RC"
+RC(config-if)# shutdown
+```
+
+De acuerdo con los resultados del comando debug, ¿cuál router se eligió como DR y cuál como BDR? **RB como DR y RA como BDR**.
+
+#### - Paso 5: Restaurar la interfaz Gigabit Ethernet 0/0 en el RC
+
+```js title="RC"
+RC(config)# interface GigabitEthernet 0/0
+```
+
+```js title="RC"
+RC(config-if)# no shutdown
+```
+
+¿Cambiaron las funciones del DR y el BDR? **RB como DR, RA como BDR y RC como DROTHER**.
+
+#### - Paso 6: Deshabilitar la interfaz Gigabit Ethernet 0/0 en el RB
+
+```js title="RB"
+RB(config)# interface GigabitEthernet 0/0
+```
+
+```js title="RB"
+RB(config-if)# shutdown
+```
+
+¿Cuál es el estado del router RC ahora? **RC como DR y RA como BDR**.
+
+#### - Paso 7: Restaurar la interfaz Gigabit Ethernet 0/0 en el RB
+
+```js title="RB"
+RB(config)# interface GigabitEthernet 0/0
+```
+
+```js title="RB"
+RB(config-if)# no shutdown
+```
+
+¿Cuál es el estado del router RC ahora? **RB como DROTHER, RA como BDR y RC como DR**.
+
+#### - Paso 8: Desactivar la depuración
+
+Utilice el comando `undebug all` para deshabilitar la depuración.
+
+```js title="RA" {1}
+RA# undebug all
+All possible debugging has been turned off
+```
+
+```js title="RB" {1}
+RB# undebug all
+All possible debugging has been turned off
+```
+
+### Parte 2: Modificar la prioridad OSPF y forzar elecciones
+
+#### - Paso 1: Configurar las prioridades OSPF en cada router
+
+Para establecer la prioridad de una interfaz, utilice el comando `ip ospf priority {value}`, donde `value` es 0 a 255. Un valor de 0 no se convierte en DR o BDR. Un valor de 1 a 255 en la interfaz hace más probable que el router se convierta en DR o BDR.
+
+> Si las prioridades de interfaz son iguales en todos los routers, se elige al router con la ID más alta como DR.
+
+```js title="RA"
+RA(config)# interface GigabitEthernet 0/0
+```
+
+```js title="RA" {1}
+RA(config-if)# ip ospf priority 200
+```
+
+```js title="RB"
+RB(config)# interface GigabitEthernet 0/0
+```
+
+```js title="RB" {1}
+RB(config-if)# ip ospf priority 100
+```
+
+```js title="RC"
+RC(config)# interface GigabitEthernet 0/0
+```
+
+```js title="RC" {1}
+RC(config-if)# ip ospf priority 1
+```
+
+#### - Paso 2: Forzar una elección restableciendo el proceso OSPF en los routers
+
+Utilice el comando `clear ip ospf process` para borrar el proceso OSPF.
+
+```js title="RA" {1}
+RA# clear ip ospf process
+```
+
+```js title="RB" {1}
+RB# clear ip ospf process
+```
+
+```js title="RC" {1}
+RC# clear ip ospf process
+```
+
+#### - Paso 3: Verificar si las elecciones del DR y el BDR se realizaron correctamente
+
+Segun el resultado del comando `show ip ospf neighbor` en los routers, ¿cual router ahora es DR y cual router ahora es BDR? **RB como BDR, RC como DROTHER y RA como DR**.
+
+### Resultado
+
+![Resultado redes OSPF de acceso múltiple](https://res.cloudinary.com/jaular/image/upload/v1688236137/blog/ospf/resultado_2_nkya9b.png "Resultado redes OSPF de acceso múltiple")
 
 ## Referencias
 
