@@ -12,7 +12,20 @@ type Props = {
 const { src, title, alt, loading } = Astro.props;
 const loadingAttribute = loading ? "eager" : "lazy";
 
-const { svg, img } = await getPlaiceholder(src, { size: 10 });
+const getRemoteImageWithPlaiceholder = async (src: string) => {
+  const buffer = await fetch(src).then(async (res) =>
+    Buffer.from(await res.arrayBuffer())
+  );
+
+  const {
+    metadata: { height, width },
+    ...plaiceholder
+  } = await getPlaiceholder(buffer, { size: 10 });
+
+  return { ...plaiceholder, img: { src, height, width } };
+};
+
+const { svg, img } = await getRemoteImageWithPlaiceholder(src);
 const [Svg, svgProps, svgChildren] = svg;
 
 // https://docs.astro.build/en/guides/images/#examples-1
@@ -23,7 +36,7 @@ const [Svg, svgProps, svgChildren] = svg;
   <Svg
     {...svgProps}
     style={{ ...svgProps.style }}
-    class="absolute inset-0 w-full h-auto blur-2xl z-[-1]"
+    class="absolute inset-0 w-full h-full blur-2xl z-[-1]"
   >
     {
       svgChildren.map((child) => {
@@ -35,7 +48,7 @@ const [Svg, svgProps, svgChildren] = svg;
   <Picture
     {...img}
     background="white"
-    class="w-full h-auto cover"
+    class="w-full h-full object-cover"
     src={src}
     title={title}
     widths={[200, 400, 600, 720, 1024]}
