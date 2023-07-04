@@ -17,7 +17,8 @@ export const components = { a: CustomLink, img: CustomImage };
 1.  [Modo de configuración de OSPF del router](/blog/ospf#modo-de-configuración-de-ospf-del-router)
 2.  [Redes OSPF punto a punto](/blog/ospf#redes-ospf-punto-a-punto)
 3.  [Redes OSPF de acceso múltiple](/blog/ospf#redes-ospf-de-acceso-múltiple)
-4.  [Referencias](/blog/ospf#referencias)
+4.  [Modificación de OSPFv2 de área única](/blog/ospf#modificación-de-ospfv2-de-área-única)
+5.  [Referencias](/blog/ospf#referencias)
 
 ## Modo de configuración de OSPF del router
 
@@ -61,7 +62,7 @@ R1(config-router)# end
 R1# show ip protocols | include Router ID
 Router ID 1.1.1.1
 
-// Ejemplo: R2 router ID 2.2.2.2 - R3 router ID 3.3.3.3
+// Ejemplo: R2 router ID 2.2.2.2 - R3 router ID 3.3.3.3.
 ```
 
 Para modificar el router ID debe utilizar el comando `clear ip ospf process` y asi restablecer las adyacencias.
@@ -334,6 +335,30 @@ Segun el resultado del comando `show ip ospf neighbor` en los routers, ¿cual ro
 ### Resultado
 
 ![Resultado redes OSPF de acceso múltiple](https://res.cloudinary.com/jaular/image/upload/v1688236137/blog/ospf/resultado_2_nkya9b.png "Resultado redes OSPF de acceso múltiple")
+
+## Modificación de OSPFv2 de área única
+
+### Ancho de banda de referencia
+
+Para ajustar el ancho de banda de referencia, use el comando `auto-cost reference-bandwidth {Mbps}`.
+
+> Para volver al ancho de banda de referencia predeterminado, use el comando `auto-cost reference-bandwidth 100`.
+
+```js title="R1" {2}
+R1(config)# router ospf 10
+R1(config-router)# auto-cost reference-bandwidth 1000
+// 10000 para 10 Gigabit Ethernet.
+```
+
+### Establecer manualmente el valor de costo OSPF
+
+Los valores de costo OSPF se pueden manipular para influir en la ruta elegida por OSPF. Utilice el comando `ip ospf cost {value}` para cambiar el valor de costo.
+
+> Las interfaces loopback tienen un costo predeterminado de 1.
+
+```js title="R1" {1}
+R1(config-if)# ip ospf cost 30
+```
 
 ## Referencias
 
