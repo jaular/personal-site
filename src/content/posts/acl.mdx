@@ -1,0 +1,106 @@
+---
+title: ACL
+publishDate: "2023-07-07T00:00:00"
+author: José Aular
+tag: cisco
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+import CustomTable from "~/components/CustomTable.astro";
+export const components = {
+  a: CustomLink,
+  img: CustomImage,
+  table: CustomTable,
+};
+
+## Tabla de contenido
+
+1.  [Concepto](/blog/acl#concepto)
+2.  [Configuración de ACL estándar para IPv4](/blog/acl#configuración-de-acl-estándar-para-ipv4)
+3.  [Referencias](/blog/acl#referencias)
+
+## Concepto
+
+Una ACL es una serie de comandos del IOS que controlan si un router reenvía o descarta paquetes según la información que se encuentra en el encabezado del paquete. De forma predeterminada, un enrutador no tiene ninguna ACL configurada. Sin embargo, cuando se aplica una ACL a una interfaz, el router realiza la tarea adicional de evaluar todos los paquetes de red a medida que pasan a través de la interfaz para determinar si el paquete se puede reenviar.
+
+Una ACL utiliza una lista secuencial de declaraciones de permiso o denegación, conocidas como **entradas de control de acceso (ACE)** o instrucciones de ACL.
+
+## Configuración de ACL estándar para IPv4
+
+### Sintaxis de ACL estándar numerada para IPv4
+
+Para crear una ACL estándar numerada, utilice el comando `access-list {access-list-number} {deny | permit | remark text} source [source-wildcard] [log]`
+
+> Utilice el comando `no access-list {access-list-number}` para eliminar una ACL estándar numerada.
+
+| Parámetro          | Descripción                                                                                                                  |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| access-list-number | El rango de números ACL estándar es de **1 a 99** o **1300 a 1999**.                                                         |
+| deny               | Esto **deniega el acceso** si la condición coincide.                                                                         |
+| permit             | Esto **permite el acceso** si la condición coincide.                                                                         |
+| remark text        | (Opcional) Esto agrega una **entrada de texto para fines de documentación**.                                                 |
+| source             | Esto identifica la red de origen o la dirección de host que se va a filtrar.                                                 |
+| source-wildcard    | (Opcional) Máscara wildcard de 32 bits para aplicar al origen. Si se omite, se asume una **máscara 0.0.0.0** predeterminada. |
+| log                | (Opcional) Esta palabra clave genera y envía un mensaje informativo siempre que se haga coincidir el ACE.                    |
+
+#### Ejemplo
+
+```js title="R1" {2}
+R1(config)# access-list 10 remark ACE permits ONLY host 192.168.10.10 to the internet
+R1(config)# access-list 10 permit host 192.168.10.10
+R1(config)# do show access-lists
+Standard IP access list 10
+    10 permit 192.168.10.10
+```
+
+> Utilice la palabra clave `host {ip-address}` o simplemente ingrese una dirección IP (sin el `host`) para identificar una dirección IP específica.
+
+Seguidamente aplique la ACL numerada a la interfaz correspondiente.
+
+```js title="R1"
+R1(config-if)# ip access-group 10 out
+```
+
+### Sintaxis de ACL con nombre estándar para IPv4
+
+La asignación de nombres a las ACL hace más fácil comprender su función. Para crear una ACL estándar con nombre, utilice el comando `ip access-list standard {access-list-name}`
+
+> Utilice el comando `no ip access-list standard {access-list-name}` para eliminar una ACL IPv4 estándar con nombre.
+
+```js title="R1"
+R1(config)# ip access-list standard PERMIT-ACCESS
+R1(config-std-nacl)#
+```
+
+#### Ejemplo
+
+Agregue un ACE que permita sólo el host 192.168.10.10 y otro ACE que permita todos los hosts LAN 2 a Internet.
+
+```js title="R1" {3,5}
+R1(config)# ip access-list standard PERMIT-ACCESS
+R1(config-std-nacl)# remark ACE permits host 192.168.10.10
+R1(config-std-nacl)# permit host 192.168.10.10
+R1(config-std-nacl)# remark ACE permits all hosts in LAN 2
+R1(config-std-nacl)# permit 192.168.20.0 0.0.0.255
+```
+
+> Utilice la palabra clave `any` para especificar todas las redes. Ejemplo: `deny any` si desea denegar todos los host.
+
+Seguidamente aplique la ACL con nombre a la interfaz correspondiente.
+
+```js title="R1"
+R1(config-if)# ip access-group PERMIT-ACCESS out
+```
+
+### Aplicación de una ACL estándar para IPv4
+
+Después de configurar una ACL estándar para IPv4, debe vincularse a una interfaz o función. Utilice el comando `ip access-group {access-list-number | access-list-name} {in | out}` para enlazar una ACL estándar para IPv4 numerada o nombrada a una interfaz.
+
+## Configuración de ACL IPv4 estándar numeradas
+
+### Parte 1: Planificar una implementación de ACL
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
