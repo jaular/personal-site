@@ -18,7 +18,8 @@ export const components = {
 
 1.  [Concepto](/blog/acl#concepto)
 2.  [Configuración de ACL estándar para IPv4](/blog/acl#configuración-de-acl-estándar-para-ipv4)
-3.  [Referencias](/blog/acl#referencias)
+3.  [Protección de puertos VTY con una ACL estándar para IPv4](/blog/acl#protección-de-puertos-vty-con-una-acl-estándar-para-ipv4)
+4.  [Referencias](/blog/acl#referencias)
 
 ## Concepto
 
@@ -96,6 +97,39 @@ R1(config-if)# ip access-group PERMIT-ACCESS out
 ### Aplicación de una ACL estándar para IPv4
 
 Después de configurar una ACL estándar para IPv4, debe vincularse a una interfaz o función. Utilice el comando `ip access-group {access-list-number | access-list-name} {in | out}` para enlazar una ACL estándar para IPv4 numerada o nombrada a una interfaz.
+
+## Protección de puertos VTY con una ACL estándar para IPv4
+
+Las ACL normalmente filtran el tráfico entrante o saliente en una interfaz. Sin embargo, una ACL también se puede utilizar para proteger el acceso administrativo remoto a un dispositivo mediante las líneas vty.
+
+Utilice el comando `access-class {access-list-number | access-list-name} { in | out }` para aplicar una ACL a las líneas vty
+
+> La palabra clave `in` es la opción más utilizada para filtrar el tráfico vty entrante, mientras que `out` filtra el tráfico vty saliente y rara vez se aplica.
+
+```js title="R1" {2,10}
+R1(config)# username ADMIN secret cisco
+R1(config)# ip access-list standard ADMIN-HOST
+R1(config-std-nacl)# remark This ACL secures incoming vty lines
+R1(config-std-nacl)# permit 192.168.10.10
+R1(config-std-nacl)# deny any
+R1(config-std-nacl)# exit
+R1(config)# line vty 0 4
+R1(config-line)# login local
+R1(config-line)# transport input telnet
+R1(config-line)# access-class ADMIN-HOST in
+```
+
+> Se ha configurado `deny any` para realizar un **seguimiento** del número de veces que se ha denegado el acceso.
+
+Utilice el comando `show access-lists` para verificar las estadísticas de ACL.
+
+```js title="R1" {1}
+R1# show access-lists
+Standard IP access list ADMIN-HOST
+    10 permit 192.168.10.10 (2 matches)
+    20 deny any (2 matches)
+R1#
+```
 
 ## Referencias
 
