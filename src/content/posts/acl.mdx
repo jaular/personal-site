@@ -19,7 +19,8 @@ export const components = {
 1.  [Concepto](/blog/acl#concepto)
 2.  [Configuración de ACL estándar para IPv4](/blog/acl#configuración-de-acl-estándar-para-ipv4)
 3.  [Protección de puertos VTY con una ACL estándar para IPv4](/blog/acl#protección-de-puertos-vty-con-una-acl-estándar-para-ipv4)
-4.  [Referencias](/blog/acl#referencias)
+4.  [Configuración de ACL extendidas para IPv4](/blog/acl#configuración-de-acl-extendidas-para-ipv4)
+5.  [Referencias](/blog/acl#referencias)
 
 ## Concepto
 
@@ -31,7 +32,7 @@ Una ACL utiliza una lista secuencial de declaraciones de permiso o denegación, 
 
 ### Sintaxis de ACL estándar numerada para IPv4
 
-Para crear una ACL estándar numerada, utilice el comando `access-list {access-list-number} {deny | permit | remark text} source [source-wildcard] [log]`
+Para crear una ACL estándar numerada, utilice el comando `access-list {access-list-number} {deny | permit | remark text} source [source-wildcard] [log]`.
 
 > Utilice el comando `no access-list {access-list-number}` para eliminar una ACL estándar numerada.
 
@@ -55,7 +56,7 @@ Standard IP access list 10
     10 permit 192.168.10.10
 ```
 
-> Utilice la palabra clave `host {ip-address}` o simplemente ingrese una dirección IP (sin el `host`) para identificar una dirección IP específica.
+> Utilice la palabra clave `host {ip-address}` o simplemente ingrese una dirección IP (sin el `host`) para identificar una dirección IP específica. Por ejemplo, el comando `deny host 192.168.5.5` es el mismo que el comando `deny 192.168.5.5 0.0.0.0`.
 
 Seguidamente aplique la ACL numerada a la interfaz correspondiente.
 
@@ -129,6 +130,115 @@ Standard IP access list ADMIN-HOST
     10 permit 192.168.10.10 (2 matches)
     20 deny any (2 matches)
 R1#
+```
+
+## Configuración de ACL extendidas para IPv4
+
+Las ACL estándar solo se filtran en la dirección de origen. Cuando se requiere un control de filtrado de tráfico más preciso, se pueden crear ACL extendidas de IPv4.
+
+Las ACL extendidas se utilizan con más frecuencia que las ACL estándar, porque proporcionan un mayor grado de control. **Pueden filtrar por dirección de origen, dirección de destino, protocolo (es decir, IP, TCP, UDP, ICMP) y número de puerto**. Esto proporciona una gama de criterios más amplia sobre la cual basar la ACL.
+
+### Sintaxis de ACL extendida numerada para IPv4
+
+Para crear una ACL extendida numerada, utilice el comando `access-list {access-list-number} {deny | permit | remark text} {protocol} source [source-wildcard] [operator {port}] destination [destination-wildcard] [operator {port}] [established] [log]`.
+
+| Parámetro            | Descripción                                                                                                                                                                                        |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| access-list-number   | El rango de números ACL estándar es de **1 a 99** o **1300 a 1999**.                                                                                                                               |
+| deny                 | Esto **deniega el acceso** si la condición coincide.                                                                                                                                               |
+| permit               | Esto **permite el acceso** si la condición coincide.                                                                                                                                               |
+| remark text          | (Opcional) Esto agrega una **entrada de texto para fines de documentación**.                                                                                                                       |
+| protocol             | Nombre o número de un protocolo de Internet. Las palabras clave más comunes incluyen **ip**, **tcp**, **udp** y **icmp**.                                                                          |
+| source               | Esto identifica la red de origen o la dirección de host que se va a filtrar.                                                                                                                       |
+| source-wildcard      | (Opcional) Máscara wildcard de 32 bits para aplicar al origen. Si se omite, se asume una **máscara 0.0.0.0** predeterminada.                                                                       |
+| destination          | Esto identifica la red de destino o la dirección de host que se va a filtrar.                                                                                                                      |
+| destination-wildcard | (Opcional) Máscara wildcard de 32 bits para aplicar al destino.                                                                                                                                    |
+| operator             | (Opcional) Compara los puertos fuente y de destino. Los operandos posibles incluyen **lt** (less than), **gt** (greater than), **eq** (equal), **neq** (not equal), y **range** (inclusive range). |
+| port                 | (Opcional) El nombre o número decimal de un puerto **TCP** o **UDP**.                                                                                                                              |
+| established          | (Opcional) Sólo para el protocolo **TCP**. Esta es una característica de firewall de primera generación.                                                                                           |
+| log                  | (Opcional) Esta palabra clave genera y envía un mensaje informativo siempre que se haga coincidir el ACE.                                                                                          |
+
+### Protocolos y puertos
+
+#### Opciones de protocolo
+
+```js title="R1" {8,10,17,18}
+R1(config)# access-list 100 permit ?
+  <0-255>       An IP protocol number
+  ahp           Authentication Header Protocol
+  dvmrp         dvmrp
+  eigrp         Cisco's EIGRP routing protocol
+  esp           Encapsulation Security Payload
+  gre           Cisco's GRE tunneling
+  icmp          Internet Control Message Protocol
+  igmp          Internet Gateway Message Protocol
+  ip            Any Internet Protocol
+  ipinip        IP in IP tunneling
+  nos           KA9Q NOS compatible IP over IP tunneling
+  object-group  Service object group
+  ospf          OSPF routing protocol
+  pcp           Payload Compression Protocol
+  pim           Protocol Independent Multicast
+  tcp           Transmission Control Protocol
+  udp           User Datagram Protocol
+```
+
+#### Opciones de palabra clave de puertos
+
+```js title="R1" {8,12,13,28,29,34,38}
+R1(config)# access-list 100 permit tcp any any eq ?
+  <0-65535>    Port number
+  bgp          Border Gateway Protocol (179)
+  chargen      Character generator (19)
+  cmd          Remote commands (rcmd, 514)
+  daytime      Daytime (13)
+  discard      Discard (9)
+  domain       Domain Name System (53)
+  echo         Echo (7)
+  exec         Exec (rsh, 512)
+  finger       Finger (79)
+  ftp          File Transfer Protocol (21)
+  ftp-data     FTP data connections (20)
+  gopher       Gopher (70)
+  hostname     NIC hostname server (101)
+  ident        Ident Protocol (113)
+  irc          Internet Relay Chat (194)
+  klogin       Kerberos login (543)
+  kshell       Kerberos shell (544)
+  login        Login (rlogin, 513)
+  lpd          Printer service (515)
+  msrpc        MS Remote Procedure Call (135)
+  nntp         Network News Transport Protocol (119)
+  onep-plain   Onep Cleartext (15001)
+  onep-tls     Onep TLS (15002)
+  pim-auto-rp  PIM Auto-RP (496)
+  pop2         Post Office Protocol v2 (109)
+  pop3         Post Office Protocol v3 (110)
+  smtp         Simple Mail Transport Protocol (25)
+  sunrpc       Sun Remote Procedure Call (111)
+  syslog       Syslog (514)
+  tacacs       TAC Access Control System (49)
+  talk         Talk (517)
+  telnet       Telnet (23)
+  time         Time (37)
+  uucp         Unix-to-Unix Copy Program (540)
+  whois        Nicname (43)
+  www          World Wide Web (HTTP, 80)
+```
+
+#### Configuración de Protocolos y Números de Puerto
+
+```js title="R1" {1,3}
+R1(config)# access-list 100 permit tcp any any eq www
+R1(config)#  !or...
+R1(config)# access-list 100 permit tcp any any eq 80
+```
+
+La configuración del número de puerto es necesaria cuando no aparece un nombre de protocolo específico, como SSH (número de puerto 22) o HTTPS (número de puerto 443).
+
+```js title="R1"
+R1(config)# access-list 100 permit tcp any any eq 22
+R1(config)# access-list 100 permit tcp any any eq 443
 ```
 
 ## Referencias
