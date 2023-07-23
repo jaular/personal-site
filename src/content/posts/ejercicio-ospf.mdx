@@ -1,0 +1,524 @@
+---
+title: Ejercicio de OSPF (WIP)
+publishDate: "2023-07-23T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://res.cloudinary.com/jaular/image/upload/v1690122282/blog/ejercicio-ospf/pkt-1_v1anyj.png
+  author: jaular14
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de contenido
+
+1.  [Topología punto a punto](/blog/ejercicio-ospf#topología-punto-a-punto)
+2.  [Topología de acceso múltiple](/blog/ejercicio-ospf#topología-de-acceso-múltiple)
+3.  [Referencias](/blog/ejercicio-ospf#referencias)
+
+## Topología punto a punto
+
+### Configuración básica
+
+#### - RT1
+
+```js title="RT1"
+Router> enable
+Router# configure terminal
+Router(config)# hostname RT1
+
+RT1(config)# line console 0
+RT1(config-line)# password cisco
+RT1(config-line)# login
+RT1(config-line)# exit
+RT1(config)# enable secret admin
+
+// RT1(config)# interface serial 0/0/0
+RT1(config-if)# ip address 10.0.0.1 255.255.255.252
+RT1(config-if)# no shutdown
+RT1(config-if)# exit
+
+// RT1(config)# interface serial 0/0/1
+RT1(config-if)# ip address 10.0.0.5 255.255.255.252
+RT1(config-if)# no shutdown
+RT1(config-if)# exit
+
+// RT1(config)# interface gigabitEthernet 0/0
+RT1(config-if)# no shutdown
+RT1(config-subif)# exit
+
+// RT1(config)# interface gigabitEthernet 0/0.10
+RT1(config-subif)# description PUERTA DE ENLACE PARA VLAN 10
+RT1(config-subif)# encapsulation dot1q 10
+RT1(config-subif)# ip address 192.168.10.1 255.255.255.0
+RT1(config-subif)# exit
+
+// RT1(config)# interface gigabitEthernet 0/0.20
+RT1(config-subif)# description PUERTA DE ENLACE PARA VLAN 20
+RT1(config-subif)# encapsulation dot1q 20
+RT1(config-subif)# ip address 192.168.20.1 255.255.255.0
+RT1(config-subif)# exit
+
+// RT1(config)# interface gigabitEthernet 0/0.99
+RT1(config-subif)# description PUERTA DE ENLACE PARA VLAN NATIVA 99
+RT1(config-subif)# encapsulation dot1Q 99 native
+RT1(config-subif)# exit
+```
+
+#### - SW1
+
+```js title="SW1"
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname SW1
+
+SW1(config)# line console 0
+SW1(config-line)# password cisco
+SW1(config-line)# login
+SW1(config-line)# exit
+
+SW1(config)# vlan 10
+SW1(config-vlan)# name SOPORTE
+SW1(config-vlan)# exit
+SW1(config)# vlan 20
+SW1(config-vlan)# name VENTAS
+SW1(config-vlan)# exit
+SW1(config)# vlan 99
+SW1(config-vlan)# name NATIVA
+SW1(config-vlan)# exit
+
+// SW1(config)# interface fastEthernet 0/1
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 10
+SW1(config-if)# exit
+
+// SW1(config)# interface fastEthernet 0/2
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport access vlan 20
+SW1(config-if)# exit
+
+// SW1(config)# interface gigabitEthernet 0/1
+SW1(config-if)# switchport mode trunk
+SW1(config-if)# switchport trunk native vlan 99
+SW1(config-if)# switchport nonegotiate
+SW1(config-if)# exit
+```
+
+#### - RT2
+
+```js title="RT2"
+Router>enable
+Router# configure terminal
+Router(config)# hostname RT2
+
+RT2(config)# line console 0
+RT2(config-line)# password cisco
+RT2(config-line)# login
+RT2(config-line)# exit
+
+// RT2(config)# interface serial 0/0/0
+RT2(config-if)# 10.0.0.2 255.255.255.252
+RT2(config-if)# ip address 10.0.0.2 255.255.255.252
+RT2(config-if)# no shutdown
+RT2(config-if)# exit
+
+// RT2(config)# interface serial 0/0/1
+RT2(config-if)# ip address 10.0.0.9 255.255.255.252
+RT2(config-if)# no shutdown
+RT2(config-if)# exit
+
+// RT2(config)# interface gigabitEthernet 0/0
+RT2(config-if)# no shutdown
+RT2(config-if)# exit
+
+// RT2(config)# interface gigabitEthernet 0/0.30
+RT2(config-subif)# description PUERTA DE ENLACE PARA VLAN VLAN 30
+RT2(config-subif)# encapsulation dot1q 30
+RT2(config-subif)# ip address 192.168.30.1 255.255.255.0
+RT2(config-subif)# exit
+
+// RT2(config)# interface gigabitEthernet 0/0.40
+RT2(config-subif)# description PUERTA DE ENLACE PARA VLAN VLAN 40
+RT2(config-subif)# encapsulation dot1q 40
+RT2(config-subif)# ip address 192.168.40.1 255.255.255.0
+RT2(config-subif)# exit
+
+// RT2(config)# interface gigabitEthernet 0/0.99
+RT2(config-subif)# description PUERTA DE ENLACE PARA VLAN VLAN NATIVA 99
+RT2(config-subif)# encapsulation dot1Q 99 native
+RT2(config-subif)# exit
+```
+
+#### - SW2
+
+```js title="SW2"
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname SW2
+
+SW2(config)# line console 0
+SW2(config-line)# password cisco
+SW2(config-line)# login
+SW2(config-line)# exit
+
+SW2(config)# vlan 30
+SW2(config-vlan)# name REDES
+SW2(config-vlan)# exit
+SW2(config)# vlan 40
+SW2(config-vlan)# name TI
+SW2(config-vlan)# exit
+SW2(config)# vlan 99
+SW2(config-vlan)# name NATIVA
+SW2(config-vlan)# exit
+
+// SW2(config)# interface fastEthernet 0/2
+SW2(config-if)# switchport mode access
+SW2(config-if)# switchport access vlan 30
+SW2(config-if)# exit
+
+// SW2(config)# interface fastEthernet 0/3
+SW2(config-if)# switchport mode access
+SW2(config-if)# switchport access vlan 40
+SW2(config-if)# exit
+
+// SW2(config)# interface fastEthernet 0/1
+SW2(config-if)# switchport mode trunk
+SW2(config-if)# switchport trunk native vlan 99
+SW2(config-if)# switchport nonegotiate
+SW2(config-if)# exit
+```
+
+#### - RT3
+
+```js title="RT3"
+Router>enable
+Router# configure terminal
+Router(config)# hostname RT3
+
+RT3(config)# line console 0
+RT3(config-line)# password cisco
+RT3(config-line)# login
+RT3(config-line)# exit
+
+// RT3(config)# interface serial 0/0/0
+RT3(config-if)# ip address 10.0.0.6 255.255.255.252
+RT3(config-if)# no shutdown
+RT3(config-if)# exit
+
+// RT3(config)# interface serial 0/0/1
+RT3(config-if)# ip address 10.0.0.13 255.255.255.252 //-------- VERIFICAR ESTO
+RT3(config-if)# no shutdown
+RT3(config-if)# exit
+
+// RT3(config)# interface gigabitEthernet 0/0
+RT3(config-if)# ip address 192.168.60.1 255.255.255.0
+RT3(config-if)# no shutdown
+RT3(config-if)# exit
+```
+
+#### - SW3
+
+```js title="SW3"
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname SW3
+
+SW3(config)# line console 0
+SW3(config-line)# password cisco
+SW3(config-line)# login
+SW3(config-line)# exit
+```
+
+#### - RT4
+
+```js title="RT4"
+Router> enable
+Router# configure terminal
+Router(config)# hostname RT4
+
+RT4(config)# line console 0
+RT4(config-line)# password cisco
+RT4(config-line)# login
+RT4(config-line)# exit
+
+// RT4(config)# interface serial 0/0/0
+RT4(config-if)# ip address 10.0.0.14 255.255.255.252
+RT4(config-if)# no shutdown
+RT4(config-if)# exit
+
+// RT4(config)# interface serial 0/0/1
+RT4(config-if)# ip address 10.0.0.10 255.255.255.252
+RT4(config-if)# no shutdown
+RT4(config-if)# exit
+```
+
+### OSPF punto a punto
+
+#### - RT1
+
+```js title="RT1"
+RT1(config)# router ospf 10
+RT1(config-router)# router-id 1.1.1.1
+RT1(config-router)# network 10.0.0.0 0.0.0.3 area 0
+RT1(config-router)# network 192.168.10.0 0.0.0.255 area 0
+RT1(config-router)# network 192.168.20.0 0.0.0.255 area 0
+RT1(config-router)# network 10.0.0.4 0.0.0.3 area 0
+```
+
+#### - RT2
+
+```js title="RT2"
+RT2(config)# router ospf 10
+RT2(config-router)# router-id 2.2.2.2
+RT2(config-router)# network 10.0.0.0 0.0.0.3 area 0
+RT2(config-router)# network 192.168.30.0 0.0.0.255 area 0
+RT2(config-router)# network 192.168.40.0 0.0.0.255 area 0
+RT2(config-router)# network 10.0.0.8 0.0.0.3 area 0
+```
+
+#### - RT3
+
+```js title="RT3"
+RT3(config)# router ospf 10
+RT3(config-router)# router-id 3.3.3.3
+RT3(config-router)# network 10.0.0.4 0.0.0.3 area 0
+RT3(config-router)# network 10.0.0.12 0.0.0.3 area 0 // ----------- VERIFICAR ESTO
+RT3(config-router)# network 192.168.60.0 0.0.0.255 area 0
+```
+
+### DHCP
+
+#### - RT1
+
+```js title="RT1"
+RT1(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.10
+RT1(config)# ip dhcp excluded-address 192.168.20.1 192.168.20.10
+RT1(config)# ip dhcp excluded-address 192.168.30.1 192.168.30.10
+RT1(config)# ip dhcp excluded-address 192.168.40.1 192.168.40.10
+RT1(config)# ip dhcp excluded-address 192.168.60.1 192.168.60.10
+
+RT1(config)# ip dhcp pool VLAN10
+RT1(dhcp-config)# network 192.168.10.0 255.255.255.0
+RT1(dhcp-config)# default-router 192.168.10.1
+RT1(dhcp-config)# exit
+
+RT1(config)# ip dhcp pool VLAN20
+RT1(dhcp-config)# network 192.168.20.0 255.255.255.0
+RT1(dhcp-config)# default-router 192.168.20.1
+RT1(dhcp-config)# exit
+
+RT1(config)# ip dhcp pool VLAN30
+RT1(dhcp-config)# network 192.168.30.0 255.255.255.0
+RT1(dhcp-config)# default-router 192.168.30.1
+RT1(dhcp-config)# exit
+
+RT1(config)# ip dhcp pool VLAN40
+RT1(dhcp-config)# network 192.168.40.0 255.255.255.0
+RT1(dhcp-config)# default-router 192.168.40.1
+RT1(dhcp-config)# exit
+
+RT1(config)# ip dhcp pool LAN-POOL-60
+RT1(dhcp-config)# network 192.168.60.0 255.255.255.0
+RT1(dhcp-config)# default-router 192.168.60.1
+RT1(dhcp-config)# exit
+```
+
+#### - RT2
+
+```js title="RT2"
+// RT2(config)# interface gigabitEthernet 0/0
+RT2(config-if)# ip helper-address 10.0.0.1
+RT2(config-if)# exit
+
+RT2(config)# router rip
+RT2(config-router)# network 10.0.0.0
+RT2(config-router)# network 192.168.30.0
+RT2(config-router)# network 192.168.40.0
+RT2(config-router)# exit
+
+// RT2(config)# interface gigabitEthernet 0/0.30
+RT2(config-subif)# ip helper-address 10.0.0.1
+RT2(config-subif)# exit
+
+// RT2(config)# interface gigabitEthernet 0/0.40
+RT2(config-subif)# ip helper-address 10.0.0.1
+RT2(config-subif)# exit
+```
+
+#### - RT3
+
+```js title="RT3"
+// RT3(config)# interface gigabitEthernet 0/0
+RT3(config-if)# ip helper-address 10.0.0.5
+RT3(config-if)# exit
+
+RT3(config)# router rip
+RT3(config-router)# network 10.0.0.0
+RT3(config-router)# network 192.168.60.0
+RT3(config-router)# exit
+```
+
+#### - Activar DHCP
+
+![Activar DHCP RT1](https://res.cloudinary.com/jaular/image/upload/v1690122283/blog/ejercicio-ospf/dhcp-1_sgubfp.png "Activar DHCP RT1")
+
+## Topología de acceso múltiple
+
+### Configuración básica
+
+#### - RT4
+
+```js title="RT4"
+// RT4(config)#interface gigabitEthernet 0/0
+RT4(config-if)# ip address 172.16.16.1 255.255.255.0
+RT5(config-if)# ip ospf priority 100 // RT1 seria BDR
+RT4(config-if)# no shutdown
+```
+
+#### - SW4
+
+```js title="SW4"
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname SW4
+
+SW4(config)# line console 0
+SW4(config-line)# password cisco
+SW4(config-line)# login
+SW4(config-line)# exit
+```
+
+#### - RT5
+
+```js title="RT5"
+Router> enable
+Router# configure terminal
+Router(config)# hostname RT5
+
+RT5(config)# line console 0
+RT5(config-line)# password cisco
+RT5(config-line)# login
+RT5(config-line)# exit
+
+// RT5(config)#interface gigabitEthernet 0/0
+RT5(config-if)# ip address 172.16.16.2 255.255.255.0
+RT5(config-if)# ip ospf priority 200 // RT2 seria DR
+RT5(config-if)# no shutdown
+RT5(config-if)# exit
+
+// RT5(config)#interface gigabitEthernet 0/1
+RT5(config-if)# ip address 172.16.18.1 255.255.255.0
+RT5(config-if)# no shutdown
+RT5(config-if)# exit
+```
+
+#### - RT6
+
+```js title="RT6"
+Router> enable
+Router# configure terminal
+Router(config)# hostname RT6
+
+RT6(config)# line console 0
+RT6(config-line)# password cisco
+RT6(config-line)# login
+RT6(config-line)# exit
+
+// RT6(config)#interface gigabitEthernet 0/0
+RT6(config-if)# ip address 172.16.16.3 255.255.255.0
+RT6(config-if)# no shutdown
+RT6(config-if)# exit
+
+// RT6(config)# interface gigabitEthernet 0/1
+RT6(config-if)# ip address 172.16.17.1 255.255.255.0
+RT6(config-if)# no shutdown
+RT6(config-if)# exit
+```
+
+### OSPF de acceso múltiple
+
+#### - RT4
+
+```js title="RT4"
+RT4(config)# router ospf 10
+RT4(config-router)# router-id 4.4.4.4
+RT4(config-router)# network 172.16.16.0 0.0.0.255 area 0
+RT4(config-router)# network 10.0.0.8 0.0.0.3 area 0
+RT4(config-router)# network 10.0.0.12 0.0.0.3 area 0
+RT4(config-router)# network 172.16.17.0 0.0.0.255 area 0
+RT4(config-router)# network 172.16.18.0 0.0.0.255 area 0
+```
+
+#### - RT5
+
+```js title="RT5"
+RT5(config)# router ospf 10
+RT5(config-router)# router-id 5.5.5.5
+RT5(config-router)# network 172.16.16.0 0.0.0.255 area 0
+RT5(config-router)# network 172.16.18.0 0.0.0.255 area 0
+```
+
+#### - RT6
+
+```js title="RT6"
+RT6(config)# router ospf 10
+RT6(config-router)# router-id 6.6.6.6
+RT6(config-router)# network 172.16.16.0 0.0.0.255 area 0
+RT5(config-router)# network 172.16.17.0 0.0.0.255 area 0
+```
+
+### DHCP
+
+#### - RT4
+
+```js title="RT4"
+RT4(config)# ip dhcp excluded-address 172.16.17.1 172.16.17.10
+RT4(config)# ip dhcp excluded-address 172.16.18.1 172.16.18.10
+
+RT4(config)# ip dhcp pool LAN-POOL-17
+RT4(dhcp-config)# network 172.16.17.0 255.255.255.0
+RT4(dhcp-config)# default-router 172.16.17.1
+RT1(dhcp-config)# exit
+
+RT4(config)# ip dhcp pool LAN-POOL-18
+RT4(dhcp-config)# network 172.16.18.0 255.255.255.0
+RT4(dhcp-config)# default-router 172.16.18.1
+RT4(dhcp-config)# exit
+```
+
+#### - RT5
+
+```js title="RT5"
+// RT2(config)# interface gigabitEthernet 0/1
+RT5(config-if)# ip helper-address 172.16.16.1
+RT5(config-if)# exit
+
+RT5(config)# router rip
+RT5(config-router)# network 172.16.0.0
+RT5(config-router)# network 172.16.18.0
+RT5(config-router)# exit
+```
+
+#### - RT6
+
+```js title="RT6"
+// RT6(config)# interface gigabitEthernet 0/1
+RT6(config-if)# ip helper-address 172.16.16.1
+RT6(config-if)# exit
+
+RT6(config)# router rip
+RT6(config-router)# network 172.16.0.0
+RT6(config-router)# network 172.16.17.0
+RT6(config-router)# exit
+```
+
+#### - Activar DHCP
+
+![Activar DHCP RT4](https://res.cloudinary.com/jaular/image/upload/v1690132467/blog/ejercicio-ospf/dhcp-2_thkcsj.png "Activar DHCP RT4")
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
+- [TECHNIG](https://www.technig.com/how-to-configure-dhcp-on-cisco-router/)
