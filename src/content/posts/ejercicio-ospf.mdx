@@ -209,6 +209,7 @@ RT3(config-if)# exit
 
 // RT3(config)# interface serial 0/0/1
 RT3(config-if)# ip address 10.0.0.13 255.255.255.252 //-------- VERIFICAR ESTO
+RT3(config-if)# bandwidth 256
 RT3(config-if)# no shutdown
 RT3(config-if)# exit
 
@@ -371,7 +372,7 @@ RT3(config-router)# exit
 #### - RT4
 
 ```js title="RT4"
-// RT4(config)#interface gigabitEthernet 0/0
+// RT4(config)# interface gigabitEthernet 0/0
 RT4(config-if)# ip address 172.16.16.1 255.255.255.0
 RT5(config-if)# ip ospf priority 100 // RT1 seria BDR
 RT4(config-if)# no shutdown
@@ -402,13 +403,13 @@ RT5(config-line)# password cisco
 RT5(config-line)# login
 RT5(config-line)# exit
 
-// RT5(config)#interface gigabitEthernet 0/0
+// RT5(config)# interface gigabitEthernet 0/0
 RT5(config-if)# ip address 172.16.16.2 255.255.255.0
 RT5(config-if)# ip ospf priority 200 // RT2 seria DR
 RT5(config-if)# no shutdown
 RT5(config-if)# exit
 
-// RT5(config)#interface gigabitEthernet 0/1
+// RT5(config)# interface gigabitEthernet 0/1
 RT5(config-if)# ip address 172.16.18.1 255.255.255.0
 RT5(config-if)# no shutdown
 RT5(config-if)# exit
@@ -426,7 +427,7 @@ RT6(config-line)# password cisco
 RT6(config-line)# login
 RT6(config-line)# exit
 
-// RT6(config)#interface gigabitEthernet 0/0
+// RT6(config)# interface gigabitEthernet 0/0
 RT6(config-if)# ip address 172.16.16.3 255.255.255.0
 RT6(config-if)# no shutdown
 RT6(config-if)# exit
@@ -522,3 +523,4 @@ RT6(config-router)# exit
 
 - [Cisco Networking Academy](https://www.netacad.com/)
 - [TECHNIG](https://www.technig.com/how-to-configure-dhcp-on-cisco-router/)
+- [Institut Sa Palomera](https://www.sapalomera.cat/moodlecf/RS/3/course/module7/7.3.2.3/7.3.2.3.html)
