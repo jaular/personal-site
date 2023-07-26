@@ -4,7 +4,7 @@ publishDate: "2023-07-23T00:00:00"
 author: José Aular
 tag: cisco
 heroImage:
-  src: https://res.cloudinary.com/jaular/image/upload/v1690122282/blog/ejercicio-ospf/pkt-1_v1anyj.png
+  src: https://res.cloudinary.com/jaular/image/upload/v1690395992/blog/ejercicio-ospf/pkt-1_yxxnn5.png
   author: jaular14
 ---
 
@@ -14,9 +14,40 @@ export const components = { a: CustomLink, img: CustomImage };
 
 ## Tabla de contenido
 
-1.  [Topología punto a punto](/blog/ejercicio-ospf#topología-punto-a-punto)
-2.  [Topología de acceso múltiple](/blog/ejercicio-ospf#topología-de-acceso-múltiple)
-3.  [Referencias](/blog/ejercicio-ospf#referencias)
+1.  [Información](/blog/ejercicio-ospf#información)
+2.  [Topología punto a punto](/blog/ejercicio-ospf#topología-punto-a-punto)
+3.  [Topología de acceso múltiple](/blog/ejercicio-ospf#topología-de-acceso-múltiple)
+4.  [Referencias](/blog/ejercicio-ospf#referencias)
+
+## Información
+
+**Configuración básica de los dispositivos**
+
+- Cada router y switch debe tener el nombre indicado en la topología.
+- Las contraseñas de acceso deben ser configuradas y suministradas por cada equipo.
+
+**Direccionamiento IPv4**
+
+- Debe asignar las direcciones IP ilustradas en el ejemplo tomando en cuenta la máscara de subred por defecto.
+- Los routers RT1 y RT2 deben poseer router on a stick de modo que las VLAN puedan ejecutar su función.
+
+**Configuración OSFP**
+
+- En la topología punto a punto, el enlace entre RT3 y RT4 será de 256 Mbps.
+- En la topología de acceso múltiple el DR es RT5 con la prioridad decida por el equipo.
+- Debe configurar una ruta por defecto a una loopback 0 con la siguiente dirección IP 201.209.X.1/30 donde la X será un número entre 1 y 10 seleccionado por el equipo.
+
+**Configuración de VLAN**
+
+- En los switches SW1 y SW2 se asignan las VLAN's 10,20,30 y 40 cada una de estas debe ser configurada con un nombre seleccionado por el equipo.
+- Debe cambiar la VLAN nativa 1 a la VLAN 99 por seguridad.
+- Deshabilite la autonegociación del protocolo de enlace troncal.
+
+**Asignación dinámica de direcciones**
+
+- Las direcciones IP de la topología punto a punto se generan por DHCP desde el router RT1.
+- Las direcciones IP de la topología de acceso múltiple se generan por DHCP desde el router RT4.
+- Se deben excluir del rango de direcciones las 10 primeras de cada segmento de red.
 
 ## Topología punto a punto
 
