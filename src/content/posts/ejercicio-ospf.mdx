@@ -430,7 +430,7 @@ RT3(config-router)# exit
 ```js title="RT4"
 // RT4(config)# interface gigabitEthernet 0/0
 RT4(config-if)# ip address 172.16.16.1 255.255.255.0
-RT4(config-if)# ip ospf priority 100 // RT1 seria BDR
+RT4(config-if)# ip ospf priority 100 // RT4 seria BDR
 RT4(config-if)# no shutdown
 ```
 
@@ -463,7 +463,7 @@ RT5(config)# enable secret admin
 
 // RT5(config)# interface gigabitEthernet 0/0
 RT5(config-if)# ip address 172.16.16.2 255.255.255.0
-RT5(config-if)# ip ospf priority 200 // RT2 seria DR
+RT5(config-if)# ip ospf priority 200 // RT5 seria DR
 RT5(config-if)# no shutdown
 RT5(config-if)# exit
 
@@ -478,7 +478,7 @@ RT5(config-if)# exit
 ```js title="SW5"
 Switch> enable
 Switch# configure terminal
-Switch(config)# hostname SW4
+Switch(config)# hostname SW5
 
 SW5(config)# line console 0
 SW5(config-line)# password cisco
@@ -516,7 +516,7 @@ RT6(config-if)# exit
 ```js title="SW6"
 Switch> enable
 Switch# configure terminal
-Switch(config)# hostname SW4
+Switch(config)# hostname SW6
 
 SW6(config)# line console 0
 SW6(config-line)# password cisco
