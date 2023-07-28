@@ -1,5 +1,5 @@
 ---
-title: Ejercicio de OSPF (WIP)
+title: Ejercicio de OSPF
 publishDate: "2023-07-23T00:00:00"
 author: José Aular
 tag: cisco
@@ -30,12 +30,14 @@ export const components = { a: CustomLink, img: CustomImage };
 
 - Debe asignar las direcciones IP ilustradas en el ejemplo tomando en cuenta la máscara de subred por defecto.
 - Los routers RT1 y RT2 deben poseer router on a stick de modo que las VLAN puedan ejecutar su función.
+- Configurar una interfaz loopback en el router RT3 para la salida a internet.
 
 **Configuración OSFP**
 
 - En la topología punto a punto, el enlace entre RT3 y RT4 será de 256 Mbps.
 - En la topología de acceso múltiple el DR es RT5 con la prioridad decida por el equipo.
 - Debe configurar una ruta por defecto a una loopback 0 con la siguiente dirección IP 201.209.X.1/30 donde la X será un número entre 1 y 10 seleccionado por el equipo.
+- Configure como pasivas las interfaces LAN que no son necesarias en el proceso OSPF.
 
 **Configuración de VLAN**
 
@@ -68,6 +70,7 @@ RT1(config)# enable secret admin
 
 // RT1(config)# interface serial 0/0/0
 RT1(config-if)# ip address 10.0.0.1 255.255.255.252
+RT1(config-if)# clock rate 128000
 RT1(config-if)# no shutdown
 RT1(config-if)# exit
 
@@ -157,6 +160,7 @@ RT2(config-if)# exit
 
 // RT2(config)# interface serial 0/0/1
 RT2(config-if)# ip address 10.0.0.9 255.255.255.252
+RT2(config-if)# clock rate 128000
 RT2(config-if)# no shutdown
 RT2(config-if)# exit
 
@@ -235,11 +239,12 @@ RT3(config-line)# exit
 
 // RT3(config)# interface serial 0/0/0
 RT3(config-if)# ip address 10.0.0.6 255.255.255.252
+RT3(config-if)# clock rate 128000
 RT3(config-if)# no shutdown
 RT3(config-if)# exit
 
 // RT3(config)# interface serial 0/0/1
-RT3(config-if)# ip address 10.0.0.13 255.255.255.252 //-------- VERIFICAR ESTO
+RT3(config-if)# ip address 10.0.0.13 255.255.255.252
 RT3(config-if)# bandwidth 256
 RT3(config-if)# no shutdown
 RT3(config-if)# exit
@@ -248,6 +253,11 @@ RT3(config-if)# exit
 RT3(config-if)# ip address 192.168.60.1 255.255.255.0
 RT3(config-if)# no shutdown
 RT3(config-if)# exit
+
+// RT3(config)# interface loopback 0
+RT3(config-if)# ip address 201.209.1.1 255.255.255.252
+RT3(config-if)# exit
+RT3(config)# ip route 0.0.0.0 0.0.0.0 loopback 0
 ```
 
 #### - SW3
@@ -277,6 +287,7 @@ RT4(config-line)# exit
 
 // RT4(config)# interface serial 0/0/0
 RT4(config-if)# ip address 10.0.0.14 255.255.255.252
+RT4(config-if)# clock rate 128000
 RT4(config-if)# no shutdown
 RT4(config-if)# exit
 
@@ -297,6 +308,8 @@ RT1(config-router)# network 10.0.0.0 0.0.0.3 area 0
 RT1(config-router)# network 192.168.10.0 0.0.0.255 area 0
 RT1(config-router)# network 192.168.20.0 0.0.0.255 area 0
 RT1(config-router)# network 10.0.0.4 0.0.0.3 area 0
+
+RT1(config-router)# passive-interface gigabitEthernet 0/0
 ```
 
 #### - RT2
@@ -308,6 +321,8 @@ RT2(config-router)# network 10.0.0.0 0.0.0.3 area 0
 RT2(config-router)# network 192.168.30.0 0.0.0.255 area 0
 RT2(config-router)# network 192.168.40.0 0.0.0.255 area 0
 RT2(config-router)# network 10.0.0.8 0.0.0.3 area 0
+
+RT2(config-router)# passive-interface gigabitEthernet 0/0
 ```
 
 #### - RT3
@@ -316,8 +331,12 @@ RT2(config-router)# network 10.0.0.8 0.0.0.3 area 0
 RT3(config)# router ospf 10
 RT3(config-router)# router-id 3.3.3.3
 RT3(config-router)# network 10.0.0.4 0.0.0.3 area 0
-RT3(config-router)# network 10.0.0.12 0.0.0.3 area 0 // ----------- VERIFICAR ESTO
+RT3(config-router)# network 10.0.0.12 0.0.0.3 area 0
 RT3(config-router)# network 192.168.60.0 0.0.0.255 area 0
+
+RT3(config-router)# default-information originate
+
+RT3(config-router)# passive-interface gigabitEthernet 0/0
 ```
 
 ### DHCP
@@ -490,6 +509,8 @@ RT5(config)# router ospf 10
 RT5(config-router)# router-id 5.5.5.5
 RT5(config-router)# network 172.16.16.0 0.0.0.255 area 0
 RT5(config-router)# network 172.16.18.0 0.0.0.255 area 0
+
+RT5(config-router)# passive-interface gigabitEthernet 0/1
 ```
 
 #### - RT6
@@ -499,6 +520,8 @@ RT6(config)# router ospf 10
 RT6(config-router)# router-id 6.6.6.6
 RT6(config-router)# network 172.16.16.0 0.0.0.255 area 0
 RT5(config-router)# network 172.16.17.0 0.0.0.255 area 0
+
+RT6(config-router)# passive-interface gigabitEthernet 0/1
 ```
 
 ### DHCP
@@ -555,3 +578,4 @@ RT6(config-router)# exit
 - [Cisco Networking Academy](https://www.netacad.com/)
 - [TECHNIG](https://www.technig.com/how-to-configure-dhcp-on-cisco-router/)
 - [Institut Sa Palomera](https://www.sapalomera.cat/moodlecf/RS/3/course/module7/7.3.2.3/7.3.2.3.html)
+- [Institut Sa Palomera](https://www.sapalomera.cat/moodlecf/RS/3/course/module5/5.1.3.1/5.1.3.1.html)
