@@ -1,0 +1,198 @@
+---
+title: NAT
+publishDate: "2023-07-28T00:00:00"
+author: José Aular
+tag: cisco
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de contenido
+
+1.  [Concepto](/blog/nat#concepto)
+2.  [NAT estático](/blog/nat#nat-estático)
+3.  [NAT dinámico](/blog/nat#nat-dinámico)
+4.  [PAT](/blog/nat#pat)
+5.  [Referencias](/blog/nat#referencias)
+
+## Concepto
+
+NAT tiene muchos usos, pero el principal es conservar las direcciones IPv4 públicas. Esto se logra al permitir que las redes utilicen direcciones IPv4 privadas internamente y al proporcionar la traducción a una dirección pública solo cuando sea necesario. NAT tiene el beneficio percibido de agregar un grado de privacidad y seguridad a una red, ya que oculta las direcciones IPv4 internas de redes externas.
+
+NAT proporciona la traducción de direcciones privadas a direcciones públicas. Esto permite que un dispositivo con una dirección IPv4 privada acceda a recursos fuera de su red privada, como los que se encuentran en Internet.
+
+Cuando se usa NAT, las direcciones IPv4 tienen diferentes designaciones en función de si están en la red privada o en la red pública (internet), y si el tráfico es entrante o saliente.
+
+NAT incluye cuatro tipos de direcciones:
+
+- Dirección local interna
+- Dirección global interna
+- Dirección local externa
+- Dirección global externa
+
+Al determinar qué tipo de dirección se utiliza, es importante recordar que la terminología de NAT siempre se aplica desde la perspectiva del dispositivo con la dirección traducida:
+
+- **Dirección interna**: la dirección del dispositivo que NAT está traduciendo.
+- **Dirección externa**: la dirección del dispositivo de destino.
+
+NAT también usa los conceptos de local o global con relación a las direcciones:
+
+- **Dirección local**: una dirección local es cualquier dirección que aparece en la parte interna de la red.
+- **Dirección global**: una dirección global es cualquier dirección que aparece en la parte externa de la red.
+
+Los términos **“interna”** y **“externa”** se combinan con los términos **“global”** y **“local”** para hacer referencia a direcciones específicas.
+
+## NAT estático
+
+![NAT estático](https://res.cloudinary.com/jaular/image/upload/v1690548582/blog/nat/nat-estatico_ypucup.png "NAT estático")
+
+La NAT estática es una asignación uno a uno entre una dirección interna y una dirección externa. La NAT estática permite que los dispositivos externos inicien conexiones a los dispositivos internos mediante la dirección pública asignada de forma estática.
+
+### Configurar NAT estático
+
+Hay dos tareas básicas al configurar traducciones NAT estáticas:
+
+#### - Paso 1
+
+El primer paso consiste en crear una asignación entre la dirección **local interna** y las direcciones **globales internas**, utilice el comando `ip nat inside source static {inside-local} {inside-global}`.
+
+```js title="R2"
+R2(config)# ip nat inside source static 192.168.10.254 209.165.201.5
+```
+
+#### - Paso 2
+
+Una vez configurada la asignación, las interfaces que participan en la traducción se configuran como interna o externa con respecto a NAT.
+
+```js title="R2" {3,8}
+// R2(config)# interface serial 0/1/0
+R2(config-if)# ip address 192.168.1.2 255.255.255.252
+R2(config-if)# ip nat inside
+R2(config-if)# exit
+
+// R2(config)# interface serial 0/1/1
+R2(config-if)# ip address 209.165.200.1 255.255.255.252
+R2(config-if)# ip nat outside
+```
+
+### Verificar NAT estático
+
+Utilice el comando `show ip nat translations` Para verificar el funcionamiento de NAT, o utilice el comando `show ip nat statistics` para ver el número total de traducciones activas.
+
+```js title="R2"
+R2# show ip nat translations
+```
+
+```js title="R2"
+R2# show ip nat statistics
+```
+
+> Es mejor borrar las estadísticas de cualquier traducción anterior utilizando el comando `clear ip nat statistics` antes de realizar la prueba.
+
+## NAT dinámico
+
+![NAT dinámico](https://res.cloudinary.com/jaular/image/upload/v1690550732/blog/nat/nat-dinamico_jqzdsp.png "NAT dinámico")
+
+La NAT dinámica utiliza un conjunto de direcciones públicas y las asigna según el orden de llegada. Cuando un dispositivo interno solicita acceso a una red externa, la NAT dinámica asigna una dirección IPv4 pública disponible del conjunto.
+
+La NAT dinámica asigna automáticamente direcciones locales internas a direcciones globales internas. Por lo general, estas direcciones globales internas son direcciones IPv4 públicas.
+
+### Configurar NAT dinámico
+
+#### - Paso 1
+
+Defina el conjunto de direcciones que se utilizarán para la traducción con el comando `ip nat pool`. Por lo general, este conjunto es un grupo de direcciones públicas. Las direcciones se definen indicando la primera y la última dirección IPv4 del conjunto. La palabra clave `netmask` o `prefix-length` indica qué bits de dirección pertenecen a la red y qué bits pertenecen al host para ese rango de direcciones.
+
+```js title="R2"
+R2(config)# ip nat pool NAT-POOL1 209.165.200.226 209.165.200.240 netmask 255.255.255.224
+```
+
+#### - Paso 2
+
+Configure una ACL estándar para identificar (permitir) solo aquellas direcciones que se deben traducir. Una ACL demasiado permisiva puede generar resultados impredecibles. Recuerde que hay una declaración implícita `deny all` al final de cada ACL.
+
+```js title="R2"
+R2(config)# access-list 1 permit 192.168.0.0 0.0.255.255
+```
+
+#### - Paso 3
+
+Enlazar la ACL al grupo, utilizando el comando `ip nat inside source list {access-list-number | access-list-name} pool pool-name`.
+
+El router utiliza esta configuración para identificar qué dispositivos (**list**) reciben qué direcciones (**pool**).
+
+```js title="R2"
+R2(config-if)# ip nat inside source list 1 pool NAT-POOL1
+```
+
+#### - Paso 4
+
+Identifique qué interfaces están dentro, en relación con NAT; Esta será cualquier interfaz que se conecte a la red interna.
+
+```js title="R2"
+// R2(config)# interface serial 0/1/0
+R2(config-if)# ip nat inside
+```
+
+#### - Paso 5
+
+Identifique qué interfaces están fuera, en relación con NAT; Esta será cualquier interfaz que se conecte a la red externa.
+
+```js title="R2"
+// R2(config)# interface serial 0/1/1
+R2(config-if)# ip nat outside
+```
+
+### Verificar NAT dinámico
+
+Agregar la palabra `verbose` clave muestra información adicional sobre cada traducción, incluido cuánto tiempo hace que se creó y usó la entrada.
+
+```js title="R2"
+R2# show ip nat translation verbose
+```
+
+## PAT
+
+![PAT](https://res.cloudinary.com/jaular/image/upload/v1690554652/blog/nat/pat_e7jfmg.png "PAT")
+
+PAT modifica tanto la dirección IPv4 como el número de puerto. Con PAT, generalmente solo hay una, o muy pocas, direcciones IPv4 expuestas públicamente. PAT traduce la mayoría de los protocolos comunes transmitidos mediante IPv4 que no utilizan TCP o UDP como protocolo de la capa de transporte.
+
+### Configurar PAT para usar una única dirección IPv4
+
+Para configurar PAT para que utilice una única dirección IPv4, simplemente agregue la palabra clave `overload` al comando `ip nat inside source`. El resto de la configuración es similar a la configuración NAT estática y dinámica, excepto que con PAT, varios hosts pueden usar la misma dirección IPv4 pública para acceder a Internet.
+
+```js title="R2"
+R2(config)# ip nat inside source list 1 interface serial 0/1/1 overload
+```
+
+```js title="R2"
+R2(config)# access-list 1 permit 192.168.0.0 0.0.255.255
+
+// R2(config)# interface serial0/1/0
+R2(config-if)# ip nat inside
+R2(config-if)# exit
+
+// R2(config)# interface Serial 0/1/1
+R2(config-if)# ip nat outside
+```
+
+### Configurar PAT para usar una Address Pool
+
+```js title="R2"
+R2(config)# ip nat pool NAT-POOL2 209.165.200.226 209.165.200.240 netmask 255.255.255.224
+R2(config)# access-list 1 permit 192.168.0.0 0.0.255.255
+R2(config)# ip nat inside source list 1 pool NAT-POOL2 overload
+
+// R2(config)# interface serial0/1/0
+R2(config-if)# ip nat inside
+R2(config-if)# exit
+
+//R2(config)# interface serial0/1/1
+R2(config-if)# ip nat outside
+```
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
