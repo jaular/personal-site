@@ -112,6 +112,7 @@ SW1(config)# line console 0
 SW1(config-line)# password cisco
 SW1(config-line)# login
 SW1(config-line)# exit
+SW1(config)# enable secret admin
 
 SW1(config)# vlan 10
 SW1(config-vlan)# name SOPORTE
@@ -151,6 +152,7 @@ RT2(config)# line console 0
 RT2(config-line)# password cisco
 RT2(config-line)# login
 RT2(config-line)# exit
+RT2(config)# enable secret admin
 
 // RT2(config)# interface serial 0/0/0
 RT2(config-if)# 10.0.0.2 255.255.255.252
@@ -197,6 +199,7 @@ SW2(config)# line console 0
 SW2(config-line)# password cisco
 SW2(config-line)# login
 SW2(config-line)# exit
+SW2(config)# enable secret admin
 
 SW2(config)# vlan 30
 SW2(config-vlan)# name REDES
@@ -236,6 +239,7 @@ RT3(config)# line console 0
 RT3(config-line)# password cisco
 RT3(config-line)# login
 RT3(config-line)# exit
+RT3(config)# enable secret admin
 
 // RT3(config)# interface serial 0/0/0
 RT3(config-if)# ip address 10.0.0.6 255.255.255.252
@@ -271,6 +275,7 @@ SW3(config)# line console 0
 SW3(config-line)# password cisco
 SW3(config-line)# login
 SW3(config-line)# exit
+SW3(config)# enable secret admin
 ```
 
 #### - RT4
@@ -284,6 +289,7 @@ RT4(config)# line console 0
 RT4(config-line)# password cisco
 RT4(config-line)# login
 RT4(config-line)# exit
+RT4(config)# enable secret admin
 
 // RT4(config)# interface serial 0/0/0
 RT4(config-if)# ip address 10.0.0.14 255.255.255.252
@@ -424,7 +430,7 @@ RT3(config-router)# exit
 ```js title="RT4"
 // RT4(config)# interface gigabitEthernet 0/0
 RT4(config-if)# ip address 172.16.16.1 255.255.255.0
-RT5(config-if)# ip ospf priority 100 // RT1 seria BDR
+RT4(config-if)# ip ospf priority 100 // RT1 seria BDR
 RT4(config-if)# no shutdown
 ```
 
@@ -439,6 +445,7 @@ SW4(config)# line console 0
 SW4(config-line)# password cisco
 SW4(config-line)# login
 SW4(config-line)# exit
+SW4(config)# enable secret admin
 ```
 
 #### - RT5
@@ -452,6 +459,7 @@ RT5(config)# line console 0
 RT5(config-line)# password cisco
 RT5(config-line)# login
 RT5(config-line)# exit
+RT5(config)# enable secret admin
 
 // RT5(config)# interface gigabitEthernet 0/0
 RT5(config-if)# ip address 172.16.16.2 255.255.255.0
@@ -465,6 +473,20 @@ RT5(config-if)# no shutdown
 RT5(config-if)# exit
 ```
 
+#### - SW5
+
+```js title="SW5"
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname SW4
+
+SW5(config)# line console 0
+SW5(config-line)# password cisco
+SW5(config-line)# login
+SW5(config-line)# exit
+SW5(config)# enable secret admin
+```
+
 #### - RT6
 
 ```js title="RT6"
@@ -476,6 +498,7 @@ RT6(config)# line console 0
 RT6(config-line)# password cisco
 RT6(config-line)# login
 RT6(config-line)# exit
+RT6(config)# enable secret admin
 
 // RT6(config)# interface gigabitEthernet 0/0
 RT6(config-if)# ip address 172.16.16.3 255.255.255.0
@@ -486,6 +509,20 @@ RT6(config-if)# exit
 RT6(config-if)# ip address 172.16.17.1 255.255.255.0
 RT6(config-if)# no shutdown
 RT6(config-if)# exit
+```
+
+#### - SW6
+
+```js title="SW6"
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname SW4
+
+SW6(config)# line console 0
+SW6(config-line)# password cisco
+SW6(config-line)# login
+SW6(config-line)# exit
+SW6(config)# enable secret admin
 ```
 
 ### OSPF de acceso múltiple
