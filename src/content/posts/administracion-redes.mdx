@@ -1,0 +1,80 @@
+---
+title: Administración de redes (WIP)
+publishDate: "2023-08-04T00:00:00"
+author: José Aular
+tag: cisco
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de contenido
+
+1.  [Detección de dispositivos con CDP](/blog/administracion-redes#detección-de-dispositivos-con-cdp)
+2.  [Referencias](/blog/administracion-redes#referencias)
+
+## Detección de dispositivos con CDP
+
+### CDP
+
+![CDP](https://res.cloudinary.com/jaular/image/upload/v1690814630/blog/administracion-redes/cdp-1_hap5wx.png "CDP")
+
+Cisco Discovery Protocol (CDP) es un protocolo de Capa 2 patentado de Cisco que se utiliza para recopilar información sobre los dispositivos Cisco que comparten el mismo enlace de datos. El CDP es independiente de los medios y del protocolo y se ejecuta en todos los dispositivos Cisco, como routers, switches y servidores de acceso.
+
+### Configuración y verificación de CDP
+
+Para los dispositivos Cisco, CDP está **habilitado de manera predeterminada**. Por motivos de seguridad, puede ser conveniente deshabilitar CDP en un dispositivo de red de manera global, o por interfaz.
+
+> Con CDP, un atacante puede recolectar información valiosa sobre el diseño de la red, como direcciones IP, versiones de IOS, y tipos de dispositivos.
+
+Utilice el comando `show cdp` para verificar el estado de CDP y mostrar información sobre CDP.
+
+```js title="Router" {1}
+Router# show cdp
+Global CDP information:
+      Sending CDP packets every 60 seconds
+      Sending a holdtime value of 180 seconds
+      Sending CDPv2 advertisements is enabled
+```
+
+Utilice el comando `cdp run` para habilitar CDP globalmente para todas las interfaces compatibles en el dispositivo.
+
+```js title="Router" {2}
+Router# configure terminal
+Router(config)# cdp run
+```
+
+Utilice el comando `no cdp run` para deshabilitar CDP en todas las interfaces del dispositivo.
+
+```js title="Router" {1,4}
+Router(config)# no cdp run
+Router(config)# exit
+Router# show cdp
+CDP is not enabled
+```
+
+Para deshabilitar CDP en una interfaz específica, como la que entra en contacto con un ISP, ingrese `no cdp enable` en la interfaz.
+
+```js title="Switch" {2}
+// Switch(config)# interface gigabitethernet 0/0/1
+Switch(config-if)# cdp enable
+```
+
+Para verificar el estado de CDP y mostrar una lista de vecinos, use el comando `show cdp neighbors` o `show cdp neighbors detail`.
+
+```js title="R1" {1,7}
+R1# show cdp neighbors
+Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+                  S - Switch, H - Host, I - IGMP, r - Repeater, P - Phone,
+                  D - Remote, C - CVTA, M - Two-port Mac Relay
+
+Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+S1               Gig 0/0/1           179         S I      WS-C3560- Fas 0/5
+```
+
+> Utilice el comando `show cdp interface` para mostrar las interfaces que están habilitadas en CDP en el dispositivo
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
