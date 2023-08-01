@@ -12,7 +12,8 @@ export const components = { a: CustomLink, img: CustomImage };
 ## Tabla de contenido
 
 1.  [Detección de dispositivos con CDP](/blog/administracion-redes#detección-de-dispositivos-con-cdp)
-2.  [Referencias](/blog/administracion-redes#referencias)
+1.  [Detección de dispositivos con LLDP](/blog/administracion-redes#detección-de-dispositivos-con-lldp)
+1.  [Referencias](/blog/administracion-redes#referencias)
 
 ## Detección de dispositivos con CDP
 
@@ -61,6 +62,8 @@ Para deshabilitar CDP en una interfaz específica, como la que entra en contacto
 Switch(config-if)# cdp enable
 ```
 
+---
+
 Para verificar el estado de CDP y mostrar una lista de vecinos, use el comando `show cdp neighbors` o `show cdp neighbors detail`.
 
 ```js title="R1" {1,7}
@@ -74,6 +77,57 @@ S1               Gig 0/0/1           179         S I      WS-C3560- Fas 0/5
 ```
 
 > Utilice el comando `show cdp interface` para mostrar las interfaces que están habilitadas en CDP en el dispositivo.
+
+## Detección de dispositivos con LLDP
+
+### LLDP
+
+![LLDP](https://res.cloudinary.com/jaular/image/upload/v1690894541/blog/administracion-redes/lldp-1_wae9f9.png "LLDP")
+
+El protocolo de descubrimiento de capa de enlace (LLDP) hace lo mismo que CDP, pero no es específico de los dispositivos Cisco. Como ventaja, todavía puede usarlo si tiene dispositivos Cisco. De una forma u otra, obtendrá su mapa de red.
+
+LLDP es un protocolo que no depende del proveedor para detección de vecinos, similar a CDP. El LLDP funciona con los dispositivos de red, como routers, switches, y puntos de acceso inalámbrico LAN. Este protocolo anuncia su identidad y capacidades a otros dispositivos y recibe la información de un dispositivo de capa 2 conectado físicamente.
+
+### Configuración y verificación de LLDP
+
+En algunos dispositivos, el LLDP podría estar **habilitado de manera predeterminada**. Para habilitar LLDP a nivel global en un dispositivo de red Cisco, ingrese el comando `lldp run`. Para deshabilitar el LLDP, ingrese el comando `no lldp run`.
+
+Al igual que el CDP, el LLDP se puede configurar en interfaces específicas. Sin embargo, LLDP se debe configurar **individualmente** para **transmitir** (`lldp transmit`) y **recibir** (`lldp receive`) paquetes LLDP.
+
+Para verificar que LLDP ya se haya habilitado en el dispositivo, ingrese el comando `show lldp`.
+
+```js title="Switch" {1,4,5,8}
+Switch(config)# lldp run
+
+// Switch(config)# interface gigabitethernet 0/1
+Switch(config-if)# lldp transmit
+Switch(config-if)# lldp receive
+Switch(config-if)# end
+
+Switch# show lldp
+Global LLDP Information:
+    Status: ACTIVE
+    LLDP advertisements are sent every 30 seconds
+    LLDP hold time advertised is 120 seconds
+    LLDP interface reinitialisation delay is 2 seconds
+```
+
+---
+
+Para verificar el estado de LLDP y mostrar una lista de vecinos, use el comando `show lldp neighbors` o `show lldp neighbors detail`.
+
+```js title="S1" {1}
+S1# show lldp neighbors
+Capability codes:
+    (R) Router, (B) Bridge, (T) Telephone, (C) DOCSIS Cable Device
+    (W) WLAN Access Point, (P) Repeater, (S) Station, (O) Other
+Device ID           Local Intf     Hold-time  Capability      Port ID
+R1                  Fa0/5          117        R               Gi0/0/1
+S2                  Fa0/1          112        B               Fa0/1
+Total entries displayed: 2
+```
+
+> La letra **B** de bridge también puede significar switch.
 
 ## Referencias
 
