@@ -54,7 +54,7 @@
   @apply m-0;
 }
 .prose hr {
-  @apply my-0 border-gray dark:border-gray-800;
+  @apply my-8 border-gray border-dashed dark:border-gray-800;
 }
 .prose th {
   @apply text-xs text-black dark:text-white whitespace-nowrap uppercase font-semibold align-middle px-6 py-4 bg-gray-100 dark:bg-black-600 border-b border-gray-300 dark:border-gray-800;
