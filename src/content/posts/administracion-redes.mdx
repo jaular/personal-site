@@ -7,13 +7,20 @@ tag: cisco
 
 import CustomLink from "~/components/CustomLink.astro";
 import CustomImage from "~/components/CustomImage.astro";
-export const components = { a: CustomLink, img: CustomImage };
+import CustomTable from "~/components/CustomTable.astro";
+export const components = {
+  a: CustomLink,
+  img: CustomImage,
+  table: CustomTable,
+};
 
 ## Tabla de contenido
 
 1.  [Detección de dispositivos con CDP](/blog/administracion-redes#detección-de-dispositivos-con-cdp)
-1.  [Detección de dispositivos con LLDP](/blog/administracion-redes#detección-de-dispositivos-con-lldp)
-1.  [Referencias](/blog/administracion-redes#referencias)
+2.  [Detección de dispositivos con LLDP](/blog/administracion-redes#detección-de-dispositivos-con-lldp)
+3.  [NTP](/blog/administracion-redes#ntp)
+4.  [Syslog](/blog/administracion-redes#syslog)
+5.  [Referencias](/blog/administracion-redes#referencias)
 
 ## Detección de dispositivos con CDP
 
@@ -128,6 +135,136 @@ Total entries displayed: 2
 ```
 
 > La letra **B** de bridge también puede significar switch.
+
+## NTP
+
+### Servicios de tiempo y calendario
+
+El reloj del software en un router o un switch se inicia cuando se inicia el sistema. Es la fuente primaria de tiempo para el sistema. Es importante sincronizar la hora en todos los dispositivos de la red porque todos los aspectos de administración, seguridad, solución de problemas, y planificación de redes requieren una marca de hora precisa. Cuando no se sincroniza la hora entre los dispositivos, será imposible determinar el orden de los eventos y la causa de un evento.
+
+Normalmente, la configuración de fecha y hora de un router o switch se puede establecer mediante uno de los dos métodos, usted puede configurar manualmente la fecha y la hora, como se muestra en el ejemplo, o configurar el Protocolo de tiempo de red (NTP).
+
+```js title="R1" {1}
+R1# clock set 16:01:00 sept 25 2020
+*Sep 25 16:01:00.000: %SYS-6-CLOCKUPDATE: System clock has been updated from 13:09:49 UTC Fri Sep 25 2020 to 16:01:00 UTC Fri Sep 25 2020, configured from console by console.
+Sep 25 16:01:00.001: %PKI-6-AUTHORITATIVE_CLOCK: The system clock has been set.
+```
+
+Una mejor solución es configurar el NTP en la red. Este protocolo permite que los routers de la red sincronicen sus ajustes de hora con un servidor NTP. Si un grupo de clientes NTP obtiene información de fecha y hora de un único origen, tendrá ajustes de hora más consistentes. Cuando se implementa NTP en la red, se puede configurar para sincronizar con un reloj maestro privado o se puede sincronizar con un servidor NTP disponible públicamente en Internet.
+
+> NTP utiliza el **puerto 123 de UDP** y se documenta en **RFC 1305**.
+
+### Funcionamiento de NTP
+
+Las redes NTP utilizan un sistema jerárquico de fuentes horarias. Cada nivel en este sistema jerárquico se denomina estrato (stratum). El nivel de estrato se define como la cantidad de saltos desde la fuente autorizada. La hora sincronizada se distribuye en la red mediante el protocolo NTP.
+
+Los servidores NTP están organizados en tres niveles, conocidos como estratos: El estrato 1 está conectado a relojes del estrato 0.
+
+![Funcionamiento de NTP](https://res.cloudinary.com/jaular/image/upload/v1691154877/blog/administracion-redes/ntp-1_hnzl43.png "Funcionamiento de NTP")
+
+#### - Estrato 0
+
+Una red NTP obtiene la hora de fuentes horarias autorizadas. Estas fuentes autorizadas, conocidas como dispositivos de estrato 0, son dispositivos de cronometraje de alta precisión que son presuntamente precisos y con poco o ningún retraso asociado con los mismos.
+
+#### - Estrato 1
+
+Los dispositivos del estrato 1 están conectados directamente a las fuentes horarias autorizadas. Actúan como el estándar principal para el horario de la red.
+
+#### - Estrato y menores
+
+Los servidores del estrato 2 están conectados a dispositivos del estrato 1 a través de conexiones de red. Los dispositivos de estrato 2, como los clientes NTP, sincronizan su tiempo utilizando los paquetes NTP de los servidores de estrato 1. Podrían también actuar como servidores para dispositivos del estrato 3.
+
+Los números más bajos de estratos indican que el servidor está más cerca de la fuente horaria autorizada que los números de estrato más altos. Cuanto mayor sea el número de estrato, menor es el nivel del estrato. El recuento de saltos máximo es 15. El estrato 16, el nivel de estrato inferior, indica que un dispositivo no está sincronizado.
+
+### Configuración y verificación del NTP
+
+Antes de configurar NTP en la red, el comando `show clock` muestra la hora actual en el reloj. Con la opción `detail`, observe que la fuente de tiempo es la configurada por el usuario. Esto significa que la hora se configuró manualmente con el comando `clock`.
+
+```js title="R1" {1,3}
+R1# show clock detail
+20:55:10.207 UTC Fri Nov 15 2019
+Time source is user configuration
+```
+
+Para configurar el servidor NTP utilice el comando `ntp server {ip-address}`. Para verificar que la fuente de tiempo esté establecida en NTP, use el comando `show clock detail`. Observe que ahora la fuente de tiempo es NTP.
+
+```js title="R1" {1,4,6}
+R1(config)# ntp server 209.165.200.225
+R1(config)# end
+
+R1# show clock detail
+21:01:34.563 UTC Fri Nov 15 2019
+Time source is NTP
+```
+
+Los comandos `show ntp associations` y `show ntp status` se utilizan para verificar que el dispositivo está sincronizado con el servidor NTP.
+
+```js title="R1" {1,6}
+R1# show ntp associations
+  address         ref clock       st   when   poll reach  delay  offset   disp
+*~209.165.200.225 .GPS.           1     61     64   377  0.481   7.480  4.261
+ * sys.peer, # selected, + candidate, - outlyer, x falseticker, ~ configured
+
+R1# show ntp status
+Clock is synchronized, stratum 2, reference is 209.165.200.225
+nominal freq is 250.0000 Hz, actual freq is 249.9995 Hz, precision is 2**19
+ntp uptime is 589900 (1/100 of seconds), resolution is 4016
+reference time is DA088DD3.C4E659D3 (13:21:23.769 PST Fri Nov 15 2019)
+clock offset is 7.0883 msec, root delay is 99.77 msec
+root dispersion is 13.43 msec, peer dispersion is 2.48 msec
+loopfilter state is 'CTRL' (Normal Controlled Loop), drift is 0.000001803 s/s
+system poll interval is 64, last update was 169 sec ago.
+```
+
+## Syslog
+
+### Introducción de syslog
+
+El protocolo syslog fue diseñado para garantizar que puede recibir y comprender estos mensajes. Cuando ocurren ciertos eventos en una red, los dispositivos de red tienen mecanismos de confianza para notificar al administrador. Estos mensajes pueden ser importantes o no. Los administradores de red tienen una amplia variedad de opciones para almacenar, interpretar y visualizar estos mensajes. También se puede alertar sobre los mensajes que podrían tener el mayor impacto en la infraestructura de la red.
+
+> Syslog usa el puerto **UDP 514** para enviar mensajes de notificación de eventos a través de redes IP a recopiladores de mensajes de eventos.
+
+### Formato de mensaje de Syslog
+
+Los dispositivos de Cisco generan mensajes de syslog como resultado de los eventos de red. Cada mensaje de syslog contiene un nivel de gravedad y un recurso.
+
+Cuanto más bajos son los números de nivel, más criticas son las alarmas de syslog. El nivel de gravedad de los mensajes se puede establecer para controlar dónde se muestra cada tipo de mensaje (es decir, en la consola o los otros destinos).
+
+| Nombre de la gravedad | Nivel de gravedad | Explicación                       |
+| --------------------- | ----------------- | --------------------------------- |
+| Emergencia            | Nivel 0           | El sistema no se puede usar.      |
+| Alerta                | Nivel 1           | Se necesita una acción inmediata. |
+| Crítico               | Nivel 2           | Condición crítica.                |
+| Error                 | Nivel 3           | Condición de error.               |
+| Advertencia           | Nivel 4           | Condición de advertencia.         |
+| Notificación          | Nivel 5           | Condición normal pero importante. |
+| Informativo           | Nivel 6           | Mensaje informativo.              |
+| Depuración            | Nivel 7           | Mensaje de depuración.            |
+
+### Configurar marca de tiempo de Syslog
+
+De manera predeterminada, los mensajes de registro no tienen marca de tiempo. El mensaje que se registra en la consola no muestra cuándo se modificó el estado de la interfaz. Los mensajes de registro deben tener marcas de tiempo,de manera que cuando se envían a otro destino, como un servidor syslog, haya un registro del momento en el que se generó el mensaje.
+
+Use el comando service timestamps log datetime para forzar que los eventos registrados muestren la fecha y la hora.
+
+> Cuando se utiliza la palabra `datetime`, se debe configurar el reloj del dispositivo de red, ya sea manualmente o a través de NTP.
+
+```js title="R1" {7,11,12,13}
+// R1(config)# interface g0/0/0
+R1(config-if)# shutdown
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/0, changed state to administratively down
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0, changed state to down
+R1(config-if)# exit
+
+R1(config)# service timestamps log datetime
+
+// R1(config)# interface g0/0/0
+R1(config-if)# no shutdown
+*Mar  1 11:52:42: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/0, changed state to down
+*Mar  1 11:52:45: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/0, changed state to up
+*Mar  1 11:52:46: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0,
+changed state to up
+```
 
 ## Referencias
 
