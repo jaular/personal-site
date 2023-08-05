@@ -50,22 +50,30 @@ import MySkills from "~/components/MySkills.astro";
 <script>
   import { animate, stagger, spring } from "motion";
 
-  animate(
-    ".skill",
-    { opacity: [0, 1], x: [-40, 0] },
-    {
-      delay: stagger(0.25, { start: 0.25 }),
-      duration: 0.5,
-      easing: spring(),
+  const motionOne = () => {
+    if (window.location.pathname === "/") {
+      animate(
+        ".skill",
+        { opacity: [0, 1], x: [-40, 0] },
+        {
+          delay: stagger(0.25, { start: 0.25 }),
+          duration: 0.5,
+          easing: spring(),
+        }
+      );
+      animate(
+        ".button",
+        { transform: ["scale(0)", "scale(1)"] },
+        {
+          delay: stagger(0.5),
+          duration: 0.5,
+        }
+      );
+    } else {
+      return;
     }
-  );
+  };
 
-  animate(
-    ".button",
-    { transform: ["scale(0)", "scale(1)"] },
-    {
-      delay: stagger(0.5),
-      duration: 0.5,
-    }
-  );
+  motionOne();
+  document.addEventListener("astro:beforeload", motionOne);
 </script>

@@ -63,17 +63,21 @@ const { title, description, image, type, siteName, date } = meta;
 {date && <meta property="article:published_time" content={date} />}
 
 <!-- Links -->
-<link
+<!-- <link
   rel="preload"
   href="/static/fonts/inter-var.woff2"
   as="font"
   type="font/woff2"
   crossorigin
-/>
+/> -->
 
 <!-- Scripts -->
 <script is:inline>
+if (!window.SomeGlobal) {
+  window.SomeGlobal = {};
+
   const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
   const theme = isDarkMode === true ? "dark" : "light";
   document.querySelector("html").className = theme;
+}
 </script>

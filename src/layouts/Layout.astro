@@ -1,6 +1,7 @@
 ---
 import "~/styles/globals.css";
 import type { CustomMeta } from "~/lib/types";
+import { ViewTransitions } from "astro:transitions";
 import Head from "~/components/Head.astro";
 import Header from "~/components/Header.astro";
 import ScrollToTopButton from "~/components/ScrollToTopButton.astro";
@@ -14,12 +15,13 @@ const { ...customMeta } = Astro.props;
 <!DOCTYPE html>
 <html
   lang="es"
-  x-data="{ isDarkMode: JSON.parse(localStorage.getItem('darkMode'))}"
+  x-data="{isDarkMode: JSON.parse(localStorage.getItem('darkMode'))}"
   x-init="$watch('isDarkMode', val => localStorage.setItem('darkMode', JSON.stringify(val)))"
-  x-bind:class="{ 'dark': isDarkMode, 'light': !isDarkMode }"
+  :class="{'dark': isDarkMode, 'light': !isDarkMode}"
 >
   <head>
     <Head data={customMeta} />
+    <ViewTransitions />
   </head>
   <body
     class="flex flex-col justify-between min-h-screen text-black bg-white dark:text-white dark:bg-black antialiased"
