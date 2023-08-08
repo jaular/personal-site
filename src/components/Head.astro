@@ -73,11 +73,8 @@ const { title, description, image, type, siteName, date } = meta;
 
 <!-- Scripts -->
 <script is:inline>
-if (!window.SomeGlobal) {
-  window.SomeGlobal = {};
+const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
 
-  const isDarkMode = JSON.parse(localStorage.getItem("darkMode"));
-  const theme = isDarkMode === true ? "dark" : "light";
-  document.querySelector("html").className = theme;
-}
+const theme = isDarkMode === true ? "dark" : "light";
+document.querySelector("html").className = theme;
 </script>
