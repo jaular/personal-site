@@ -20,7 +20,8 @@ export const components = {
 2.  [Detección de dispositivos con LLDP](/blog/administracion-redes#detección-de-dispositivos-con-lldp)
 3.  [NTP](/blog/administracion-redes#ntp)
 4.  [Syslog](/blog/administracion-redes#syslog)
-5.  [Referencias](/blog/administracion-redes#referencias)
+5.  [Mantenimiento de archivos del router y del switch](/blog/administracion-redes#mantenimiento-de-archivos-del-router-y-del-switch)
+6.  [Referencias](/blog/administracion-redes#referencias)
 
 ## Detección de dispositivos con CDP
 
@@ -264,6 +265,140 @@ R1(config-if)# no shutdown
 *Mar  1 11:52:45: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/0, changed state to up
 *Mar  1 11:52:46: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0,
 changed state to up
+```
+
+## Mantenimiento de archivos del router y del switch
+
+### Sistemas de archivos del router
+
+En una red grande, no sería posible configurar manualmente todos los dispositivos. Afortunadamente, hay muchas maneras de copiar o actualizar sus configuraciones y luego simplemente pegarlas. Para hacer esto, necesitará saber cómo ver y administrar sus sistemas de archivos.
+
+El Sistema de archivos Cisco IOS (**IFS**) permite al administrador navegar a diferentes directorios y enumerar los archivos en un directorio. El administrador también puede crear subdirectorios en memoria flash o en un disco. Los directorios disponibles dependen del dispositivo.
+
+Utilice el comando `show file systems` para mostrar un resultado que enumera todos los sistemas de archivos disponibles en un dispositivo.
+
+```js title="Router" {1,6}
+Router# show file systems
+File Systems:
+       Size(b)       Free(b)      Type  Flags  Prefixes
+             -             -    opaque     rw   system:
+             -             -    opaque     rw   tmpsys:
+*   7194652672    6294822912      disk     rw   bootflash: flash:#
+     256589824     256573440      disk     rw   usb0:
+    1804468224    1723789312      disk     ro   webui:
+             -             -    opaque     rw   null:
+             -             -    opaque     ro   tar:
+             -             -   network     rw   tftp:
+             -             -    opaque     wo   syslog:
+      33554432      33539983     nvram     rw   nvram:
+             -             -   network     rw   rcp:
+             -             -   network     rw   ftp:
+             -             -   network     rw   http:
+             -             -   network     rw   scp:
+             -             -   network     rw   sftp:
+             -             -   network     rw   https:
+             -             -    opaque     ro   cns:
+```
+
+Este comando proporciona información útil, como la cantidad de memoria total y memoria libre, el tipo de sistema de archivos y los permisos. Los permisos incluyen solo lectura (**ro**), solo escritura (**wo**) y lectura y escritura (**rw**).
+
+Observe que el sistema de archivos flash también tiene un **asterisco** que le precede. Esto indica que el sistema de archivos predeterminado actual es flash. El IOS de arranque está ubicado en la memoria flash; por lo tanto, se agrega el símbolo de almohadilla (**#**) a la entrada de flash para indicar que es un disco de arranque.
+
+### Usar TFTP para realizar la copia de seguridad de una configuración y restaurarla
+
+Las copias de los archivos de configuración se deben almacenar como archivos de copia de respaldo en caso de que se produzca un problema. Los archivos de configuración se pueden almacenar en un servidor de protocolo trivial de transferencia de archivos (TFTP) o en una unidad USB.
+
+Para guardar la configuración en ejecución o la configuración de inicio en un servidor TFTP, utilice el comando `copy running-config tftp` o `copy startup-config tftp`.
+
+```js title="R1"
+R1# copy running-config tftp
+Remote host []?192.168.10.254
+Name of the configuration file to write[R1-config]? R1-Jan-2019
+Write file R1-Jan-2019 to 192.168.10.254? [confirm]
+Writing R1-Jan-2019 !!!!!! [OK]
+```
+
+Siga estos pasos para realizar una copia de respaldo de la configuración en un servidor TFTP:
+
+1. Ingrese el comando `copy running-config tftp`.
+2. Introduzca la **dirección IP** del host en el cual se almacenará el archivo de configuración.
+3. Introduzca el **nombre** que se asignará al archivo de configuración.
+4. Presione la tecla **Enter** para confirmar cada elección.
+
+Para restaurar la configuración en ejecución o la configuración de inicio desde un servidor TFTP, utilice el comando `copy tftp running-config` o `copy tftp startup-config`.
+
+1. Ingrese el comando `copy tftp running-config`.
+2. Introduzca la **dirección IP** del host en el que está almacenado el archivo de configuración.
+3. Introduzca el **nombre** que se asignará al archivo de configuración.
+4. Presione la tecla **Enter** para confirmar cada elección.
+
+### Usar una USB para realizar copias de seguridad y restaurar una configuración
+
+Al realizar copias de respaldo en un puerto USB, se recomienda ejecutar el comando `show file systems` para verificar que la unidad USB esté presente y confirmar el nombre.
+
+```js title="R1" {1,22}
+R1# show file systems
+File Systems:
+		Size(b)       Free(b)      Type  Flags  Prefixes
+             -             -    opaque     rw   archive:
+             -             -    opaque     rw   system:
+             -             -    opaque     rw   tmpsys:
+             -             -    opaque     rw   null:
+             -             -   network     rw   tftp:
+*    256487424     184819712      disk     rw   flash0: flash:#
+             -             -      disk     rw   flash1:
+        262136        249270     nvram     rw   nvram:
+             -             -    opaque     wo   syslog:
+             -             -    opaque     rw   xmodem:
+             -             -    opaque     rw   ymodem:
+             -             -   network     rw   rcp:
+             -             -   network     rw   http:
+             -             -   network     rw   ftp:
+             -             -   network     rw   scp:
+             -             -    opaque     ro   tar:
+             -             -   network     rw   https:
+             -             -    opaque     ro   cns:
+    4050042880    3774152704  usbflash     rw   usbflash0:
+```
+
+Utilice el comando `copy run usbflash0:/` para copiar el archivo de configuración a la unidad flash USB. Asegúrese de utilizar el nombre de la unidad flash tal como se indica en el sistema de archivos.
+
+El IOS le solicitará el nombre de archivo. Si el archivo ya existe en la unidad flash USB, el router solicitará que se sobrescriba.
+
+```js title="R1" {1}
+R1# copy running-config usbflash0:
+Destination filename [running-config]? R1-Config
+5024 bytes copied in 0.736 secs (6826 bytes/sec)
+```
+
+Utilice el comando `dir` para ver el archivo en la unidad USB, y el comando `more` para ver el contenido.
+
+```js title="R1" {1,4,7}
+R1# dir usbflash0:/
+Directory of usbflash0:/
+    1  drw-     0  Oct 15 2010 16:28:30 +00:00  Cisco
+   16  -rw-  5024   Jan 7 2013 20:26:50 +00:00  R1-Config
+4050042880 bytes total (3774144512 bytes free)
+R1#
+R1# more usbflash0:/R1-Config
+!
+! Last configuration change at 20:19:54 UTC Mon Jan 7 2013 by
+admin version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+logging buffered 51200 warnings
+!
+no aaa new-model
+!
+no ipv6 cef
+R1#
 ```
 
 ## Referencias
