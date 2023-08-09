@@ -1,8 +1,11 @@
 ---
-title: Administración de redes (WIP)
+title: Administración de redes
 publishDate: "2023-07-30T00:00:00"
 author: José Aular
 tag: cisco
+heroImage:
+  src: https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=871&q=80
+  author: freestocks
 ---
 
 import CustomLink from "~/components/CustomLink.astro";
@@ -21,7 +24,8 @@ export const components = {
 3.  [NTP](/blog/administracion-redes#ntp)
 4.  [Syslog](/blog/administracion-redes#syslog)
 5.  [Mantenimiento de archivos del router y del switch](/blog/administracion-redes#mantenimiento-de-archivos-del-router-y-del-switch)
-6.  [Referencias](/blog/administracion-redes#referencias)
+6.  [Administración de imágenes de IOS](/blog/administracion-redes#administración-de-imágenes-de-ios)
+7.  [Referencias](/blog/administracion-redes#referencias)
 
 ## Detección de dispositivos con CDP
 
@@ -398,7 +402,103 @@ logging buffered 51200 warnings
 no aaa new-model
 !
 no ipv6 cef
+```
+
+## Administración de imágenes de IOS
+
+### Realizar una copia de seguridad de una imagen del IOS en un servidor TFTP
+
+![Realizar una copia de seguridad de una imagen del IOS en un servidor TFTP](https://res.cloudinary.com/jaular/image/upload/v1691584565/blog/administracion-redes/copia-seguridad_yffm9i.png "Realizar una copia de seguridad de una imagen del IOS en un servidor TFTP")
+
+Para mantener la red operacional con el mínimo tiempo de inactividad posible, es necesario implementar procedimientos para realizar copias de seguridad de las imágenes del IOS de Cisco. Esto permite que el administrador de red copie rápidamente una imagen a un router en caso de que la imagen esté dañada o borrada.
+
+1. Asegúrese de que haya acceso al servidor TFTP de red. Haga ping en el servidor TFTP para probar la conectividad.
+
+```js title="R1"
+R1# ping 172.16.1.100
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 172.16.1.100, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5),
+round-trip min/avg/max = 56/56/56 ms
+```
+
+2. Verifique que el servidor TFTP tenga suficiente espacio en disco para admitir la imagen del software IOS de Cisco. Use el comando `show flash0:` en el router para determinar el tamaño del archivo de imagen Cisco IOS.
+
+```js title="R1"
+R1# show flash0:
+-# - --length-- -----date/time------ path
+8 517153193Apr 2 2019 21:29:58 +00:00
+                        ISR4200-UniversalK9_IAS.16.09.04.SPA.binms
+```
+
+3. Copie la imagen en el servidor TFTP mediante el comando `copy {source-url} {destination-url}`. Después de emitir el comando utilizando las URL de origen y destino especificadas, se le solicita al usuario el nombre del archivo de origen, la dirección IP del host remoto y el nombre del archivo de destino.
+
+```js title="R1"
+R1# copy flash: tftp:
+Source filename []?ISR4200-UniversalK9_IAS.16.09.04.SPA.bin
+Address or name of remote host []? 172.16.1.100
+Destination filename [isr4200-universalk9_ias.16.09.04.SPA.bin]?
+Writing isr4200-universalk9_ias.16.09.04.SPA.bin...
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+(output omitted)
+517153193 bytes copied in 863.468 secs (269058 bytes/sec)
+```
+
+### Copia de una imagen de IOS en un dispositivo
+
+![Copia de una imagen de IOS en un dispositivo](https://res.cloudinary.com/jaular/image/upload/v1691585041/blog/administracion-redes/copia-seguridad-2_rnxpnb.png "Copia de una imagen de IOS en un dispositivo")
+
+1. Asegúrese de que haya acceso al servidor TFTP de red. Haga ping en el servidor TFTP para probar la conectividad.
+
+```js title="R1"
+R1# ping 2001:db8:cafe:100::99
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 2001:DB8:CAFE:100::99,
+timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5),
+round-trip min/avg/max = 56/56/56 ms
+```
+
+2. Asegúrese de que haya suficiente espacio en la memoria flash en el router que se actualiza. Se puede verificar la cantidad de memoria flash disponible mediante el comando `show flash:`. Compare el espacio disponible en la memoria flash con el tamaño del nuevo archivo de imagen.
+
+```js title="R1"
+R1# show flash:
+-# - --length-- -----date/time------ path
+(output omitted)
+6294806528 bytes available (537251840 bytes used)
+```
+
+3. Copie el archivo de imagen del IOS del servidor TFTP al router con el comando `copy`. Después de emitir este comando con los URL de destino y de origen especificados, se solicitará al usuario que introduzca la dirección IP del host remoto, el nombre del archivo de origen y el nombre del archivo de destino.
+
+```js title="R1"
+R1# copy tftp: flash:
+Address or name of remote host []?2001:DB8:CAFE:100::99
+Source filename []?ISR4200-UniversalK9_IAS.16.09.04.SPA.bin
+Destination filename [isr4200-universalk9_ias.16.09.04.SPA.bin]?
+Accessing tftp://2001:DB8:CAFE:100::99/ isr4200-
+UniversalK9_IAS.16.09.04.SPA.bin...
+Loading isr4200-universalk9_ias.16.09.04.SPA.bin
+from 2001:DB8:CAFE:100::99 (via
+GigabitEthernet0/0/0): !!!!!!!!!!!!!!!!!!!!
+
+[OK - 517153193 bytes]
+517153193 bytes copied in 868.128 secs (265652 bytes/sec)
+```
+
+### El comando boot system
+
+Para actualizar a la imagen IOS copiada después de que esa imagen se guarde en la memoria flash del router, configure el router para cargar la nueva imagen mediante el comando `boot system`.
+
+```js title="R1"
+R1(config)# boot system flash0:isr4200-universalk9_ias.16.09.04.SPA.bin
+R1(config)# exit
 R1#
+R1# copy running-config startup-config
+R1#
+R1# reload
+Proceed with reload? [confirm]
 ```
 
 ## Referencias
