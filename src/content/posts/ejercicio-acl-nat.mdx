@@ -1,0 +1,189 @@
+---
+title: Ejercicio de ACL y NAT
+publishDate: "2023-08-12T00:00:00"
+author: José Aular
+tag: cisco
+heroImage:
+  src: https://res.cloudinary.com/jaular/image/upload/v1692113370/blog/ejercicio-acl-nat/pkt-1_fsryhq.png
+  author: jaular14
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = { a: CustomLink, img: CustomImage };
+
+## Tabla de contenido
+
+1.  [Información](/blog/ejercicio-acl-nat#información)
+2.  [ACL estándar y extendida](/blog/ejercicio-acl-nat#acl-estándar-y-extendida)
+3.  [Traducción dinámica de direcciones aplicando PAT](/blog/ejercicio-acl-nat#traducción-dinámica-de-direcciones-aplicando-pat)
+4.  [Referencias](/blog/ejercicio-acl-nat#referencias)
+
+## Información
+
+Configurar el acceso seguro a la red LAN y WAN a través de las listas de acceso y la traducción dinámica de direcciones para la comunicación con el ISP y la red local.
+
+- Los usuarios y contraseñas de los dispositivos son: admin / 1234
+- Los usuario sy contraseñas para acceder por FTP son: cisco / cisco
+
+[Descargar documentos](https://www.dropbox.com/scl/fo/75rafi4j3xm4d109ws59l/h?rlkey=ujj7u518hu751bwqur81240gj&dl=0)
+
+## ACL estándar y extendida
+
+Configurar las listas de acceso extendidas y estándar nombradas (Escoja el nombre de cada una a su elección)
+Los dispositivos intermediarios (**routers y switch**) solo pueden ser administrados por la estación de trabajo de la red **Sur 2** a través de **SSH**.
+
+```js title="SUR"
+Sur# configure terminal
+Sur(config)# ip access-list standard ADMIN-SSH
+Sur(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
+Sur(config-std-nacl)# permit 192.168.1.128 0.0.0.63
+Sur(config-std-nacl)# remark DENEGAR ACCESS A TODOS LOS HOST
+Sur(config-std-nacl)# deny any
+Sur(config-std-nacl)# exit
+Sur(config)# line vty 0 4
+Sur(config-line)# transport input ssh
+Sur(config-line)# access-class ADMIN-SSH in
+```
+
+```js title="SWS1"
+SWS1# configure terminal
+SWS1(config)# ip access-list standard ADMIN-SSH
+SWS1(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
+SWS1(config-std-nacl)# permit 192.168.1.128 0.0.0.63
+SWS1(config-std-nacl)# remark DENEGAR ACCESS A TODOS LOS HOST
+SWS1(config-std-nacl)# deny any
+SWS1(config-std-nacl)# exit
+SWS1(config)# line vty 0 15
+SWS1(config-line)# transport input ssh
+SWS1(config-line)# access-class ADMIN-SSH in
+```
+
+```js title="SWS2"
+SWS2# configure terminal
+SWS2(config)# ip access-list standard ADMIN-SSH
+SWS2(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
+SWS2(config-std-nacl)# permit 192.168.1.128 0.0.0.63
+SWS2(config-std-nacl)# remark DENEGAR ACCESS A TODOS LOS HOST
+SWS2(config-std-nacl)# deny any
+SWS2(config-std-nacl)# exit
+SWS2(config)# line vty 0 15
+SWS2(config-line)# transport input ssh
+SWS2(config-line)# access-class ADMIN-SSH in
+```
+
+---
+
+```js title="NORTE"
+Norte# configure terminal
+Norte(config)# ip access-list standard ADMIN-SSH
+Norte(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
+Norte(config-std-nacl)# permit 192.168.1.128 0.0.0.63
+Norte(config-std-nacl)# remark DENEGAR ACCESS A TODOS LOS HOST
+Norte(config-std-nacl)# deny any
+Norte(config-std-nacl)# exit
+Norte(config)# line vty 0 4
+Norte(config-line)# transport input ssh
+Norte(config-line)# access-class ADMIN-SSH in
+```
+
+```js title="SWN1"
+SWN1# configure terminal
+SWN1(config)# ip access-list standard ADMIN-SSH
+SWN1(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
+SWN1(config-std-nacl)# permit 192.168.1.128 0.0.0.63
+SWN1(config-std-nacl)# remark DENEGAR ACCESS A TODOS LOS HOST
+SWN1(config-std-nacl)# deny any
+SWN1(config-std-nacl)# exit
+SWN1(config)# line vty 0 15
+SWN1(config-line)# transport input ssh
+SWN1(config-line)# access-class ADMIN-SSH in
+```
+
+```js title="SWN2"
+SWN2# configure terminal
+SWN2(config)# ip access-list standard ADMIN-SSH
+SWN2(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
+SWN2(config-std-nacl)# permit 192.168.1.128 0.0.0.63
+SWN2(config-std-nacl)# remark DENEGAR ACCESS A TODOS LOS HOST
+SWN2(config-std-nacl)# deny any
+SWN2(config-std-nacl)# exit
+SWN2(config)# line vty 0 15
+SWN2(config-line)# transport input ssh
+SWN2(config-line)# access-class ADMIN-SSH in
+```
+
+En la red **Norte 1** y **Norte 2** los dispositivos poseen las siguientes **restricciones**:
+
+- Respuesta de ping a la red Sur 2 (Administrativa).
+- Acceso al servidor FTP.
+- Acceso Web al servidor interno.
+
+Todos los demás servicios están disponibles.
+
+```js title="NORTE"
+Norte(config)# ip access-list extended NORTE-IN
+Norte(config-ext-nacl)# remark DENEGAR ACCESO AL SERVIDOR FTP
+Norte(config-ext-nacl)# deny tcp 172.16.10.0 0.0.0.255 host 192.168.1.130 eq 21
+Norte(config-ext-nacl)# deny tcp 172.16.11.0 0.0.0.255 host 192.168.1.130 eq 21
+
+Norte(config-ext-nacl)# remark DENEGAR ACCESO WEB DEL SERVIDOR INTERNO
+Norte(config-ext-nacl)# deny tcp 172.16.10.0 0.0.0.255 host 192.168.1.130 eq 80
+Norte(config-ext-nacl)# deny tcp 172.16.11.0 0.0.0.255 host 192.168.1.130 eq 80
+
+Norte(config-ext-nacl)# remark DENEGAR RESPUESTA DE PING A LA RED SUR 2
+Norte(config-ext-nacl)# deny icmp 172.16.10.0 0.0.0.255 192.168.1.128 0.0.0.63 echo
+Norte(config-ext-nacl)# deny icmp 172.16.11.0 0.0.0.255 192.168.1.128 0.0.0.63 echo
+
+Norte(config-ext-nacl)# permit ip any any
+Norte(config-ext-nacl)# exit
+
+Norte(config)# int range gigabitEthernet 0/0-1
+Norte(config-if-range)# ip access-group NORTE-IN in
+Norte(config-if-range)# exit
+```
+
+En la red **Sur 1** los dispositivos poseen las siguientes **restricciones**:
+
+- Envío de correos electrónicos.
+- Acceso al servidor FTP.
+
+Todos los demás servicios están disponibles.
+
+```js title="SUR"
+Sur(config)# ip access-list extended SUR1
+Sur(config-ext-nacl)# remark DENEGAR ACCESO AL SERVIDOR FTP
+Sur(config-ext-nacl)# deny tcp 192.168.1.0 0.0.0.127 host 192.168.1.130 eq 21
+
+Sur(config-ext-nacl)# remark DENEGAR ENVIOS DE CORREOS ELECTRONICOS
+Sur(config-ext-nacl)# deny tcp 192.168.1.0 0.0.0.127 host 192.168.1.130 eq 25
+
+Norte(config-ext-nacl)# permit ip any any
+Sur(config-ext-nacl)# exit
+
+Sur(config)# int gigabitEthernet 0/0
+Sur(config-if-range)# ip access-group SUR1 in
+Sur(config-if-range)# exit
+```
+
+## Traducción dinámica de direcciones aplicando PAT
+
+Las redes **Norte1** y **Norte2** deben realizar comunicación hacía internet empleando el pool de direcciones **203.0.200.232/30**.
+
+```js title="NORTE"
+Norte(config)# access-list 1 permit 172.16.0.0 0.0.255.255
+Norte(config)# ip nat pool NAT-POOL-NORTE 203.0.200.233 203.0.200.234 netmask 255.255.255.252
+Norte(config)# ip nat inside source list 1 pool NAT-POOL-NORTE overload
+
+Norte(config)# int serial 0/0/1
+Norte(config-if)# ip nat outside
+Norte(config-if)# exit
+
+Norte(config)# int range gigabitEthernet 0/0-1
+Norte(config-if-range)# ip nat inside
+```
+
+## Referencias
+
+- [Cisco Networking Academy](https://www.netacad.com/)
+- [ComputerNetworkingNotes](https://www.computernetworkingnotes.com/ccna-study-guide/how-to-block-icmp-ping-on-cisco-routers.html)
