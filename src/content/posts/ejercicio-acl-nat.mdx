@@ -16,7 +16,7 @@ export const components = { a: CustomLink, img: CustomImage };
 
 1.  [Información](/blog/ejercicio-acl-nat#información)
 2.  [ACL estándar y extendida](/blog/ejercicio-acl-nat#acl-estándar-y-extendida)
-3.  [Traducción dinámica de direcciones aplicando PAT](/blog/ejercicio-acl-nat#traducción-dinámica-de-direcciones-aplicando-pat)
+3.  [NAT con sobrecarga](/blog/ejercicio-acl-nat#nat-con-sobrecarga)
 4.  [Referencias](/blog/ejercicio-acl-nat#referencias)
 
 ## Información
@@ -24,7 +24,7 @@ export const components = { a: CustomLink, img: CustomImage };
 Configurar el acceso seguro a la red LAN y WAN a través de las listas de acceso y la traducción dinámica de direcciones para la comunicación con el ISP y la red local.
 
 - Los usuarios y contraseñas de los dispositivos son: admin / 1234
-- Los usuario sy contraseñas para acceder por FTP son: cisco / cisco
+- Los usuarios y contraseñas para acceder por FTP son: cisco / cisco
 
 [Descargar documentos](https://www.dropbox.com/scl/fo/75rafi4j3xm4d109ws59l/h?rlkey=ujj7u518hu751bwqur81240gj&dl=0)
 
@@ -166,7 +166,7 @@ Sur(config-if-range)# ip access-group SUR1 in
 Sur(config-if-range)# exit
 ```
 
-## Traducción dinámica de direcciones aplicando PAT
+## NAT con sobrecarga
 
 Las redes **Norte1** y **Norte2** deben realizar comunicación hacía internet empleando el pool de direcciones **203.0.200.232/30**.
 
