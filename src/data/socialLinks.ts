@@ -13,8 +13,8 @@ const socialLinks: SocialLink[] = [
   },
   {
     href: "https://twitter.com/jaular14",
-    title: "Twitter",
-    name: "twitter",
+    title: "X",
+    name: "x",
   },
   {
     href: "https://jaular.itch.io/",
