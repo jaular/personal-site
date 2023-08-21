@@ -68,34 +68,34 @@ RT1(config-line)# login
 RT1(config-line)# exit
 RT1(config)# enable secret admin
 
-// RT1(config)# interface serial 0/0/0
+RT1(config)# int serial 0/0/0
 RT1(config-if)# ip address 10.0.0.1 255.255.255.252
 RT1(config-if)# clock rate 128000
 RT1(config-if)# no shutdown
 RT1(config-if)# exit
 
-// RT1(config)# interface serial 0/0/1
+RT1(config)# int serial 0/0/1
 RT1(config-if)# ip address 10.0.0.5 255.255.255.252
 RT1(config-if)# no shutdown
 RT1(config-if)# exit
 
-// RT1(config)# interface gigabitEthernet 0/0
+RT1(config)# int gigabitEthernet 0/0
 RT1(config-if)# no shutdown
 RT1(config-subif)# exit
 
-// RT1(config)# interface gigabitEthernet 0/0.10
+RT1(config)# int gigabitEthernet 0/0.10
 RT1(config-subif)# description PUERTA DE ENLACE PARA VLAN 10
 RT1(config-subif)# encapsulation dot1q 10
 RT1(config-subif)# ip address 192.168.10.1 255.255.255.0
 RT1(config-subif)# exit
 
-// RT1(config)# interface gigabitEthernet 0/0.20
+RT1(config)# int gigabitEthernet 0/0.20
 RT1(config-subif)# description PUERTA DE ENLACE PARA VLAN 20
 RT1(config-subif)# encapsulation dot1q 20
 RT1(config-subif)# ip address 192.168.20.1 255.255.255.0
 RT1(config-subif)# exit
 
-// RT1(config)# interface gigabitEthernet 0/0.99
+RT1(config)# int gigabitEthernet 0/0.99
 RT1(config-subif)# description PUERTA DE ENLACE PARA VLAN NATIVA 99
 RT1(config-subif)# encapsulation dot1Q 99 native
 RT1(config-subif)# exit
@@ -124,17 +124,17 @@ SW1(config)# vlan 99
 SW1(config-vlan)# name NATIVA
 SW1(config-vlan)# exit
 
-// SW1(config)# interface fastEthernet 0/1
+SW1(config)# int fastEthernet 0/1
 SW1(config-if)# switchport mode access
 SW1(config-if)# switchport access vlan 10
 SW1(config-if)# exit
 
-// SW1(config)# interface fastEthernet 0/2
+SW1(config)# int fastEthernet 0/2
 SW1(config-if)# switchport mode access
 SW1(config-if)# switchport access vlan 20
 SW1(config-if)# exit
 
-// SW1(config)# interface gigabitEthernet 0/1
+SW1(config)# int gigabitEthernet 0/1
 SW1(config-if)# switchport mode trunk
 SW1(config-if)# switchport trunk native vlan 99
 SW1(config-if)# switchport nonegotiate
@@ -154,35 +154,35 @@ RT2(config-line)# login
 RT2(config-line)# exit
 RT2(config)# enable secret admin
 
-// RT2(config)# interface serial 0/0/0
+RT2(config)# int serial 0/0/0
 RT2(config-if)# 10.0.0.2 255.255.255.252
 RT2(config-if)# ip address 10.0.0.2 255.255.255.252
 RT2(config-if)# no shutdown
 RT2(config-if)# exit
 
-// RT2(config)# interface serial 0/0/1
+RT2(config)# int serial 0/0/1
 RT2(config-if)# ip address 10.0.0.9 255.255.255.252
 RT2(config-if)# clock rate 128000
 RT2(config-if)# no shutdown
 RT2(config-if)# exit
 
-// RT2(config)# interface gigabitEthernet 0/0
+RT2(config)# int gigabitEthernet 0/0
 RT2(config-if)# no shutdown
 RT2(config-if)# exit
 
-// RT2(config)# interface gigabitEthernet 0/0.30
+RT2(config)# int gigabitEthernet 0/0.30
 RT2(config-subif)# description PUERTA DE ENLACE PARA VLAN 30
 RT2(config-subif)# encapsulation dot1q 30
 RT2(config-subif)# ip address 192.168.30.1 255.255.255.0
 RT2(config-subif)# exit
 
-// RT2(config)# interface gigabitEthernet 0/0.40
+RT2(config)# int gigabitEthernet 0/0.40
 RT2(config-subif)# description PUERTA DE ENLACE PARA VLAN 40
 RT2(config-subif)# encapsulation dot1q 40
 RT2(config-subif)# ip address 192.168.40.1 255.255.255.0
 RT2(config-subif)# exit
 
-// RT2(config)# interface gigabitEthernet 0/0.99
+RT2(config)# int gigabitEthernet 0/0.99
 RT2(config-subif)# description PUERTA DE ENLACE PARA VLAN NATIVA 99
 RT2(config-subif)# encapsulation dot1Q 99 native
 RT2(config-subif)# exit
@@ -211,17 +211,17 @@ SW2(config)# vlan 99
 SW2(config-vlan)# name NATIVA
 SW2(config-vlan)# exit
 
-// SW2(config)# interface fastEthernet 0/2
+SW2(config)# int fastEthernet 0/2
 SW2(config-if)# switchport mode access
 SW2(config-if)# switchport access vlan 30
 SW2(config-if)# exit
 
-// SW2(config)# interface fastEthernet 0/3
+SW2(config)# int fastEthernet 0/3
 SW2(config-if)# switchport mode access
 SW2(config-if)# switchport access vlan 40
 SW2(config-if)# exit
 
-// SW2(config)# interface fastEthernet 0/1
+SW2(config)# int fastEthernet 0/1
 SW2(config-if)# switchport mode trunk
 SW2(config-if)# switchport trunk native vlan 99
 SW2(config-if)# switchport nonegotiate
@@ -241,24 +241,24 @@ RT3(config-line)# login
 RT3(config-line)# exit
 RT3(config)# enable secret admin
 
-// RT3(config)# interface serial 0/0/0
+RT3(config)# int serial 0/0/0
 RT3(config-if)# ip address 10.0.0.6 255.255.255.252
 RT3(config-if)# clock rate 128000
 RT3(config-if)# no shutdown
 RT3(config-if)# exit
 
-// RT3(config)# interface serial 0/0/1
+RT3(config)# int serial 0/0/1
 RT3(config-if)# ip address 10.0.0.13 255.255.255.252
 RT3(config-if)# bandwidth 256
 RT3(config-if)# no shutdown
 RT3(config-if)# exit
 
-// RT3(config)# interface gigabitEthernet 0/0
+RT3(config)# int gigabitEthernet 0/0
 RT3(config-if)# ip address 192.168.60.1 255.255.255.0
 RT3(config-if)# no shutdown
 RT3(config-if)# exit
 
-// RT3(config)# interface loopback 0
+RT3(config)# int loopback 0
 RT3(config-if)# ip address 201.209.1.1 255.255.255.252
 RT3(config-if)# exit
 RT3(config)# ip route 0.0.0.0 0.0.0.0 loopback 0
@@ -291,13 +291,13 @@ RT4(config-line)# login
 RT4(config-line)# exit
 RT4(config)# enable secret admin
 
-// RT4(config)# interface serial 0/0/0
+RT4(config)# int serial 0/0/0
 RT4(config-if)# ip address 10.0.0.14 255.255.255.252
 RT4(config-if)# clock rate 128000
 RT4(config-if)# no shutdown
 RT4(config-if)# exit
 
-// RT4(config)# interface serial 0/0/1
+RT4(config)# int serial 0/0/1
 RT4(config-if)# ip address 10.0.0.10 255.255.255.252
 RT4(config-if)# no shutdown
 RT4(config-if)# exit
@@ -385,15 +385,15 @@ RT1(dhcp-config)# exit
 #### - RT2
 
 ```js title="RT2"
-// RT2(config)# interface gigabitEthernet 0/0
+RT2(config)# int gigabitEthernet 0/0
 RT2(config-if)# ip helper-address 10.0.0.1
 RT2(config-if)# exit
 
-// RT2(config)# interface gigabitEthernet 0/0.30
+RT2(config)# int gigabitEthernet 0/0.30
 RT2(config-subif)# ip helper-address 10.0.0.1
 RT2(config-subif)# exit
 
-// RT2(config)# interface gigabitEthernet 0/0.40
+RT2(config)# int gigabitEthernet 0/0.40
 RT2(config-subif)# ip helper-address 10.0.0.1
 RT2(config-subif)# exit
 ```
@@ -401,7 +401,7 @@ RT2(config-subif)# exit
 #### - RT3
 
 ```js title="RT3"
-// RT3(config)# interface gigabitEthernet 0/0
+RT3(config)# int gigabitEthernet 0/0
 RT3(config-if)# ip helper-address 10.0.0.5
 RT3(config-if)# exit
 ```
@@ -417,7 +417,7 @@ RT3(config-if)# exit
 #### - RT4
 
 ```js title="RT4"
-// RT4(config)# interface gigabitEthernet 0/0
+RT4(config)# int gigabitEthernet 0/0
 RT4(config-if)# ip address 172.16.16.1 255.255.255.0
 RT4(config-if)# ip ospf priority 100 // RT4 seria BDR
 RT4(config-if)# no shutdown
@@ -450,13 +450,13 @@ RT5(config-line)# login
 RT5(config-line)# exit
 RT5(config)# enable secret admin
 
-// RT5(config)# interface gigabitEthernet 0/0
+RT5(config)# int gigabitEthernet 0/0
 RT5(config-if)# ip address 172.16.16.2 255.255.255.0
 RT5(config-if)# ip ospf priority 200 // RT5 seria DR
 RT5(config-if)# no shutdown
 RT5(config-if)# exit
 
-// RT5(config)# interface gigabitEthernet 0/1
+RT5(config)# int gigabitEthernet 0/1
 RT5(config-if)# ip address 172.16.18.1 255.255.255.0
 RT5(config-if)# no shutdown
 RT5(config-if)# exit
@@ -489,12 +489,12 @@ RT6(config-line)# login
 RT6(config-line)# exit
 RT6(config)# enable secret admin
 
-// RT6(config)# interface gigabitEthernet 0/0
+RT6(config)# int gigabitEthernet 0/0
 RT6(config-if)# ip address 172.16.16.3 255.255.255.0
 RT6(config-if)# no shutdown
 RT6(config-if)# exit
 
-// RT6(config)# interface gigabitEthernet 0/1
+RT6(config)# int gigabitEthernet 0/1
 RT6(config-if)# ip address 172.16.17.1 255.255.255.0
 RT6(config-if)# no shutdown
 RT6(config-if)# exit
@@ -570,7 +570,7 @@ RT4(dhcp-config)# exit
 #### - RT5
 
 ```js title="RT5"
-// RT2(config)# interface gigabitEthernet 0/1
+RT2(config)# int gigabitEthernet 0/1
 RT5(config-if)# ip helper-address 172.16.16.1
 RT5(config-if)# exit
 ```
@@ -578,7 +578,7 @@ RT5(config-if)# exit
 #### - RT6
 
 ```js title="RT6"
-// RT6(config)# interface gigabitEthernet 0/1
+RT6(config)# int gigabitEthernet 0/1
 RT6(config-if)# ip helper-address 172.16.16.1
 RT6(config-if)# exit
 ```

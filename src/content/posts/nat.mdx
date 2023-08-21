@@ -67,12 +67,12 @@ R2(config)# ip nat inside source static 192.168.10.254 209.165.201.5
 Una vez configurada la asignación, las interfaces que participan en la traducción se configuran como interna o externa con respecto a NAT.
 
 ```js title="R2" {3,8}
-// R2(config)# interface serial 0/1/0
+R2(config)# int serial 0/1/0
 R2(config-if)# ip address 192.168.1.2 255.255.255.252
 R2(config-if)# ip nat inside
 R2(config-if)# exit
 
-// R2(config)# interface serial 0/1/1
+R2(config)# int serial 0/1/1
 R2(config-if)# ip address 209.165.200.1 255.255.255.252
 R2(config-if)# ip nat outside
 ```
@@ -132,7 +132,7 @@ R2(config-if)# ip nat inside source list 1 pool NAT-POOL1
 Identifique qué interfaces están dentro, en relación con NAT; Esta será cualquier interfaz que se conecte a la red interna.
 
 ```js title="R2"
-// R2(config)# interface serial 0/1/0
+R2(config)# int serial 0/1/0
 R2(config-if)# ip nat inside
 ```
 
@@ -141,7 +141,7 @@ R2(config-if)# ip nat inside
 Identifique qué interfaces están fuera, en relación con NAT; Esta será cualquier interfaz que se conecte a la red externa.
 
 ```js title="R2"
-// R2(config)# interface serial 0/1/1
+R2(config)# int serial 0/1/1
 R2(config-if)# ip nat outside
 ```
 
@@ -170,11 +170,11 @@ R2(config)# ip nat inside source list 1 interface serial 0/1/1 overload
 ```js title="R2"
 R2(config)# access-list 1 permit 192.168.0.0 0.0.255.255
 
-// R2(config)# interface serial0/1/0
+R2(config)# int serial0/1/0
 R2(config-if)# ip nat inside
 R2(config-if)# exit
 
-// R2(config)# interface Serial 0/1/1
+R2(config)# int Serial 0/1/1
 R2(config-if)# ip nat outside
 ```
 
@@ -185,11 +185,11 @@ R2(config)# ip nat pool NAT-POOL2 209.165.200.226 209.165.200.240 netmask 255.25
 R2(config)# access-list 1 permit 192.168.0.0 0.0.255.255
 R2(config)# ip nat inside source list 1 pool NAT-POOL2 overload
 
-// R2(config)# interface serial0/1/0
+R2(config)# int serial0/1/0
 R2(config-if)# ip nat inside
 R2(config-if)# exit
 
-//R2(config)# interface serial0/1/1
+R2(config)# int serial0/1/1
 R2(config-if)# ip nat outside
 ```
 

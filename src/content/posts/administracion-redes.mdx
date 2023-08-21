@@ -70,7 +70,7 @@ CDP is not enabled
 Para deshabilitar CDP en una interfaz específica, como la que entra en contacto con un ISP, ingrese `no cdp enable` en la interfaz.
 
 ```js title="Switch" {2}
-// Switch(config)# interface gigabitethernet 0/0/1
+Switch(config)# int gigabitethernet 0/0/1
 Switch(config-if)# cdp enable
 ```
 
@@ -111,7 +111,7 @@ Para verificar que LLDP ya se haya habilitado en el dispositivo, ingrese el coma
 ```js title="Switch" {1,4,5,8}
 Switch(config)# lldp run
 
-// Switch(config)# interface gigabitethernet 0/1
+Switch(config)# int gigabitethernet 0/1
 Switch(config-if)# lldp transmit
 Switch(config-if)# lldp receive
 Switch(config-if)# end
@@ -255,7 +255,7 @@ Use el comando service timestamps log datetime para forzar que los eventos regis
 > Cuando se utiliza la palabra `datetime`, se debe configurar el reloj del dispositivo de red, ya sea manualmente o a través de NTP.
 
 ```js title="R1" {7,11,12,13}
-// R1(config)# interface g0/0/0
+R1(config)# int g0/0/0
 R1(config-if)# shutdown
 %LINK-5-CHANGED: Interface GigabitEthernet0/0/0, changed state to administratively down
 %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0, changed state to down
@@ -263,7 +263,7 @@ R1(config-if)# exit
 
 R1(config)# service timestamps log datetime
 
-// R1(config)# interface g0/0/0
+R1(config)# int g0/0/0
 R1(config-if)# no shutdown
 *Mar  1 11:52:42: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/0, changed state to down
 *Mar  1 11:52:45: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/0, changed state to up
