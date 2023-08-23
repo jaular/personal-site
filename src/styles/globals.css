@@ -102,6 +102,10 @@ prose > :first-child {
   @apply bg-pink-400 bg-opacity-20;
 }
 
+.word--highlighted {
+  @apply bg-blue bg-opacity-20 px-1 rounded border border-blue;
+}
+
 [data-rehype-pretty-code-fragment] .line-highlighted span {
   @apply relative;
 }
