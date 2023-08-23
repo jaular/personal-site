@@ -14,11 +14,18 @@ export const components = { a: CustomLink, img: CustomImage };
 
 ## Tabla de contenido
 
-1.  [Modo de configuración de OSPF del router](/blog/ospf#modo-de-configuración-de-ospf-del-router)
-2.  [Redes OSPF punto a punto](/blog/ospf#redes-ospf-punto-a-punto)
-3.  [Redes OSPF de acceso múltiple](/blog/ospf#redes-ospf-de-acceso-múltiple)
-4.  [Modificación de OSPFv2 de área única](/blog/ospf#modificación-de-ospfv2-de-área-única)
-5.  [Referencias](/blog/ospf#referencias)
+1.  [Concepto](/blog/ospf#concepto)
+2.  [Modo de configuración de OSPF del router](/blog/ospf#modo-de-configuración-de-ospf-del-router)
+3.  [Redes OSPF punto a punto](/blog/ospf#redes-ospf-punto-a-punto)
+4.  [Redes OSPF de acceso múltiple](/blog/ospf#redes-ospf-de-acceso-múltiple)
+5.  [Modificación de OSPFv2 de área única](/blog/ospf#modificación-de-ospfv2-de-área-única)
+6.  [Referencias](/blog/ospf#referencias)
+
+## Concepto
+
+El protocolo OSPF es un protocolo de enrutamiento de estado de enlace que se desarrolló como una alternativa al Protocolo de Información de Enrutamiento del Vector de Distancia (RIP). RIP fue un protocolo de enrutamiento aceptable en los primeros días de las redes e Internet. Sin embargo, el hecho de que RIP dependiera del conteo de saltos como única métrica para determinar la mejor ruta, rápidamente, se volvió problemático.
+
+El OSPF tiene ventajas significativas sobre el RIP en el sentido que ofrece una convergencia más rápida y se escala a implementaciones de redes mucho más grandes. Un administrador de red puede dividir el dominio de enrutamiento en áreas distintas que ayudan a controlar el tráfico de actualización de enrutamiento.
 
 ## Modo de configuración de OSPF del router
 

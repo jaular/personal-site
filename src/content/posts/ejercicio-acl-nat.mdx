@@ -33,7 +33,7 @@ Configurar el acceso seguro a la red LAN y WAN a través de las listas de acceso
 Configurar las listas de acceso extendidas y estándar nombradas (Escoja el nombre de cada una a su elección)
 Los dispositivos intermediarios (**routers y switch**) solo pueden ser administrados por la estación de trabajo de la red **Sur 2** a través de **SSH**.
 
-```js title="SUR"
+```js title="SUR" /ADMIN-SSH/
 Sur# configure terminal
 Sur(config)# ip access-list standard ADMIN-SSH
 Sur(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
@@ -46,7 +46,7 @@ Sur(config-line)# transport input ssh
 Sur(config-line)# access-class ADMIN-SSH in
 ```
 
-```js title="SWS1"
+```js title="SWS1" /ADMIN-SSH/
 SWS1# configure terminal
 SWS1(config)# ip access-list standard ADMIN-SSH
 SWS1(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
@@ -59,7 +59,7 @@ SWS1(config-line)# transport input ssh
 SWS1(config-line)# access-class ADMIN-SSH in
 ```
 
-```js title="SWS2"
+```js title="SWS2" /ADMIN-SSH/
 SWS2# configure terminal
 SWS2(config)# ip access-list standard ADMIN-SSH
 SWS2(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
@@ -74,7 +74,7 @@ SWS2(config-line)# access-class ADMIN-SSH in
 
 ---
 
-```js title="NORTE"
+```js title="NORTE" /ADMIN-SSH/
 Norte# configure terminal
 Norte(config)# ip access-list standard ADMIN-SSH
 Norte(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
@@ -87,7 +87,7 @@ Norte(config-line)# transport input ssh
 Norte(config-line)# access-class ADMIN-SSH in
 ```
 
-```js title="SWN1"
+```js title="SWN1" /ADMIN-SSH/
 SWN1# configure terminal
 SWN1(config)# ip access-list standard ADMIN-SSH
 SWN1(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
@@ -100,7 +100,7 @@ SWN1(config-line)# transport input ssh
 SWN1(config-line)# access-class ADMIN-SSH in
 ```
 
-```js title="SWN2"
+```js title="SWN2" /ADMIN-SSH/
 SWN2# configure terminal
 SWN2(config)# ip access-list standard ADMIN-SSH
 SWN2(config-std-nacl)# remark PERMITIR TODOS LOS HOST DE LA RED SUR 2 POR SSH
@@ -121,7 +121,7 @@ En la red **Norte 1** y **Norte 2** los dispositivos poseen las siguientes **res
 
 Todos los demás servicios están disponibles.
 
-```js title="NORTE"
+```js title="NORTE" /NORTE-IN/
 Norte(config)# ip access-list extended NORTE-IN
 Norte(config-ext-nacl)# remark DENEGAR ACCESO AL SERVIDOR FTP
 Norte(config-ext-nacl)# deny tcp 172.16.10.0 0.0.0.255 host 192.168.1.130 eq 21
@@ -150,7 +150,7 @@ En la red **Sur 1** los dispositivos poseen las siguientes **restricciones**:
 
 Todos los demás servicios están disponibles.
 
-```js title="SUR"
+```js title="SUR" /SUR1/
 Sur(config)# ip access-list extended SUR1
 Sur(config-ext-nacl)# remark DENEGAR ACCESO AL SERVIDOR FTP
 Sur(config-ext-nacl)# deny tcp 192.168.1.0 0.0.0.127 host 192.168.1.130 eq 21
@@ -170,7 +170,7 @@ Sur(config-if-range)# exit
 
 Las redes **Norte1** y **Norte2** deben realizar comunicación hacía internet empleando el pool de direcciones **203.0.200.232/30**.
 
-```js title="NORTE"
+```js title="NORTE" /NAT-POOL-NORTE/
 Norte(config)# access-list 1 permit 172.16.0.0 0.0.255.255
 Norte(config)# ip nat pool NAT-POOL-NORTE 203.0.200.233 203.0.200.234 netmask 255.255.255.252
 Norte(config)# ip nat inside source list 1 pool NAT-POOL-NORTE overload
