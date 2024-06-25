@@ -8,7 +8,7 @@ const { tag: activeTag } = Astro.params;
 <div class="flex items-center space-x-4">
   <Tag
     href="/blog"
-    name="todos"
+    name="Todos"
     activeTag={typeof activeTag === "undefined" && true}
   />
   {tags.map((tag) => <Tag name={tag} activeTag={activeTag === tag && true} />)}
