@@ -18,7 +18,7 @@ type Props = {
 
 export async function getStaticPaths({ paginate }: any) {
   const posts = await getCollection("posts");
-  return tags.map((tag) => {
+  return tags.flatMap((tag) => {
     const filteredPosts = posts
       .filter((post) => post.data.tag === tag)
       .sort(

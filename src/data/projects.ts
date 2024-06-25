@@ -3,7 +3,7 @@ import type { Project } from "~/lib/types";
 const projects: Project[] = [
   {
     title: "T3 App CRUD",
-    href: "https://crud-mantine.vercel.app/",
+    href: "https://github.com/jaular/inventory-app",
     imageUrl: `https://res.cloudinary.com/jaular/image/upload/v1676055521/projects/t3app-crud_je5lwj.png`,
   },
   {

@@ -1,5 +1,5 @@
 ---
-import { Picture } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import { getPlaiceholder } from "plaiceholder";
 
 type Props = {
@@ -45,15 +45,13 @@ const [Svg, svgProps, svgChildren] = svg;
       })
     }
   </Svg>
-  <Picture
+  <Image
     {...img}
-    background="white"
     class="w-full h-full object-cover"
     src={src}
     title={title}
     widths={[200, 400, 600, 720, 1024]}
     sizes="(max-width: 1024px) 100vw, 1024px"
-    aspectRatio="16:9"
     format="avif"
     alt={alt}
     loading={loadingAttribute}

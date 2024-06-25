@@ -3,7 +3,6 @@ import mdx from "@astrojs/mdx";
 import solidJs from "@astrojs/solid-js";
 import alpinejs from "@astrojs/alpinejs";
 import tailwind from "@astrojs/tailwind";
-import image from "@astrojs/image";
 import sitemap from "@astrojs/sitemap";
 import robotsTxt from "astro-robots-txt";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -20,19 +19,14 @@ export default defineConfig({
         applyBaseStyles: false,
       },
     }),
-    image({
-      serviceEntryPoint: "@astrojs/image/sharp",
-    }),
     sitemap(),
     solidJs(),
   ],
   markdown: {
-    extendDefaultPlugins: true,
+    smartypants: true,
+    gfm: true,
     syntaxHighlight: false,
     rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
-  },
-  experimental: {
-    viewTransitions: true,
   },
 });
 

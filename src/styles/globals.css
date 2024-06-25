@@ -88,33 +88,33 @@ prose > :first-child {
 }
 
 /* Rehype Pretty Code */
-[data-rehype-pretty-code-fragment] code {
+[data-rehype-pretty-code-figure] code {
   @apply grid min-w-full break-words rounded-none border-0 bg-transparent p-0 text-sm text-black;
   counter-reset: line;
   box-decoration-break: clone;
 }
 
-[data-rehype-pretty-code-fragment] .line {
+[data-rehype-pretty-code-figure] [data-line] {
   @apply px-4 my-[1px] py-[1px];
 }
 
-[data-rehype-pretty-code-fragment] .line--highlighted {
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
   @apply bg-pink-400 bg-opacity-20;
 }
 
-.word--highlighted {
+[data-highlighted-chars] {
   @apply bg-blue bg-opacity-20 px-1 rounded border border-blue;
 }
 
-[data-rehype-pretty-code-fragment] .line-highlighted span {
+[data-rehype-pretty-code-figure] [data-highlighted-line] span {
   @apply relative;
 }
 
-div[data-rehype-pretty-code-title] {
+figcaption[data-rehype-pretty-code-title] {
   @apply inline-block text-white font-mono text-sm bg-black-700 rounded-t px-5 py-1 border-b border-b-blue;
 }
 
-div[data-rehype-pretty-code-title] + pre {
+figcaption[data-rehype-pretty-code-title] + pre {
   @apply rounded rounded-tl-none mt-0 px-0 py-3 bg-black-600 focus:outline focus:outline-1 focus:outline-blue !important;
 }
 /* https://docs.astro.build/en/guides/integrations-guide/tailwind/#configapplybasestyles */
