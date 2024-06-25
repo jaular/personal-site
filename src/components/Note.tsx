@@ -1,5 +1,5 @@
 import type { Component } from "solid-js";
-import { formattedDate } from "~/lib/utils";
+// import { formattedDate } from "~/lib/utils";
 
 type NoteProps = {
   slug: string;

@@ -1,3 +1,3 @@
-const tags = ["SAP", "Redes", "Cisco", "ts", "js"] as const;
+const tags = ["sap", "redes", "cisco", "ts", "js"] as const;
 
 export default tags;
