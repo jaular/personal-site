@@ -1,0 +1,86 @@
+---
+title: Materiales en SAP
+publishDate: "2024-06-25T00:00:00"
+author: José Aular
+tag: sap
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+import CustomTable from "~/components/CustomTable.astro";
+export const components = {
+  a: CustomLink,
+  img: CustomImage,
+  table: CustomTable,
+};
+
+## Tabla de contenido
+
+1.  [Material](/blog/sap-materiales#material)
+2.  [Crear material](/blog/sap-materiales#crear-material)
+3.  [Modificar material](/blog/sap-materiales#modificar-material)
+
+## Material
+
+Productos que serán adquiridos para ser usados en cualquier actividad de la
+empresa. Se pueden usar para vender, producir, mantener o consumir.
+
+### Tipos de Material
+
+El tipo de material `[Material Type]` es un atributo básico de todos los materiales que se crean
+en SAP. Un tipo de material es un agrupador de aquellos materiales que se gestionan
+del mismo modo.
+
+Los tipos de materiales estándar comúnmente utilizados en **MM** y **PM** son:
+
+| Código | Descripción                         |
+| ------ | ----------------------------------- |
+| ROH    | Materia prima                       |
+| HALB   | Producto semielaborado              |
+| FERT   | Producto terminado                  |
+| HAWA   | Mercadería                          |
+| HIBE   | Materiales auxiliares / Combustible |
+| NLAG   | Material no de almacén              |
+| ERSA   | Piezas de recambio                  |
+| FHMI   | Medios auxiliares de fabricación    |
+| IBAU   | Conjuntos de mantenimiento          |
+
+#### TIP: Visualizar clave en listas desplegables
+
+![Opciones](https://res.cloudinary.com/jaular/image/upload/v1719430837/blog/sap-materiales/gui1_qvtphk.png "Opciones")
+
+![Diseño interactivo](https://res.cloudinary.com/jaular/image/upload/v1719430266/blog/sap-materiales/gui2_kzpqsk.png "Diseño interactivo")
+
+## Crear material
+
+Código de transacción `MM01`
+
+![MM01 - 1](https://res.cloudinary.com/jaular/image/upload/v1719430385/blog/sap-materiales/mm01-1_mswo8q.png "MM01 - 1")
+
+![MM01 - 2](https://res.cloudinary.com/jaular/image/upload/v1719430501/blog/sap-materiales/mm01-2_dbzkpc.png "MM01 - 2")
+
+![MM01 - 3](https://res.cloudinary.com/jaular/image/upload/v1719430578/blog/sap-materiales/mm01-3_qhz2ou.png "MM01 - 3")
+
+**Datos base 1**
+![Datos base 1](https://res.cloudinary.com/jaular/image/upload/v1719430750/blog/sap-materiales/mm01-4_ptkjb6.png "Datos base 1")
+
+**Compras**
+![Compras](https://res.cloudinary.com/jaular/image/upload/v1719431111/blog/sap-materiales/mm01-5_tmaadt.png "Compras")
+
+**Texto pedido de compras**
+![Texto pedido de compras](https://res.cloudinary.com/jaular/image/upload/v1719431501/blog/sap-materiales/mm01-6_pw5ldo.png "Texto pedido de compras")
+
+**Almacenamiento 1**
+![Almacenamiento 1](https://res.cloudinary.com/jaular/image/upload/v1719435216/blog/sap-materiales/mm01-7_utf9ej.png "Almacenamiento 1")
+
+**Contabilidad 1**
+![Contabilidad 1](https://res.cloudinary.com/jaular/image/upload/v1719432670/blog/sap-materiales/mm01-8_iyds1v.png "Contabilidad 1")
+
+## Modificar material
+
+Código de transacción `MM02`
+![MM02 - 1](https://res.cloudinary.com/jaular/image/upload/v1719433327/blog/sap-materiales/mm02-1_sp6pt1.png "MM02 - 1")
+
+![MM02 - 2](https://res.cloudinary.com/jaular/image/upload/v1719433326/blog/sap-materiales/mm02-2_kdgtu9.png "MM02 - 2")
+
+![MM02 - 3](https://res.cloudinary.com/jaular/image/upload/v1719433568/blog/sap-materiales/mm02-3_iqi0no.png "MM02 - 3")
