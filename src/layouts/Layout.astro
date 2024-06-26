@@ -11,7 +11,7 @@ type Props = CustomMeta;
 const { ...customMeta } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="es"
   x-data="{isDarkMode: JSON.parse(localStorage.getItem('darkMode'))}"
@@ -25,7 +25,7 @@ const { ...customMeta } = Astro.props;
     class="flex flex-col justify-between min-h-screen text-black bg-white dark:text-white dark:bg-black antialiased"
   >
     <Header />
-    <main class="w-full max-w-3xl px-4 mx-auto my-10 sm:px-6 md:my-12 lg:px-8">
+    <main class="w-full max-w-4xl px-4 mx-auto my-10 sm:px-6 md:my-12 lg:px-8">
       <slot />
     </main>
     <ScrollToTopButton />
