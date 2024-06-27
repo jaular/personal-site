@@ -1,0 +1,73 @@
+---
+title: SAP Procesos de aprovisionamiento
+publishDate: "2024-06-28T00:00:00"
+author: José Aular
+tag: sap
+---
+
+import CustomLink from "~/components/CustomLink.astro";
+import CustomImage from "~/components/CustomImage.astro";
+export const components = {
+  a: CustomLink,
+  img: CustomImage,
+};
+
+## Tabla de contenido
+
+1.  [Crear solicitud de pedido](/blog/sap-procesos-aprovisionamiento#crear-solicitud-de-pedido)
+2.  [Liberar solicitud de pedido](/blog/sap-procesos-aprovisionamiento#liberar-solicitud-de-pedido)
+3.  [Crear pedido](/blog/sap-procesos-aprovisionamiento#crear-pedido)
+4.  [Liberar pedido](/blog/sap-procesos-aprovisionamiento#liberar-pedido)
+5.  [Resumen de stock](/blog/sap-procesos-aprovisionamiento#resumen-de-stock)
+6.  [Transacciones](/blog/sap-procesos-aprovisionamiento#transacciones)
+
+## Crear solicitud de pedido
+
+Código de transacción `ME51N`
+
+![ME51N - 1](https://res.cloudinary.com/jaular/image/upload/v1719502815/blog/sap-procesos-aprovisionamiento/me51n-1_getmcd.png "ME51N - 1")
+
+![ME51N - 2](https://res.cloudinary.com/jaular/image/upload/v1719502690/blog/sap-procesos-aprovisionamiento/me51n-2_zcmrm2.png "ME51N - 2")
+
+![ME51N - 3](https://res.cloudinary.com/jaular/image/upload/v1719502824/blog/sap-procesos-aprovisionamiento/me51-3_r5ymfl.png "ME51N - 3")
+
+## Liberar solicitud de pedido
+
+Código de transacción `ME54N`
+![ME54N - 1](https://res.cloudinary.com/jaular/image/upload/v1719503359/blog/sap-procesos-aprovisionamiento/me54n-1_oqzwex.png "ME54N - 1")
+
+## Crear pedido
+
+Código de transacción `ME21N`
+![ME21N - 1](https://res.cloudinary.com/jaular/image/upload/v1719511372/blog/sap-procesos-aprovisionamiento/me21n-1_gabbu8.png "ME21N - 1")
+
+![ME21N - 2](https://res.cloudinary.com/jaular/image/upload/v1719511372/blog/sap-procesos-aprovisionamiento/me21n-2_bur5yn.png "ME21N - 2")
+
+![ME21N - 3](https://res.cloudinary.com/jaular/image/upload/v1719511373/blog/sap-procesos-aprovisionamiento/me21n-3_flv9yl.png "ME21N - 3")
+
+## Liberar pedido
+
+Código de transacción `ME29N`
+![ME29N - 1](https://res.cloudinary.com/jaular/image/upload/v1719511730/blog/sap-procesos-aprovisionamiento/me29n-1_y8xmuq.png "ME29N - 1")
+
+## Entrada de mercancías de pedido
+
+Código de transacción `MIGO`
+![MIGO - 1](https://res.cloudinary.com/jaular/image/upload/v1719513010/blog/sap-procesos-aprovisionamiento/migo-1_cv9gds.png "MIGO - 1")
+
+## Resumen de stock
+
+Código de transacción `MMBE`
+![MMBE](https://res.cloudinary.com/jaular/image/upload/v1719514071/blog/sap-procesos-aprovisionamiento/mmbe_u2la2t.png "MMBE")
+
+## Transacciones
+
+- `ME51N /2-3` Solicitud de pedido
+- `ME54N` Liberar solicitud de pedido
+- `ME21N /2-3` Crear pedido
+- `ME29N` Liberar pedido
+- `MIGO` Entrada de mercancías de pedido
+- `MMBE` Resumen de stock
+- `MIRO` Factura
+- `MB21 /2-3` Reserva
+- `MIGO` Salida
