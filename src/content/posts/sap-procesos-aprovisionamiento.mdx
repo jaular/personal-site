@@ -18,8 +18,15 @@ export const components = {
 2.  [Liberar solicitud de pedido](/blog/sap-procesos-aprovisionamiento#liberar-solicitud-de-pedido)
 3.  [Crear pedido](/blog/sap-procesos-aprovisionamiento#crear-pedido)
 4.  [Liberar pedido](/blog/sap-procesos-aprovisionamiento#liberar-pedido)
-5.  [Resumen de stock](/blog/sap-procesos-aprovisionamiento#resumen-de-stock)
-6.  [Transacciones](/blog/sap-procesos-aprovisionamiento#transacciones)
+5.  [Entrada de mercancías de pedido](/blog/sap-procesos-aprovisionamiento#entrada-de-mercancías-de-pedido)
+6.  [Resumen de stock (Opcional)](/blog/sap-procesos-aprovisionamiento#resumen-de-stock-opcional)
+7.  [Documentos de compras por número de documento (Opcional)](/blog/sap-procesos-aprovisionamiento#documentos-de-compras-por-número-de-documento-opcional)
+8.  [Lista documentos material (Opcional)](/blog/sap-procesos-aprovisionamiento#lista-documentos-material-opcional)
+9.  [Visualizar stocks en almacén por material (Opcional)](/blog/sap-procesos-aprovisionamiento#visualizar-stocks-en-almacén-por-material-opcional)
+10. [Crear reserva](/blog/sap-procesos-aprovisionamiento#crear-reserva)
+11. [Lista de reservas gestión de stocks (Opcional)](/blog/sap-procesos-aprovisionamiento#lista-de-reservas-gestión-de-stocks-opcional)
+12. [Salida de mercancías reserva](/blog/sap-procesos-aprovisionamiento#salida-de-mercancías-reserva)
+13. [Transacciones](/blog/sap-procesos-aprovisionamiento#transacciones)
 
 ## Crear solicitud de pedido
 
@@ -55,10 +62,42 @@ Código de transacción `ME29N`
 Código de transacción `MIGO`
 ![MIGO - 1](https://res.cloudinary.com/jaular/image/upload/v1719513010/blog/sap-procesos-aprovisionamiento/migo-1_cv9gds.png "MIGO - 1")
 
-## Resumen de stock
+## Resumen de stock (Opcional)
 
 Código de transacción `MMBE`
 ![MMBE](https://res.cloudinary.com/jaular/image/upload/v1719514071/blog/sap-procesos-aprovisionamiento/mmbe_u2la2t.png "MMBE")
+
+## Documentos de compras por número de documento (Opcional)
+
+Código de transacción `ME2N`
+![ME2N - 1](https://res.cloudinary.com/jaular/image/upload/v1719600661/blog/sap-procesos-aprovisionamiento/me2n-1_s9nsa4.png "ME2N - 1")
+
+![ME2N - 2](https://res.cloudinary.com/jaular/image/upload/v1719600560/blog/sap-procesos-aprovisionamiento/me2n-2_vxpfnc.png "ME2N - 2")
+
+## Lista documentos material (Opcional)
+
+Código de transacción `MB51`
+![MB51 - 1](https://res.cloudinary.com/jaular/image/upload/v1719600768/blog/sap-procesos-aprovisionamiento/mb51-1_sicyh0.png "MB51 - 1")
+
+## Visualizar stocks en almacén por material (Opcional)
+
+Código de transacción `MB52`
+![MB52 - 1](https://res.cloudinary.com/jaular/image/upload/v1719600959/blog/sap-procesos-aprovisionamiento/mb52-1_ryylpj.png "MB52 - 1")
+
+## Crear reserva
+
+Código de transacción `MB21`
+![MB21 - 1](https://res.cloudinary.com/jaular/image/upload/v1719601603/blog/sap-procesos-aprovisionamiento/mb21-1_ywsqru.png "MB21 - 1")
+
+## Lista de reservas gestión de stocks (Opcional)
+
+Código de transacción `MB25`
+![MB25 - 1](https://res.cloudinary.com/jaular/image/upload/v1719601823/blog/sap-procesos-aprovisionamiento/mb25-1_xqbrdd.png "MB25 - 1")
+
+## Salida de mercancías reserva
+
+Código de transacción `MIGO`
+![MIGO - 2](https://res.cloudinary.com/jaular/image/upload/v1719602161/blog/sap-procesos-aprovisionamiento/migo-2_p66anq.png "MIGO - 2")
 
 ## Transacciones
 
@@ -67,7 +106,11 @@ Código de transacción `MMBE`
 - `ME21N /2-3` Crear pedido
 - `ME29N` Liberar pedido
 - `MIGO` Entrada de mercancías de pedido
-- `MMBE` Resumen de stock
+- `MMBE` Resumen de stock (Opcional)
+- `ME2N` Documentos de compras (Opcional)
+- `MB51` Lista documentos material (Opcional)
+- `MB52` Visualizar stocks en almacén por materiall (Opcional)
 - `MIRO` Factura
-- `MB21 /2-3` Reserva
-- `MIGO` Salida
+- `MB21 /2-3` Gestión reserva
+- `MB25` Lista de reservas gestión de stocks (Opcional)
+- `MIGO` Salida de mercancías reserva
